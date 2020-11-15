@@ -47,7 +47,7 @@ public class InventoryUtils
         ArrayList<ItemStack> newI = new ArrayList<>();
         for (ItemStack stack: current)
         {
-            if (!stack.getItemMeta().hasLore() || stack.getItemMeta() == null)
+            if (stack.getItemMeta() == null || !stack.getItemMeta().hasLore())
             {
                 newI.add(new ItemStack(Material.AIR));
                 continue;

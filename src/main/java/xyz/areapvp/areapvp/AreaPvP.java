@@ -33,7 +33,7 @@ public class AreaPvP extends JavaPlugin
         Bukkit.getPluginManager().registerEvents(new Events(), this);
         getCommand("areapvp").setExecutor(new Main());
         getCommand("spawn").setExecutor(new Spawn());
-        getCommand("opf").setExecutor(new Oof());
+        getCommand("oof").setExecutor(new Oof());
         saveDefaultConfig();
         config = getConfig();
         blockPlace = new HashMap<>();
