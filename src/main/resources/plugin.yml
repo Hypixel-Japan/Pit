@@ -3,3 +3,6 @@ version: ${project.version}
 main: xyz.areapvp.areapvp.AreaPvP
 commands:
   areapvp:
+  spawn:
+    aliases: ["respawn"]
+  oof:

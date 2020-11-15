@@ -1,7 +1,11 @@
 package xyz.areapvp.areapvp;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.event.EventHandler;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.awt.geom.Area;
@@ -13,6 +17,28 @@ public class Timer extends BukkitRunnable
     public void run()
     {
         breakBlock();
+    }
+
+    private void hit()
+    {
+        Bukkit.getOnlinePlayers().parallelStream()
+                .forEach(player -> {
+                    if (!player.hasMetadata("x-hitted"))
+                    {
+                        if (!player.hasMetadata("x-hitter"))
+                            return;
+                        player.removeMetadata("x-hitter", AreaPvP.getPlugin());
+                        return;
+                    }
+
+                    int hitted = 15;
+                    for (MetadataValue hitter: player.getMetadata("x-hitted"))
+                        if (hitter.getOwningPlugin().getName().equals(AreaPvP.getPlugin().getName()))
+                            hitted = hitter.asInt();
+                    hitted = hitted - 1;
+                    player.removeMetadata("x-hitted", AreaPvP.getPlugin());
+                    player.setMetadata("x-hitted", new FixedMetadataValue(AreaPvP.getPlugin(), hitted));
+                });
     }
 
     private void breakBlock()

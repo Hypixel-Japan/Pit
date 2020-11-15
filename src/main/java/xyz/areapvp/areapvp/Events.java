@@ -1,5 +1,8 @@
 package xyz.areapvp.areapvp;
 
+import com.sun.xml.internal.ws.client.SenderException;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -7,17 +10,82 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
+import org.bukkit.scheduler.BukkitRunnable;
+import xyz.areapvp.areapvp.level.PlayerInfo;
+import xyz.areapvp.areapvp.level.PlayerModify;
+
+import java.util.UUID;
 
 public class Events implements Listener
 {
     @EventHandler
     public void onKill(PlayerDeathEvent e)
     {
-        e.getEntity().getPlayer().spigot().respawn();
+        Player killer = e.getEntity().getKiller();
+
+        if (killer == null)
+        {
+            if (e.getEntity().hasMetadata("x-hitter"))
+            {
+                String uuid = null;
+                for (MetadataValue hitter: e.getEntity().getMetadata("x-hitter"))
+                    if (hitter.getOwningPlugin().getName().equals(AreaPvP.getPlugin().getName()))
+                        uuid = hitter.asString();
+                if (uuid == null)
+                {
+                    e.getEntity().spigot().respawn();
+                    e.getEntity().sendMessage(ChatColor.RED + ChatColor.BOLD.toString() + "DEATH!");
+                    InventoryUtils.reItem(e.getEntity());
+                    return;
+                }
+                killer = Bukkit.getPlayer(UUID.fromString(uuid));
+            }
+            else
+            {
+                e.getEntity().sendMessage(ChatColor.RED + ChatColor.BOLD.toString() + "DEATH!");
+                e.getEntity().spigot().respawn();
+                InventoryUtils.reItem(e.getEntity());
+                return;
+            }
+        }
+
+        if (killer != null)
+        {
+            Player finalKiller = killer;
+            new BukkitRunnable()
+            {
+                @Override
+                public void run()
+                {
+                    PlayerInfo info = PlayerModify.getInfo(e.getEntity());
+                    int nm = 28;
+
+                    if (info != null)
+                        nm = nm * (info.prestige * 110 / 100);
+
+                    PlayerModify.addExp(finalKiller, nm);
+                    e.getEntity().sendMessage(ChatColor.GREEN +
+                            ChatColor.BOLD.toString() +
+                            "KILL! " + ChatColor.RESET + ChatColor.GRAY + "on " +
+                            e.getEntity().getDisplayName() +
+                            ChatColor.AQUA + " +" + nm + "XP"
+                    );
+                }
+            }.runTaskAsynchronously(AreaPvP.getPlugin());
+            e.getEntity().sendMessage(ChatColor.RED + ChatColor.BOLD.toString() + "DEATH!" + ChatColor.RESET + ChatColor.GRAY + " by " + e.getEntity().getDisplayName());
+
+        }
+        else
+            e.getEntity().sendMessage(ChatColor.RED + ChatColor.BOLD.toString() + "DEATH!");
+        e.getEntity().spigot().respawn();
+        InventoryUtils.reItem(e.getEntity());
+
     }
 
     @EventHandler
@@ -32,9 +100,44 @@ public class Events implements Listener
     }
 
     @EventHandler
+    public void onEntityDamageByEntity(EntityDamageByEntityEvent e)
+    {
+        if (!(e.getEntity() instanceof Player) || !(e.getDamager() instanceof Player))
+            return;
+
+        Player damager = (Player)  e.getEntity();
+        Player hitter = (Player) e.getDamager();
+
+        hitter.setMetadata("x-hitted", new FixedMetadataValue(AreaPvP.getPlugin(), 15));
+        damager.setMetadata("x-hitted", new FixedMetadataValue(AreaPvP.getPlugin(), 15));
+        damager.setMetadata("x-hitter", new FixedMetadataValue(AreaPvP.getPlugin(), hitter.getUniqueId().toString()));
+    }
+
+    @EventHandler
     public void onJoin(PlayerJoinEvent e)
     {
-        e.getPlayer().teleport(e.getPlayer().getWorld().getSpawnLocation());
+        Player player = e.getPlayer();
+        player.teleport(player.getWorld().getSpawnLocation());
+        new BukkitRunnable()
+        {
+            @Override
+            public void run()
+            {
+                if (PlayerModify.isCreated(player))
+                {
+                    PlayerInfo info = PlayerModify.getInfo(player);
+                    if (info == null)
+                    {
+                        PlayerModify.createBalance(player, true);
+                        return;
+                    }
+                    player.setDisplayName(PlayerInfo.getPrefix(info.level, info.prestige) + player.getDisplayName());
+                    return;
+                }
+                PlayerModify.createBalance(player, true);
+            }
+        }.runTaskAsynchronously(AreaPvP.getPlugin());
+        InventoryUtils.reItem(player);
     }
 
     @EventHandler

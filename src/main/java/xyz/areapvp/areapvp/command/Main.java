@@ -1,10 +1,10 @@
-package xyz.areapvp.areapvp;
+package xyz.areapvp.areapvp.command;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-public class Commands implements CommandExecutor
+public class Main implements CommandExecutor
 {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
