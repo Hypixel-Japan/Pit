@@ -41,7 +41,7 @@ public class AreaPvP extends JavaPlugin
         HikariConfig config = new HikariConfig();
         config.setDriverClassName("org.sqlite.JDBC");
         config.setJdbcUrl("jdbc:sqlite:" + getDataFolder().getPath() + "\\" + "data.db");
-        data = new HikariDataSource(data);
+        data = new HikariDataSource(config);
         initDatabase();
 
         timer = new Timer();
