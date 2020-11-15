@@ -14,7 +14,7 @@ public class InventoryUtils
 {
     private static void addOrElse(PlayerInventory inventory, int index, ItemStack item, boolean fwa)
     {
-        if (inventory.getItem(index).getType() == Material.AIR)
+        if (inventory.getItem(index) == null || inventory.getItem(index).getType() == Material.AIR)
             inventory.setItem(0, item);
         else if (fwa && inventory.getItem(index) != item)
             inventory.addItem(item);
