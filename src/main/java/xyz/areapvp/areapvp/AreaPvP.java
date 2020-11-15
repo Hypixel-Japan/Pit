@@ -29,6 +29,6 @@ public final class AreaPvP extends JavaPlugin
         config = getConfig();
         blockPlace = new HashMap<>();
         timer = new Timer();
-        timer.runTaskTimerAsynchronously(this, 0L, 20L); //1秒に1回実行
+        timer.runTaskTimer(this, 0L, 20L); //1秒に1回実行
     }
 }
