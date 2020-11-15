@@ -10,23 +10,31 @@ import javax.lang.model.util.ElementScanner6;
 import java.awt.geom.Area;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class InventoryUtils
 {
-    private static void addOrElse(PlayerInventory inventory, int index, ItemStack item)
+    private static void addOrElse(PlayerInventory inventory, int index, ItemStack item, boolean fwa)
     {
         if (inventory.getItem(index).getType() == Material.AIR)
             inventory.setItem(0, item);
-        else if (inventory.getItem(index) != item)
+        else if (fwa && inventory.getItem(index) != item)
             inventory.addItem(item);
     }
 
     public static void initItem(Player player)
     {
         PlayerInventory inventory = player.getInventory();
-        addOrElse(inventory, 0, new ItemStack(Material.IRON_SWORD));
-        addOrElse(inventory, 1, new ItemStack(Material.BOW));
-        addOrElse(inventory, 8, new ItemStack(Material.ARROW, 31));
+        addOrElse(inventory, 0, new ItemStack(Material.IRON_SWORD), true);
+        addOrElse(inventory, 1, new ItemStack(Material.BOW), true);
+        addOrElse(inventory, 8, new ItemStack(Material.ARROW, 31), true);
+
+        boolean c100n = new Random().nextBoolean();
+
+        addOrElse(inventory, 100, new ItemStack(c100n ? Material.IRON_BOOTS: Material.CHAINMAIL_BOOTS), false);
+        addOrElse(inventory, 101, new ItemStack(c100n ? Material.IRON_LEGGINGS: Material.CHAINMAIL_LEGGINGS), false);
+        addOrElse(inventory, 102, new ItemStack(!c100n ? Material.IRON_CHESTPLATE: Material.CHAINMAIL_CHESTPLATE), false);
+
     }
     public static void reItem(Player player)
     {
@@ -38,6 +46,7 @@ public class InventoryUtils
                 PlayerInventory inventory = player.getInventory();
                 inventory.setArmorContents(equip(inventory.getArmorContents()));
                 inventory.setStorageContents(equip(inventory.getStorageContents()));
+                initItem(player);
             }
         }.runTaskAsynchronously(AreaPvP.getPlugin());
     }
