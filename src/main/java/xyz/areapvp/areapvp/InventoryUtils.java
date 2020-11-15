@@ -6,8 +6,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import javax.lang.model.util.ElementScanner6;
-import java.awt.geom.Area;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -56,7 +54,7 @@ public class InventoryUtils
         ArrayList<ItemStack> newI = new ArrayList<>();
         for (ItemStack stack: current)
         {
-            if (stack.getItemMeta() == null || !stack.getItemMeta().hasLore())
+            if (stack == null || stack.getType() == Material.AIR || stack.getItemMeta() == null || !stack.getItemMeta().hasLore())
             {
                 newI.add(new ItemStack(Material.AIR));
                 continue;

@@ -69,7 +69,7 @@ public class Events implements Listener
                         nm = nm * (info.prestige * 110 / 100);
 
                     PlayerModify.addExp(finalKiller, nm);
-                    e.getEntity().sendMessage(ChatColor.GREEN +
+                    finalKiller.sendMessage(ChatColor.GREEN +
                             ChatColor.BOLD.toString() +
                             "KILL! " + ChatColor.RESET + ChatColor.GRAY + "on " +
                             e.getEntity().getDisplayName() +

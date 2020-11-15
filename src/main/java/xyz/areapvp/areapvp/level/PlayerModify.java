@@ -1,5 +1,6 @@
 package xyz.areapvp.areapvp.level;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import xyz.areapvp.areapvp.AreaPvP;
 
@@ -99,6 +100,10 @@ public class PlayerModify
             statement.execute();
         }
         catch (Exception ignored) { }
+        player.sendTitle(ChatColor.AQUA + ChatColor.BOLD.toString() + "LEVEL UP!",
+                PlayerInfo.getPrefix(info.level, info.prestige) + ChatColor.GRAY + " → " +
+                        PlayerInfo.getPrefix(info.level + level, info.prestige),
+                10, 20, 10);
     }
 
     public static void addExp(Player player, long exp)
