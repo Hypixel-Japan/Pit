@@ -29,12 +29,12 @@ public class AreaPvP extends JavaPlugin
     @Override
     public void onEnable()
     {
+        plugin = this;
         Bukkit.getPluginManager().registerEvents(new Events(), this);
         getCommand("areapvp").setExecutor(new Main());
         getCommand("spawn").setExecutor(new Spawn());
         getCommand("opf").setExecutor(new Oof());
         saveDefaultConfig();
-        plugin = this;
         config = getConfig();
         blockPlace = new HashMap<>();
 
