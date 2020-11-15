@@ -1,5 +1,0 @@
-name: AreaPvP
-version: 1.0-SNAPSHOT
-main: xyz.areapvp.areapvp.AreaPvP
-commands:
-  areapvp:
