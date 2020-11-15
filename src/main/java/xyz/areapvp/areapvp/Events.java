@@ -167,13 +167,6 @@ public class Events implements Listener
     }
 
     @EventHandler
-    private void onLeave(PlayerQuitEvent e)
-    {
-        Player player = e.getPlayer();
-        PlayerEditor.changePlayerHead(player, 0,  1, PlayerEditor.Type.DELETE);
-    }
-
-    @EventHandler
     private void onBreak(BlockBreakEvent e)
     {
         if (e.getPlayer().getGameMode() == GameMode.CREATIVE)

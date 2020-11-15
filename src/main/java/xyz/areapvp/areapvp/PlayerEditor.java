@@ -20,13 +20,6 @@ public class PlayerEditor
                 return;
         }
 
-        if (type == Type.DELETE)
-        {
-            if (team.getSize() - 1 <= 0)
-                team.unregister();
-            return;
-        }
-
         team.setPrefix(PlayerInfo.getPrefix(level, prestige) + ChatColor.GRAY + " ");
         team.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.ALWAYS);
 
