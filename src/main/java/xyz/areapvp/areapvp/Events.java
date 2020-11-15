@@ -3,6 +3,7 @@ package xyz.areapvp.areapvp;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.entity.Egg;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,8 +12,10 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -56,7 +59,15 @@ public class Events implements Listener
 
         if (killer != null)
         {
+            if (killer.getUniqueId() == e.getEntity().getUniqueId())
+            {
+                e.getEntity().sendMessage(ChatColor.RED + ChatColor.BOLD.toString() + "DEATH!");
+                e.getEntity().spigot().respawn();
+                InventoryUtils.reItem(e.getEntity());
+            }
+
             Player finalKiller = killer;
+
             new BukkitRunnable()
             {
                 @Override
@@ -66,13 +77,19 @@ public class Events implements Listener
                     int nm = 28;
 
                     if (info != null)
-                        nm = nm * (info.prestige * 110 / 100);
+                        nm = nm * ((info.prestige == 0 ? 1: info.prestige) * 110 / 100);
 
                     PlayerModify.addExp(finalKiller, nm);
+
+                    PlayerInfo fs = PlayerModify.getInfo(e.getEntity());
+                    String name = ChatColor.GRAY + "[1] " + e.getEntity().getDisplayName();
+                    if (fs != null)
+                        name = PlayerInfo.getPrefix(fs.level, fs.prestige) + " " + e.getEntity().getDisplayName();
+
                     finalKiller.sendMessage(ChatColor.GREEN +
                             ChatColor.BOLD.toString() +
                             "KILL! " + ChatColor.RESET + ChatColor.GRAY + "on " +
-                            e.getEntity().getDisplayName() +
+                            name +
                             ChatColor.AQUA + " +" + nm + "XP"
                     );
                 }
@@ -116,6 +133,7 @@ public class Events implements Listener
     public void onJoin(PlayerJoinEvent e)
     {
         Player player = e.getPlayer();
+        player.setFoodLevel(19);
         player.teleport(player.getWorld().getSpawnLocation());
         new BukkitRunnable()
         {
@@ -130,13 +148,21 @@ public class Events implements Listener
                         PlayerModify.createBalance(player, true);
                         return;
                     }
-                    player.setDisplayName(PlayerInfo.getPrefix(info.level, info.prestige) + player.getDisplayName());
+                    PlayerEditor.changePlayerHead(player, info.prestige, info.level, PlayerEditor.Type.CREATE);
+
                     return;
                 }
                 PlayerModify.createBalance(player, true);
             }
         }.runTaskAsynchronously(AreaPvP.getPlugin());
         InventoryUtils.reItem(player);
+    }
+
+    @EventHandler
+    private void onLeave(PlayerQuitEvent e)
+    {
+        Player player = e.getPlayer();
+        PlayerEditor.changePlayerHead(player, 0,  1, PlayerEditor.Type.DELETE);
     }
 
     @EventHandler
@@ -175,5 +201,11 @@ public class Events implements Listener
                 remove = null; //削除しない
         }
         AreaPvP.blockPlace.put(e.getBlock().getLocation(), remove);
+    }
+
+    @EventHandler
+    private void onHungr(FoodLevelChangeEvent e)
+    {
+        e.setFoodLevel(19);
     }
 }

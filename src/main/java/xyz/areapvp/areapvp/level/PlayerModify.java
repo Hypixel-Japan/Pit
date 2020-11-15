@@ -3,6 +3,7 @@ package xyz.areapvp.areapvp.level;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import xyz.areapvp.areapvp.AreaPvP;
+import xyz.areapvp.areapvp.PlayerEditor;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -32,7 +33,7 @@ public class PlayerModify
 
     public static void createBalance(Player player, boolean tested)
     {
-        if (tested || isCreated(player))
+        if (tested && isCreated(player))
             return;
         try (Connection connection = AreaPvP.data.getConnection();
              PreparedStatement statement = connection.prepareStatement("INSERT INTO player VALUES (" +
@@ -54,7 +55,7 @@ public class PlayerModify
         UUID uuid = player.getUniqueId();
         try (Connection connection = AreaPvP.data.getConnection();
              PreparedStatement statement = connection.prepareStatement("SELECT * FROM player WHERE UUID=?");
-             PreparedStatement wh = connection.prepareCall("SELECT perk from perk WHERE UUID=?"))
+             PreparedStatement wh = connection.prepareStatement("SELECT perk from perk WHERE UUID=?"))
 
         {
             statement.setString(1, uuid.toString().replace("-", ""));
@@ -79,8 +80,9 @@ public class PlayerModify
 
             return new PlayerInfo(level, exp, prestige, perkStr);
         }
-        catch (Exception ignored)
+        catch (Exception e)
         {
+            e.printStackTrace();
             return null;
         }
     }
@@ -104,12 +106,16 @@ public class PlayerModify
                 PlayerInfo.getPrefix(info.level, info.prestige) + ChatColor.GRAY + " → " +
                         PlayerInfo.getPrefix(info.level + level, info.prestige),
                 10, 20, 10);
+        PlayerEditor.changePlayerHead(player, info.prestige, info.level + level, PlayerEditor.Type.UPDATE);
     }
 
     public static void addExp(Player player, long exp)
     {
         PlayerInfo info = getInfo(player);
         if (info == null)
+            return;
+
+        if (info.level == 120)
             return;
 
         long xp = info.exp + exp;
@@ -124,6 +130,8 @@ public class PlayerModify
             if(a > xp)
             {
                 int l = add - 1;
+                if (l == 0)
+                    break;
                 addLevel(player, l, xp);
                 break;
             }

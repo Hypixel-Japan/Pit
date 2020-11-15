@@ -15,7 +15,7 @@ public class InventoryUtils
     private static void addOrElse(PlayerInventory inventory, int index, ItemStack item, boolean fwa)
     {
         if (inventory.getItem(index) == null || inventory.getItem(index).getType() == Material.AIR)
-            inventory.setItem(0, item);
+            inventory.setItem(index, item);
         else if (fwa && inventory.getItem(index) != item)
             inventory.addItem(item);
     }
@@ -23,17 +23,22 @@ public class InventoryUtils
     public static void initItem(Player player)
     {
         PlayerInventory inventory = player.getInventory();
-        addOrElse(inventory, 0, new ItemStack(Material.IRON_SWORD), true);
-        addOrElse(inventory, 1, new ItemStack(Material.BOW), true);
-        addOrElse(inventory, 8, new ItemStack(Material.ARROW, 31), true);
+        addOrElse(inventory, 0, Items.setUnbreakable(new ItemStack(Material.IRON_SWORD)), true);
+        addOrElse(inventory, 1, Items.setUnbreakable(new ItemStack(Material.BOW)), true);
+        addOrElse(inventory, 8, Items.setUnbreakable(new ItemStack(Material.ARROW, 31)), true);
 
         boolean c100n = new Random().nextBoolean();
 
-        addOrElse(inventory, 100, new ItemStack(c100n ? Material.IRON_BOOTS: Material.CHAINMAIL_BOOTS), false);
-        addOrElse(inventory, 101, new ItemStack(c100n ? Material.IRON_LEGGINGS: Material.CHAINMAIL_LEGGINGS), false);
-        addOrElse(inventory, 102, new ItemStack(!c100n ? Material.IRON_CHESTPLATE: Material.CHAINMAIL_CHESTPLATE), false);
+        if (inventory.getBoots() == null)
+            inventory.setBoots(Items.setUnbreakable(new ItemStack(c100n ? Material.IRON_BOOTS: Material.CHAINMAIL_BOOTS)));
+        if (inventory.getLeggings() == null)
+            inventory.setLeggings(Items.setUnbreakable(new ItemStack(c100n ? Material.IRON_LEGGINGS: Material.CHAINMAIL_LEGGINGS)));
+        if (inventory.getChestplate() == null)
+            inventory.setChestplate(Items.setUnbreakable(new ItemStack(!c100n ? Material.IRON_CHESTPLATE: Material.CHAINMAIL_CHESTPLATE)));
 
     }
+
+
     public static void reItem(Player player)
     {
         new BukkitRunnable()

@@ -2,7 +2,6 @@ package xyz.areapvp.areapvp.level;
 
 import org.bukkit.ChatColor;
 
-import javax.swing.text.StyledEditorKit;
 import java.util.ArrayList;
 
 public class PlayerInfo
@@ -29,7 +28,9 @@ public class PlayerInfo
 
     private static ChatColor getBracketColor(int prestige)
     {
-        if (prestige < 5)
+        if (prestige == 0)
+            return ChatColor.GRAY;
+        else if (prestige < 5)
             return ChatColor.BLUE;
         else if (prestige < 10)
             return ChatColor.YELLOW;

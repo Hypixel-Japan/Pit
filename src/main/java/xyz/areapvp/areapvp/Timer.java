@@ -6,6 +6,8 @@ import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.awt.geom.Area;
@@ -17,6 +19,7 @@ public class Timer extends BukkitRunnable
     public void run()
     {
         breakBlock();
+        hit();
     }
 
     private void hit()

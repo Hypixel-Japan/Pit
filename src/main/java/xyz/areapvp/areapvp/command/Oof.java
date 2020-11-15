@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import xyz.areapvp.areapvp.AreaPvP;
+import xyz.areapvp.areapvp.InventoryUtils;
 import xyz.areapvp.areapvp.level.PlayerInfo;
 import xyz.areapvp.areapvp.level.PlayerModify;
 
@@ -63,14 +64,17 @@ public class Oof implements CommandExecutor
                     }
                 }.runTaskAsynchronously(AreaPvP.getPlugin());
                 sender.sendMessage(ChatColor.RED + ChatColor.BOLD.toString() + "DEATH!" + ChatColor.RESET + ChatColor.GRAY + " by " + killer.getDisplayName());
-                player.spigot().respawn();
+                player.teleport(player.getWorld().getSpawnLocation());
+                InventoryUtils.reItem(player);
                 return true;
             }
 
         }
 
         player.sendMessage(ChatColor.RED + ChatColor.BOLD.toString() + "DEATH!");
-        player.spigot().respawn();
+        player.teleport(player.getWorld().getSpawnLocation());
+        InventoryUtils.reItem(player);
+
         return true;
     }
 }

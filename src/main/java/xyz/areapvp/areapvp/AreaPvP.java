@@ -6,6 +6,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 import xyz.areapvp.areapvp.command.Main;
 import xyz.areapvp.areapvp.command.Oof;
 import xyz.areapvp.areapvp.command.Spawn;
@@ -46,6 +49,16 @@ public class AreaPvP extends JavaPlugin
 
         timer = new Timer();
         timer.runTaskTimer(this, 0L, 20L); //1秒に1回実行
+
+        new BukkitRunnable()
+        {
+            @Override
+            public void run()
+            {
+                Bukkit.getOnlinePlayers().parallelStream()
+                        .forEach(player -> player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 100, 255, false)));
+            }
+        }.runTaskTimer(this, 0L, 20L);
     }
 
     private static void initDatabase()
@@ -63,7 +76,7 @@ public class AreaPvP extends JavaPlugin
                     "PERK text" +
                     ")");
         }
-        catch (Exception e)
+        catch (Exception ignored)
         {
 
         }
