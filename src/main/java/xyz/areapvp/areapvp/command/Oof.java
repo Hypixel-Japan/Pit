@@ -49,17 +49,31 @@ public class Oof implements CommandExecutor
                     public void run()
                     {
                         PlayerInfo info = PlayerModify.getInfo(player);
+
                         int nm = 28;
 
                         if (info != null)
-                            nm = nm * (info.prestige * 110 / 100);
+                            nm = nm * ((info.prestige == 0 ? 1: info.prestige) * 110 / 100);
 
+                        int gse = 11;
+
+                        if (info != null)
+                            gse = gse * ((info.prestige == 0 ? 1: info.prestige) * 110 / 100);
+
+                        AreaPvP.economy.depositPlayer(killer, gse);
                         PlayerModify.addExp(killer, nm);
+
+                        PlayerInfo fs = PlayerModify.getInfo(player);
+                        String name = ChatColor.GRAY + "[1] " + player.getDisplayName();
+                        if (fs != null)
+                            name = PlayerInfo.getPrefix(fs.level, fs.prestige) + ChatColor.GRAY + " " + player.getDisplayName();
+
                         killer.sendMessage(ChatColor.GREEN +
                                 ChatColor.BOLD.toString() +
                                 "KILL! " + ChatColor.RESET + ChatColor.GRAY + "on " +
-                                player.getDisplayName() +
-                                ChatColor.AQUA + " +" + nm + "XP"
+                                name +
+                                ChatColor.AQUA + " +" + nm + "XP " +
+                                ChatColor.GOLD + " +" + gse + ".00g"
                         );
                     }
                 }.runTaskAsynchronously(AreaPvP.getPlugin());

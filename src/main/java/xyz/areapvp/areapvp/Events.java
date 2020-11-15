@@ -1,10 +1,12 @@
 package xyz.areapvp.areapvp;
 
+import com.sun.javafx.sg.prism.web.NGWebView;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
-import org.bukkit.entity.Egg;
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,15 +16,24 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryPickupItemEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
+import xyz.areapvp.areapvp.inventory.Shop;
+import xyz.areapvp.areapvp.item.IShopItem;
 import xyz.areapvp.areapvp.level.PlayerInfo;
 import xyz.areapvp.areapvp.level.PlayerModify;
 
+import java.awt.geom.Area;
 import java.util.UUID;
 
 public class Events implements Listener
@@ -75,11 +86,18 @@ public class Events implements Listener
                 public void run()
                 {
                     PlayerInfo info = PlayerModify.getInfo(e.getEntity());
+
                     int nm = 28;
 
                     if (info != null)
                         nm = nm * ((info.prestige == 0 ? 1: info.prestige) * 110 / 100);
 
+                    int gse = 11;
+
+                    if (info != null)
+                        gse = gse * ((info.prestige == 0 ? 1: info.prestige) * 110 / 100);
+
+                    AreaPvP.economy.depositPlayer(finalKiller, gse);
                     PlayerModify.addExp(finalKiller, nm);
 
                     PlayerInfo fs = PlayerModify.getInfo(e.getEntity());
@@ -91,7 +109,8 @@ public class Events implements Listener
                             ChatColor.BOLD.toString() +
                             "KILL! " + ChatColor.RESET + ChatColor.GRAY + "on " +
                             name +
-                            ChatColor.AQUA + " +" + nm + "XP"
+                            ChatColor.AQUA + " +" + nm + "XP " +
+                            ChatColor.GOLD + " +" + gse + ".00g"
                     );
                 }
             }.runTaskAsynchronously(AreaPvP.getPlugin());
@@ -208,5 +227,93 @@ public class Events implements Listener
     private void onHungr(FoodLevelChangeEvent e)
     {
         e.setFoodLevel(19);
+    }
+
+    @EventHandler
+    private void onLeave(PlayerQuitEvent e)
+    {
+        AreaPvP.gui.remove(e.getPlayer().getUniqueId());
+    }
+
+    @EventHandler
+    private void onClose(InventoryCloseEvent e)
+    {
+        AreaPvP.gui.remove(e.getPlayer().getUniqueId());
+    }
+
+    @EventHandler
+    private void onPickUp(InventoryClickEvent e)
+    {
+        Player player = (Player) e.getInventory().getViewers().get(0);
+        if (player == null)
+            return;
+        String type = AreaPvP.gui.get(player.getUniqueId());
+        if (type == null)
+            return;
+        e.setCancelled(true);
+
+        if (e.getInventory() instanceof PlayerInventory)
+            return;
+
+        ItemStack item = e.getCurrentItem();
+
+        if (item.getType() == Material.BEDROCK)
+        {
+            player.sendMessage(ChatColor.RED + "あなたはこれを購入することができません！");
+            return;
+        }
+
+        IShopItem shopItem = xyz.areapvp.areapvp.item.Items.getItem(Items.getMetaData(item, "type"));
+
+        if (shopItem == null)
+        {
+            player.sendMessage(ChatColor.RED + "アイテムが不明です！");
+            return;
+        }
+
+        if (AreaPvP.economy.getBalance(player) >= shopItem.getNeedGold())
+        {
+            player.getInventory().addItem(shopItem.getItem());
+            player.sendMessage(ChatColor.GREEN + "アイテムを購入しました！");
+            AreaPvP.economy.withdrawPlayer(player, shopItem.getNeedGold());
+            player.closeInventory();
+        }
+    }
+
+    @EventHandler
+    private void onEntityRight(PlayerInteractEntityEvent e)
+    {
+        if (e.getRightClicked().getType() != EntityType.VILLAGER)
+            return;
+
+        if (e.getPlayer().hasPermission("areapvp.admin"))
+        {
+            if (e.getPlayer().getInventory().getItemInMainHand() != null && e.getPlayer().getInventory().getItemInMainHand().getType() != Material.AIR)
+            {
+                if (e.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals(ChatColor.RED + "Shop Creator 3000"))
+                {
+                    e.getRightClicked().setMetadata("areaPvP", new FixedMetadataValue(AreaPvP.getPlugin(), "item"));
+                    e.getPlayer().sendMessage(ChatColor.GREEN + "アイテムショップを作成しました。");
+                    return;
+                }
+            }
+        }
+
+        if (!e.getRightClicked().hasMetadata("areaPvP"))
+            return;
+        String type = null;
+        for (MetadataValue value: e.getRightClicked().getMetadata("areaPvP"))
+            if (value.getOwningPlugin().getName().equals(AreaPvP.getPlugin().getName()))
+                type = value.asString();
+        if (type == null)
+            return;
+        e.setCancelled(true);
+        switch (type)
+        {
+            case "item":
+                AreaPvP.gui.put(e.getPlayer().getUniqueId(), "item");
+                Shop.openInventory(e.getPlayer());
+                break;
+        }
     }
 }

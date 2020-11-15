@@ -2,9 +2,11 @@ package xyz.areapvp.areapvp;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -12,9 +14,13 @@ import org.bukkit.scheduler.BukkitRunnable;
 import xyz.areapvp.areapvp.command.Main;
 import xyz.areapvp.areapvp.command.Oof;
 import xyz.areapvp.areapvp.command.Spawn;
+import xyz.areapvp.areapvp.item.Items;
+import xyz.areapvp.areapvp.item.items.DiamondBoots;
+import xyz.areapvp.areapvp.item.items.DiamondChestPlate;
 
 import java.sql.Statement;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class AreaPvP extends JavaPlugin
 {
@@ -23,6 +29,8 @@ public class AreaPvP extends JavaPlugin
     public static HashMap<Location, Integer> blockPlace;
     public static Timer timer;
     public static HikariDataSource data;
+    public static HashMap<UUID, String> gui;
+    public static Economy economy;
 
     public static AreaPvP getPlugin()
     {
@@ -40,6 +48,19 @@ public class AreaPvP extends JavaPlugin
         saveDefaultConfig();
         config = getConfig();
         blockPlace = new HashMap<>();
+        gui = new HashMap<>();
+        if (getServer().getPluginManager().getPlugin("Vault") == null)
+        {
+            System.out.println("Please install 1 plugin(s) [Vault]");
+            getServer().getPluginManager().disablePlugin(this);
+        }
+
+        Items.addItem(new DiamondBoots());
+        Items.addItem(new DiamondChestPlate());
+
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+
+        economy = rsp.getProvider();
 
         HikariConfig config = new HikariConfig();
         config.setDriverClassName("org.sqlite.JDBC");

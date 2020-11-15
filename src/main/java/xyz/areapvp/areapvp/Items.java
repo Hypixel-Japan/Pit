@@ -61,7 +61,7 @@ public class Items
         return quickLore(stack, keptOnDeath);
     }
 
-    private static ItemStack removeMetadata(ItemStack stack, String name)
+    public static ItemStack removeMetadata(ItemStack stack, String name)
     {
         net.minecraft.server.v1_12_R1.ItemStack nmStack = CraftItemStack.asNMSCopy(stack);
         NBTTagCompound tagCompound = nmStack.getTag() != null ? nmStack.getTag(): new NBTTagCompound();
@@ -77,7 +77,14 @@ public class Items
         return tagCompound.getString(name) != null;
     }
 
-    private static ItemStack addMetaData(ItemStack stack, String key, String value)
+    public static String getMetaData(ItemStack stack, String name)
+    {
+        net.minecraft.server.v1_12_R1.ItemStack nmStack = CraftItemStack.asNMSCopy(stack);
+        NBTTagCompound tagCompound = nmStack.getTag() != null ? nmStack.getTag(): new NBTTagCompound();
+        return tagCompound.getString(name);
+    }
+
+    public static ItemStack addMetaData(ItemStack stack, String key, String value)
     {
         net.minecraft.server.v1_12_R1.ItemStack nmStack = CraftItemStack.asNMSCopy(stack);
         NBTTagCompound tagCompound = nmStack.getTag() != null ? nmStack.getTag(): new NBTTagCompound();

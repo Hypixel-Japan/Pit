@@ -2,10 +2,13 @@ package xyz.areapvp.areapvp.command;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import xyz.areapvp.areapvp.AreaPvP;
 import xyz.areapvp.areapvp.level.PlayerInfo;
@@ -24,46 +27,19 @@ public class Main implements CommandExecutor
 
         switch (args.length)
         {
-            case 3:
-                if (args[0].equals("level") || args[0].equals("lv"))
+            case 1:
+                if (args[0].equals("shop"))
                 {
-                    int lv;
-                    try
+                    if (!(sender instanceof Player))
                     {
-                        lv = Integer.parseInt(args[1]);
-                    }
-                    catch (Exception ignored)
-                    {
-                        sender.sendMessage(ChatColor.RED + "エラー！引数が数字ではありません！");
+                        sender.sendMessage(ChatColor.RED + "エラー！プレイヤーからのみ実行できます！");
                         return true;
                     }
-                    Player player = Bukkit.getPlayer(args[2]);
-                    if (player == null)
-                    {
-                        sender.sendMessage(ChatColor.RED + "エラー！プレイヤーが見つかりませんでした！");
-                        return true;
-                    }
-                    new BukkitRunnable()
-                    {
-                        @Override
-                        public void run()
-                        {
-                            PlayerInfo info = PlayerModify.getInfo(player);
-                            if (info == null)
-                            {
-                                sender.sendMessage(ChatColor.RED + "エラー！プレイヤーはアカウントを持っていません！");
-                                return;
-                            }
-
-                            int level = info.level + lv;
-                            if (level < 1)
-                            {
-                                sender.sendMessage(ChatColor.RED + "エラー！レベルが負の値です！");
-                            }
-
-                            PlayerModify.addLevel(player, level, 0);
-                        }
-                    }.runTaskAsynchronously(AreaPvP.getPlugin());
+                    ItemStack stack = new ItemStack(Material.STICK);
+                    ItemMeta meta = stack.getItemMeta();
+                    meta.setDisplayName(ChatColor.RED + "Shop Creator 3000");
+                    stack.setItemMeta(meta);
+                    ((Player) sender).getInventory().addItem(stack);
                 }
         }
 
