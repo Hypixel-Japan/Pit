@@ -7,7 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
 
-public final class AreaPvP extends JavaPlugin
+public class AreaPvP extends JavaPlugin
 {
     public static FileConfiguration config;
     public static AreaPvP plugin;
