@@ -40,7 +40,8 @@ public class Timer extends BukkitRunnable
                             hitted = hitter.asInt();
                     hitted = hitted - 1;
                     player.removeMetadata("x-hitted", AreaPvP.getPlugin());
-                    player.setMetadata("x-hitted", new FixedMetadataValue(AreaPvP.getPlugin(), hitted));
+                    if (hitted > 0)
+                        player.setMetadata("x-hitted", new FixedMetadataValue(AreaPvP.getPlugin(), hitted));
                 });
     }
 

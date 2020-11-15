@@ -15,6 +15,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
@@ -84,7 +85,7 @@ public class Events implements Listener
                     PlayerInfo fs = PlayerModify.getInfo(e.getEntity());
                     String name = ChatColor.GRAY + "[1] " + e.getEntity().getDisplayName();
                     if (fs != null)
-                        name = PlayerInfo.getPrefix(fs.level, fs.prestige) + " " + e.getEntity().getDisplayName();
+                        name = PlayerInfo.getPrefix(fs.level, fs.prestige) + ChatColor.GRAY + " " + e.getEntity().getDisplayName();
 
                     finalKiller.sendMessage(ChatColor.GREEN +
                             ChatColor.BOLD.toString() +
@@ -102,6 +103,13 @@ public class Events implements Listener
         e.getEntity().spigot().respawn();
         InventoryUtils.reItem(e.getEntity());
 
+    }
+
+    @EventHandler
+    public void onMove(PlayerMoveEvent e)
+    {
+        if (e.getTo().getY() > AreaPvP.config.getInt("spawnLoc"))
+            e.getPlayer().setHealth(20);
     }
 
     @EventHandler

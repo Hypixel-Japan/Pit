@@ -1,5 +1,6 @@
 package xyz.areapvp.areapvp;
 
+import jdk.internal.dynalink.beans.StaticClass;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -64,9 +65,8 @@ public class InventoryUtils
                 newI.add(new ItemStack(Material.AIR));
                 continue;
             }
-            List<String> lore = stack.getItemMeta().getLore();
 
-            if (lore.get(0).equals(Items.keptOnDeath) || lore.get(0).equals(Items.specialItem) || lore.get(0).equals(Items.perkItem))
+            if (Items.hasMetadata(stack, "keptOnDeath") || Items.hasMetadata(stack, "special"))
                 newI.add(stack);
         }
 

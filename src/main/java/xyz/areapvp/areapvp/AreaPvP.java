@@ -55,10 +55,17 @@ public class AreaPvP extends JavaPlugin
             @Override
             public void run()
             {
-                Bukkit.getOnlinePlayers().parallelStream()
-                        .forEach(player -> player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 100, 255, false)));
+                Bukkit.getOnlinePlayers()
+                        .forEach(player -> player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 100, 4, false)));
             }
         }.runTaskTimer(this, 0L, 20L);
+    }
+
+    @Override
+    public void onDisable()
+    {
+        if (data != null)
+            data.close();
     }
 
     private static void initDatabase()
