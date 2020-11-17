@@ -7,6 +7,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import xyz.areapvp.areapvp.Items;
 
 import java.util.Collections;
+import java.util.UUID;
 
 public class ShopItem
 {
@@ -15,15 +16,18 @@ public class ShopItem
         ItemStack stack = itemStack.clone();
         if (prestige < needPrestige)
         {
-            stack.setType(Material.BEDROCK);
-            stack.setItemMeta(error(stack, ChatColor.RED + "購入に必要なPrestigeが足りません！"));
+            stack = new ItemStack(Material.BEDROCK);
+            stack.setItemMeta(error(ChatColor.RED + "Unknown", stack,ChatColor.RED + "購入に必要なPrestigeが足りません！"));
+            stack = Items.addMetaData(stack, "r", UUID.randomUUID().toString());
             return stack;
         }
 
         if (gold < needGold)
         {
-            stack.setType(Material.BEDROCK);
-            stack.setItemMeta(error(stack, ChatColor.RED + "購入に必要なGoldが足りません！"));
+            String title = stack.getItemMeta().getDisplayName();
+            stack = new ItemStack(Material.BEDROCK);
+            stack.setItemMeta(error(title,stack, ChatColor.RED + "購入に必要なGoldが足りません！"));
+            stack = Items.addMetaData(stack, "r", UUID.randomUUID().toString());
             return stack;
         }
 
@@ -31,9 +35,10 @@ public class ShopItem
         return stack;
     }
 
-    public static ItemMeta error(ItemStack stack, String why)
+    public static ItemMeta error(String title,  ItemStack stack, String why)
     {
         ItemMeta meta = stack.getItemMeta();
+        meta.setDisplayName(title);
         meta.setLore(Collections.singletonList(why));
         return meta;
     }

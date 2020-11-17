@@ -5,18 +5,24 @@ import com.zaxxer.hikari.HikariDataSource;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scoreboard.Scoreboard;
 import xyz.areapvp.areapvp.command.Main;
 import xyz.areapvp.areapvp.command.Oof;
 import xyz.areapvp.areapvp.command.Spawn;
 import xyz.areapvp.areapvp.item.Items;
 import xyz.areapvp.areapvp.item.items.DiamondBoots;
 import xyz.areapvp.areapvp.item.items.DiamondChestPlate;
+import xyz.areapvp.areapvp.item.items.DiamondSword;
+import xyz.areapvp.areapvp.item.items.ItemAir;
+import xyz.areapvp.areapvp.item.items.Obsidian;
+import xyz.areapvp.areapvp.perk.PerkProcess;
 
 import java.sql.Statement;
 import java.util.HashMap;
@@ -42,6 +48,8 @@ public class AreaPvP extends JavaPlugin
     {
         plugin = this;
         Bukkit.getPluginManager().registerEvents(new Events(), this);
+        Bukkit.getPluginManager().registerEvents(new PerkProcess(), this);
+        Bukkit.getPluginManager().registerEvents(new GUI(), this);
         getCommand("areapvp").setExecutor(new Main());
         getCommand("spawn").setExecutor(new Spawn());
         getCommand("oof").setExecutor(new Oof());
@@ -55,8 +63,12 @@ public class AreaPvP extends JavaPlugin
             getServer().getPluginManager().disablePlugin(this);
         }
 
-        Items.addItem(new DiamondBoots());
         Items.addItem(new DiamondChestPlate());
+        Items.addItem(new DiamondBoots());
+        Items.addItem(new ItemAir());
+        Items.addItem(new DiamondSword());
+        Items.addItem(new ItemAir());
+        Items.addItem(new Obsidian());
 
         RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
 
@@ -77,9 +89,31 @@ public class AreaPvP extends JavaPlugin
             public void run()
             {
                 Bukkit.getOnlinePlayers()
-                        .forEach(player -> player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 100, 4, false)));
+                        .forEach(player -> {
+                            player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 100, 0, true));
+                            Scoreboard b = Sidebar.getBoard(player);
+                            if (b == null)
+                                return;
+                            player.setScoreboard(b);
+                        });
             }
         }.runTaskTimer(this, 0L, 20L);
+
+        int b = getConfig().getInt("spawnLoc");
+
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
+            Bukkit.getOnlinePlayers()
+                    .forEach(player -> {
+                        int y = (int) player.getLocation().getY();
+                        if (y >= b)
+                        {
+                            player.removeMetadata("x-hitter", AreaPvP.getPlugin());
+                            player.removeMetadata("x-hitted", AreaPvP.getPlugin());
+                            player.removeMetadata("x-streak", AreaPvP.getPlugin());
+                            KillStreak.reset(player);
+                        }
+                    });
+        },0L, 1L);
     }
 
     @Override
@@ -87,6 +121,9 @@ public class AreaPvP extends JavaPlugin
     {
         if (data != null)
             data.close();
+        blockPlace.keySet().forEach((b) -> {
+            b.getWorld().getBlockAt(b).setType(Material.AIR);
+        });
     }
 
     private static void initDatabase()

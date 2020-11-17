@@ -3,7 +3,6 @@ package xyz.areapvp.areapvp.level;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import xyz.areapvp.areapvp.AreaPvP;
-import xyz.areapvp.areapvp.PlayerEditor;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -97,16 +96,20 @@ public class PlayerModify
              PreparedStatement statement = connection.prepareStatement("UPDATE player SET LEVEL=?, EXP=? WHERE UUID=?"))
         {
             statement.setInt(1, info.level + level);
-            statement.setLong(2, exp);
+            if (level == 0)
+                statement.setLong(2, info.exp + exp);
+            else
+                statement.setLong(2, exp);
             statement.setString(3, player.getUniqueId().toString().replace("-", ""));
             statement.execute();
         }
         catch (Exception ignored) { }
+        if (level == 0)
+            return;
         player.sendTitle(ChatColor.AQUA + ChatColor.BOLD.toString() + "LEVEL UP!",
                 PlayerInfo.getPrefix(info.level, info.prestige) + ChatColor.GRAY + " → " +
                         PlayerInfo.getPrefix(info.level + level, info.prestige),
                 10, 20, 10);
-        PlayerEditor.changePlayerHead(player, info.prestige, info.level + level, PlayerEditor.Type.UPDATE);
     }
 
     public static void addExp(Player player, long exp)
@@ -123,6 +126,11 @@ public class PlayerModify
         int level = info.level;
 
         int add = 1;
+
+        if (xp < Exp.getExp(level + add, prestige))
+        {
+            addLevel(player, 0, exp);
+        }
 
         while (true)
         {

@@ -19,6 +19,40 @@ public class PlayerInfo
         this.perk = perk;
     }
 
+    /**
+     *
+     * 参考: http://lovedvoraklayout.hatenablog.com/entry/roman-numerals-to-arabic
+     */
+    private static String arabicToRoman (int n) {
+        if (n <= 0)
+            return "";
+        else if (n >=  3999)
+            return "IN-";
+        int[] number = {1000,900,500,400,100,90,50,40,10,9,5,4,1};
+        String[] roma = {"M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I"};
+        StringBuilder ans = new StringBuilder();
+        for (int i = 0; i < 13; i++)
+        {
+            int ii = n / number[i];
+            for (int j=0; j<ii; j++)
+                ans.append(roma[i]);
+
+            n = n % number[i];
+        }
+        return ans.toString();
+    }
+
+    public static String getPrefixFull(int level, int prestige)
+    {
+        String bracketColor = getBracketColor(prestige).toString();
+        String levelColor = getLevelColor(level);
+        String a = "";
+        if (prestige != 0)
+            a = ChatColor.YELLOW + arabicToRoman(prestige) + "-";
+        return bracketColor + "[" + a + levelColor + level + bracketColor + "]" + ChatColor.WHITE;
+    }
+
+
     public static String getPrefix(int level, int prestige)
     {
         String bracketColor = getBracketColor(prestige).toString();

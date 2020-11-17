@@ -1,6 +1,10 @@
 package xyz.areapvp.areapvp;
 
 import net.minecraft.server.v1_12_R1.NBTTagCompound;
+import net.minecraft.server.v1_12_R1.NBTTagDouble;
+import net.minecraft.server.v1_12_R1.NBTTagInt;
+import net.minecraft.server.v1_12_R1.NBTTagList;
+import net.minecraft.server.v1_12_R1.NBTTagString;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -11,6 +15,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Stack;
+import java.util.UUID;
 
 public class Items
 {
@@ -24,6 +29,8 @@ public class Items
         ArrayList<String> lore = new ArrayList<>();
         lore.add(t);
         lore.add("");
+        if (b.getType() == Material.AIR)
+            return b;
         if (meta.hasLore())
             lore.addAll(meta.getLore());
         meta.setLore(lore);
@@ -103,6 +110,27 @@ public class Items
         ItemStack stack = b.clone();
         stack.setItemMeta(meta);
         return stack;
+    }
+
+    public static ItemStack changeDamage(ItemStack stack, double damage)
+    {
+        net.minecraft.server.v1_12_R1.ItemStack craftItem = CraftItemStack.asNMSCopy(stack);
+        NBTTagCompound compound = craftItem.hasTag() ? craftItem.getTag(): new NBTTagCompound();
+        if (compound == null)
+            compound = new NBTTagCompound();
+        NBTTagList mod = new NBTTagList();
+        NBTTagCompound dm = new NBTTagCompound();
+        dm.set("AttributeName", new NBTTagString("generic.attackDamage"));
+        dm.set("Name", new NBTTagString("genericd.attackDamage"));
+        dm.set("Amount", new NBTTagDouble(damage));
+        dm.set("Operation", new NBTTagInt(0));
+        dm.set("UUIDLeast", new NBTTagInt(UUID.randomUUID().hashCode()));
+        dm.set("UUIDMost", new NBTTagInt(UUID.randomUUID().hashCode()));
+        dm.set("Slot", new NBTTagString("mainhand"));
+        mod.add(dm);
+        compound.set("AttributeModifiers", mod);
+        craftItem.setTag(compound);
+        return CraftItemStack.asBukkitCopy(craftItem);
     }
 
 

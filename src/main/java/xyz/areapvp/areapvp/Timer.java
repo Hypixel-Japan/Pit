@@ -26,10 +26,27 @@ public class Timer extends BukkitRunnable
     {
         Bukkit.getOnlinePlayers().parallelStream()
                 .forEach(player -> {
+
+                    if (player.hasMetadata("x-spawn"))
+                    {
+                        Integer spawn = null;
+                        for (MetadataValue hitter: player.getMetadata("x-spawn"))
+                            if (hitter.getOwningPlugin().getName().equals(AreaPvP.getPlugin().getName()))
+                                spawn = hitter.asInt();
+
+                        if (spawn != null)
+                        {
+                            spawn--;
+                            player.removeMetadata("x-spawn", AreaPvP.getPlugin());
+
+                            if (spawn > 0)
+                                player.setMetadata("x-spawn", new FixedMetadataValue(AreaPvP.getPlugin(), spawn));
+
+                        }
+                    }
+
                     if (!player.hasMetadata("x-hitted"))
                     {
-                        if (!player.hasMetadata("x-hitter"))
-                            return;
                         player.removeMetadata("x-hitter", AreaPvP.getPlugin());
                         return;
                     }

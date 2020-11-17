@@ -5,6 +5,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.metadata.FixedMetadataValue;
+import xyz.areapvp.areapvp.AreaPvP;
 
 public class Spawn implements CommandExecutor
 {
@@ -24,8 +26,23 @@ public class Spawn implements CommandExecutor
             return true;
         }
 
-        player.teleport(player.getWorld().getSpawnLocation());
-
+        if (player.hasMetadata("x-spawn"))
+        {
+            sender.sendMessage(ChatColor.RED + "エラー！/respawnは15秒に1回可能です！");
+            return true;
+        }
+        if (player.getLocation().getY() >= AreaPvP.config.getInt("spawnLoc"))
+        {
+            player.sendMessage(ChatColor.RED + "あなたは現在スポーンポイント範囲内にいます！");
+            return true;
+        }
+        if (player.getEyeLocation().getY() >= AreaPvP.config.getInt("spawnLoc"))
+            player.sendMessage(ChatColor.RED + "あなたは現在スポーンポイント範囲内にいます！");
+        else
+        {
+            player.teleport(player.getWorld().getSpawnLocation());
+            player.setMetadata("x-spawn", new FixedMetadataValue(AreaPvP.getPlugin(), 15));
+        }
         return true;
     }
 }

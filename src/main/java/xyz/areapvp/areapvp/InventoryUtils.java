@@ -1,6 +1,5 @@
 package xyz.areapvp.areapvp;
 
-import jdk.internal.dynalink.beans.StaticClass;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -8,7 +7,6 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class InventoryUtils
@@ -24,7 +22,7 @@ public class InventoryUtils
     public static void initItem(Player player)
     {
         PlayerInventory inventory = player.getInventory();
-        addOrElse(inventory, 0, Items.setUnbreakable(new ItemStack(Material.IRON_SWORD)), true);
+        addOrElse(inventory, 0, Items.changeDamage(Items.setUnbreakable(new ItemStack(Material.IRON_SWORD)), 6), true);
         addOrElse(inventory, 1, Items.setUnbreakable(new ItemStack(Material.BOW)), true);
         addOrElse(inventory, 8, Items.setUnbreakable(new ItemStack(Material.ARROW, 31)), true);
 

@@ -6,10 +6,12 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import xyz.areapvp.areapvp.AreaPvP;
 import xyz.areapvp.areapvp.InventoryUtils;
+import xyz.areapvp.areapvp.KillStreak;
 import xyz.areapvp.areapvp.level.PlayerInfo;
 import xyz.areapvp.areapvp.level.PlayerModify;
 
@@ -27,6 +29,18 @@ public class Oof implements CommandExecutor
         }
 
         Player player = (Player) sender;
+        if (player.getLocation().getY() >= AreaPvP.config.getInt("spawnLoc"))
+        {
+            player.sendMessage(ChatColor.RED + "あなたは現在スポーンポイント範囲内にいます！");
+            return true;
+        }
+
+        if (player.hasMetadata("x-spawn"))
+        {
+            sender.sendMessage(ChatColor.RED + "エラー！/respawnは15秒に1回可能です！");
+        }
+
+        player.setMetadata("x-spawn", new FixedMetadataValue(AreaPvP.getPlugin(), 15));
 
         if (player.hasMetadata("x-hitter") && player.hasMetadata("x-hitted"))
         {
@@ -75,6 +89,8 @@ public class Oof implements CommandExecutor
                                 ChatColor.AQUA + " +" + nm + "XP " +
                                 ChatColor.GOLD + " +" + gse + ".00g"
                         );
+                        KillStreak.kill(killer);
+
                     }
                 }.runTaskAsynchronously(AreaPvP.getPlugin());
                 sender.sendMessage(ChatColor.RED + ChatColor.BOLD.toString() + "DEATH!" + ChatColor.RESET + ChatColor.GRAY + " by " + killer.getDisplayName());
