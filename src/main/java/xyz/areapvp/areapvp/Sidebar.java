@@ -67,11 +67,13 @@ public class Sidebar
 
         if (board.getTeam("c") == null)
             board.registerNewTeam("c");
+        if (board.getTeam("c") != null)
+        {
+            board.getTeam("c").setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
+            if (!board.getTeam("c").getEntries().contains(player.getName()))
+                board.getTeam("c").addEntry(player.getName());
 
-        board.getTeam("c").setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
-
-        if (!board.getTeam("c").getEntries().contains(player.getName()))
-            board.getTeam("c").addEntry(player.getName());
+        }
 
         return board;
     }
