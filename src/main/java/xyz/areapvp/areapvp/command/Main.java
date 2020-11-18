@@ -126,7 +126,7 @@ public class Main implements CommandExecutor
                                 ChatColor.GRAY + "をオンラインのプレイヤー全員にくばりました。");
                     break;
                     case "remove":
-                        if (!args[0].equals("exp") && !args[0].equals("xp"))
+                        if (args[0].equals("exp") || args[0].equals("xp"))
                         {
                             sender.sendMessage(ChatColor.RED + "エラー：XPを減らすことはできません！");
                             return true;
