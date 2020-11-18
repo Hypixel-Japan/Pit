@@ -124,7 +124,7 @@ public class Main implements CommandExecutor
 
                         sender.sendMessage((hasGold ? ChatColor.GOLD.toString() + a + "g": ChatColor.AQUA.toString() + a + "xp") + " " +
                                 ChatColor.GRAY + "をオンラインのプレイヤー全員にくばりました。");
-
+                    break;
                     case "remove":
                         if (!args[0].equals("exp") && !args[0].equals("xp"))
                         {
