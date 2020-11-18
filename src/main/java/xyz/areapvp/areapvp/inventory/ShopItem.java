@@ -31,7 +31,9 @@ public class ShopItem
             return stack;
         }
 
+        stack = Items.quickLore(stack, ChatColor.GOLD + "金額：" + needGold + "g");
         stack = Items.quickLore(stack, ChatColor.GREEN + "クリックして購入！");
+
         return stack;
     }
 
