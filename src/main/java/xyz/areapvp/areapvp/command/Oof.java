@@ -12,9 +12,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 import xyz.areapvp.areapvp.AreaPvP;
 import xyz.areapvp.areapvp.InventoryUtils;
 import xyz.areapvp.areapvp.KillStreak;
+import xyz.areapvp.areapvp.level.Exp;
 import xyz.areapvp.areapvp.level.PlayerInfo;
 import xyz.areapvp.areapvp.level.PlayerModify;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 public class Oof implements CommandExecutor
@@ -38,6 +40,7 @@ public class Oof implements CommandExecutor
         if (player.hasMetadata("x-spawn"))
         {
             sender.sendMessage(ChatColor.RED + "エラー！/respawnは15秒に1回可能です！");
+            return true;
         }
 
         player.setMetadata("x-spawn", new FixedMetadataValue(AreaPvP.getPlugin(), 15));
@@ -64,15 +67,21 @@ public class Oof implements CommandExecutor
                     {
                         PlayerInfo info = PlayerModify.getInfo(player);
 
-                        int nm = 28;
+                        if (info == null)
+                            return;
 
-                        if (info != null)
-                            nm = nm * ((info.prestige == 0 ? 1: info.prestige) * 110 / 100);
+                        long nm = Exp.calcKillExp(killer, (Player) sender, info.level, info.prestige);
 
-                        int gse = 11;
+                        nm = (int) (nm * ((info.prestige == 0 ? 1: info.prestige * 0.5)));
 
-                        if (info != null)
-                            gse = gse * ((info.prestige == 0 ? 1: info.prestige) * 110 / 100);
+                        double gse = 11;
+
+                        gse = gse * ((info.prestige == 0 ? 1: info.prestige) * 110d / 100d);
+                        BigDecimal bd = new BigDecimal(gse);
+
+                        bd = bd.setScale(3, BigDecimal.ROUND_DOWN);
+
+                        gse = bd.doubleValue();
 
                         AreaPvP.economy.depositPlayer(killer, gse);
                         PlayerModify.addExp(killer, nm);
@@ -90,10 +99,11 @@ public class Oof implements CommandExecutor
                                 ChatColor.GOLD + " +" + gse + ".00g"
                         );
                         KillStreak.kill(killer);
+                        sender.sendMessage(ChatColor.RED + ChatColor.BOLD.toString() + "DEATH!" + ChatColor.RESET + ChatColor.GRAY + " by " +
+                                PlayerInfo.getPrefix(info.level, info.prestige) + ChatColor.GRAY + " " + killer.getDisplayName());
 
                     }
                 }.runTaskAsynchronously(AreaPvP.getPlugin());
-                sender.sendMessage(ChatColor.RED + ChatColor.BOLD.toString() + "DEATH!" + ChatColor.RESET + ChatColor.GRAY + " by " + killer.getDisplayName());
                 player.teleport(player.getWorld().getSpawnLocation());
                 InventoryUtils.reItem(player);
                 return true;

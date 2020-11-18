@@ -7,6 +7,7 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -16,6 +17,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -93,8 +95,12 @@ public class Events implements Listener
 
                     double gse = 11;
 
-                    gse = new BigDecimal(gse).multiply(new BigDecimal(info.prestige == 0 ? info.prestige: 1)
-                            .multiply(new BigDecimal("1.1"))).doubleValue();
+                    gse = gse * ((info.prestige == 0 ? 1: info.prestige) * 110d / 100d);
+                    BigDecimal bd = new BigDecimal(gse);
+
+                    bd = bd.setScale(3, BigDecimal.ROUND_DOWN);
+
+                    gse = bd.doubleValue();
 
                     AreaPvP.economy.depositPlayer(finalKiller, gse);
                     PlayerModify.addExp(finalKiller, nm);
@@ -109,11 +115,11 @@ public class Events implements Listener
                             "KILL! " + ChatColor.RESET + ChatColor.GRAY + "on " +
                             name +
                             ChatColor.AQUA + " +" + nm + "XP " +
-                            ChatColor.GOLD + " +" + gse + ".00g"
+                            ChatColor.GOLD + " +" + gse + "g"
                     );
                     KillStreak.kill(finalKiller);
                     e.getEntity().sendMessage(ChatColor.RED + ChatColor.BOLD.toString() + "DEATH!" + ChatColor.RESET + ChatColor.GRAY + " by " +
-                            PlayerInfo.getPrefix(info.level, info.prestige) + " " + finalKiller);
+                            PlayerInfo.getPrefix(info.level, info.prestige) + " " + ChatColor.GRAY + finalKiller.getName());
                 }
             }.runTaskAsynchronously(AreaPvP.getPlugin());
 
@@ -177,8 +183,7 @@ public class Events implements Listener
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent e)
     {
-
-        if (!(e.getEntity() instanceof Player) || !(e.getDamager() instanceof Player))
+        if (!(e.getEntity() instanceof Player) || !(e.getDamager() instanceof Player || e.getDamager() instanceof Projectile))
             return;
 
         Player damager = (Player)  e.getEntity();
@@ -298,5 +303,4 @@ public class Events implements Listener
         Bukkit.getOnlinePlayers().parallelStream()
                 .forEach(player -> player.sendMessage(full));
     }
-
 }
