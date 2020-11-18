@@ -13,6 +13,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 import xyz.areapvp.areapvp.command.Main;
 import xyz.areapvp.areapvp.command.Oof;
 import xyz.areapvp.areapvp.command.Spawn;
@@ -79,6 +80,7 @@ public class AreaPvP extends JavaPlugin
         config.setJdbcUrl("jdbc:sqlite:" + getDataFolder().getAbsolutePath() + "/" + "data.db");
         data = new HikariDataSource(config);
         initDatabase();
+
 
         timer = new Timer();
         timer.runTaskTimer(this, 0L, 20L); //1秒に1回実行

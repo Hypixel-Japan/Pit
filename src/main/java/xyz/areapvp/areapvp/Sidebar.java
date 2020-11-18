@@ -8,6 +8,7 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
+import org.bukkit.scoreboard.Team;
 import xyz.areapvp.areapvp.level.Exp;
 import xyz.areapvp.areapvp.level.PlayerInfo;
 import xyz.areapvp.areapvp.level.PlayerModify;
@@ -63,6 +64,15 @@ public class Sidebar
         objective.getScore(ChatColor.BLUE.toString()).setScore(2);
         objective.getScore(ChatColor. BLACK.toString()).setScore(1);
         player.setPlayerListName(PlayerInfo.getPrefix(info.level, info.prestige) + ChatColor.GRAY + " " + player.getName());
+
+        if (board.getTeam("c") == null)
+            board.registerNewTeam("c");
+
+        board.getTeam("c").setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
+
+        if (!board.getTeam("c").getEntries().contains(player.getName()))
+            board.getTeam("c").addEntry(player.getName());
+
         return board;
     }
 

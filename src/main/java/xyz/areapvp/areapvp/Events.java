@@ -23,6 +23,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.vehicle.VehicleEntityCollisionEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import xyz.areapvp.areapvp.level.PlayerInfo;
@@ -105,6 +106,8 @@ public class Events implements Listener
     {
         Player player = e.getPlayer();
         player.setFoodLevel(19);
+
+
         player.teleport(player.getWorld().getSpawnLocation());
         new BukkitRunnable()
         {
@@ -209,4 +212,11 @@ public class Events implements Listener
         Bukkit.getOnlinePlayers().parallelStream()
                 .forEach(player -> player.sendMessage(full));
     }
+
+    @EventHandler
+    private void onCollision(VehicleEntityCollisionEvent e)
+    {
+        e.setCancelled(true);
+    }
+
 }
