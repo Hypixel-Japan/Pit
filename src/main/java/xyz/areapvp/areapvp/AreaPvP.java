@@ -110,7 +110,7 @@ public class AreaPvP extends JavaPlugin
                             player.removeMetadata("x-hitter", AreaPvP.getPlugin());
                             player.removeMetadata("x-hitted", AreaPvP.getPlugin());
                             player.removeMetadata("x-streak", AreaPvP.getPlugin());
-                            KillStreak.reset(player);
+                            Kill.reset(player);
                         }
                     });
         },0L, 1L);

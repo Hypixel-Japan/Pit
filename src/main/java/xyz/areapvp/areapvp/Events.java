@@ -17,7 +17,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -25,15 +24,9 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.metadata.MetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
-import sun.awt.geom.AreaOp;
-import xyz.areapvp.areapvp.level.Exp;
 import xyz.areapvp.areapvp.level.PlayerInfo;
 import xyz.areapvp.areapvp.level.PlayerModify;
-
-import java.math.BigDecimal;
-import java.util.UUID;
 
 public class Events implements Listener
 {
@@ -41,94 +34,7 @@ public class Events implements Listener
     public void onKill(PlayerDeathEvent e)
     {
         Player killer = e.getEntity().getKiller();
-
-        if (killer == null)
-        {
-            if (e.getEntity().hasMetadata("x-hitter"))
-            {
-                String uuid = null;
-                for (MetadataValue hitter: e.getEntity().getMetadata("x-hitter"))
-                    if (hitter.getOwningPlugin().getName().equals(AreaPvP.getPlugin().getName()))
-                        uuid = hitter.asString();
-                if (uuid == null)
-                {
-                    e.getEntity().spigot().respawn();
-                    e.getEntity().sendMessage(ChatColor.RED + ChatColor.BOLD.toString() + "DEATH!");
-                    InventoryUtils.reItem(e.getEntity());
-                    return;
-                }
-                killer = Bukkit.getPlayer(UUID.fromString(uuid));
-            }
-            else
-            {
-                e.getEntity().sendMessage(ChatColor.RED + ChatColor.BOLD.toString() + "DEATH!");
-                e.getEntity().spigot().respawn();
-                InventoryUtils.reItem(e.getEntity());
-                return;
-            }
-        }
-
-        if (killer != null)
-        {
-            if (killer.getUniqueId() == e.getEntity().getUniqueId())
-            {
-                e.getEntity().sendMessage(ChatColor.RED + ChatColor.BOLD.toString() + "DEATH!");
-                e.getEntity().spigot().respawn();
-                InventoryUtils.reItem(e.getEntity());
-            }
-
-            Player finalKiller = killer;
-
-            new BukkitRunnable()
-            {
-                @Override
-                public void run()
-                {
-                    PlayerInfo info = PlayerModify.getInfo(e.getEntity());
-
-                    if (info == null)
-                        return;
-
-                    long nm = Exp.calcKillExp(finalKiller, e.getEntity(), info.level, info.prestige);
-
-                    nm = (int) (nm * ((info.prestige == 0 ? 1: info.prestige * 0.5)));
-
-                    double gse = 11;
-
-                    gse = gse * ((info.prestige == 0 ? 1: info.prestige) * 110d / 100d);
-                    BigDecimal bd = new BigDecimal(gse);
-
-                    bd = bd.setScale(3, BigDecimal.ROUND_DOWN);
-
-                    gse = bd.doubleValue();
-
-                    AreaPvP.economy.depositPlayer(finalKiller, gse);
-                    PlayerModify.addExp(finalKiller, nm);
-
-                    PlayerInfo fs = PlayerModify.getInfo(e.getEntity());
-                    String name = ChatColor.GRAY + "[1] " + e.getEntity().getDisplayName();
-                    if (fs != null)
-                        name = PlayerInfo.getPrefix(fs.level, fs.prestige) + ChatColor.GRAY + " " + e.getEntity().getDisplayName();
-
-                    finalKiller.sendMessage(ChatColor.GREEN +
-                            ChatColor.BOLD.toString() +
-                            "KILL! " + ChatColor.RESET + ChatColor.GRAY + "on " +
-                            name +
-                            ChatColor.AQUA + " +" + nm + "XP " +
-                            ChatColor.GOLD + " +" + gse + "g"
-                    );
-                    KillStreak.kill(finalKiller);
-                    e.getEntity().sendMessage(ChatColor.RED + ChatColor.BOLD.toString() + "DEATH!" + ChatColor.RESET + ChatColor.GRAY + " by " +
-                            PlayerInfo.getPrefix(info.level, info.prestige) + " " + ChatColor.GRAY + finalKiller.getName());
-                }
-            }.runTaskAsynchronously(AreaPvP.getPlugin());
-
-        }
-        else
-            e.getEntity().sendMessage(ChatColor.RED + ChatColor.BOLD.toString() + "DEATH!");
-        e.getEntity().spigot().respawn();
-        InventoryUtils.reItem(e.getEntity());
-
+        Kill.processKill(killer, e.getEntity());
     }
 
     @EventHandler

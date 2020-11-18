@@ -1,17 +1,20 @@
 package xyz.areapvp.areapvp.level;
 
 import org.bukkit.entity.Player;
-import xyz.areapvp.areapvp.KillStreak;
+import xyz.areapvp.areapvp.Kill;
 
 public class Exp
 {
     public static long calcKillExp(Player killer, Player death, int level, int prestige)
     {
-        int base = 5;
-        if (KillStreak.getStreak(killer.getUniqueId()) >= 10)
+        int base = 10;
+        if (Kill.getStreak(killer.getUniqueId()) >= 10)
             base += 10;
-        if (KillStreak.getStreak(death.getUniqueId()) >= 10)
+        if (Kill.getStreak(death.getUniqueId()) >= 10)
             base += 10;
+        if (prestige == 0)
+            return base;
+        base += (prestige * 1.25);
         return base;
     }
 
