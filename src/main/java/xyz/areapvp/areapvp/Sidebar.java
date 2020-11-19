@@ -37,7 +37,7 @@ public class Sidebar
         objective.getScore(ChatColor.WHITE.toString()).setScore(9);
         objective.getScore(ChatColor.WHITE + "Level: " + PlayerInfo.getPrefix(info.level, info.prestige)).setScore(8);
         objective.getScore(ChatColor.WHITE + "Needed XP: " +
-                ChatColor.AQUA + (Exp.getExp(info.level + 1, info.prestige) - info.exp)).setScore(7);
+                ChatColor.AQUA + (info.level != 120 ? Exp.getExp(info.level + 1, info.prestige) - info.exp: "MAXED!")).setScore(7);
         objective.getScore(ChatColor.ITALIC.toString()).setScore(6);
         objective.getScore(ChatColor.WHITE + "Gold: " + ChatColor.GOLD + AreaPvP.economy.getBalance(player)).setScore(5);
         objective.getScore(ChatColor.YELLOW.toString()).setScore(4);
@@ -61,10 +61,15 @@ public class Sidebar
             }
         }
 
-        objective.getScore(ChatColor.BLUE.toString()).setScore(2);
+        long streak = Kill.getStreak(player.getUniqueId());
+
+        if (streak == 0)
+            objective.getScore(ChatColor.BLUE.toString()).setScore(2);
+        else
+            objective.getScore("Streak: " + ChatColor.GREEN + streak).setScore(2);
         objective.getScore(ChatColor. BLACK.toString()).setScore(1);
         player.setPlayerListName(PlayerInfo.getPrefix(info.level, info.prestige) + ChatColor.GRAY + " " + player.getName());
-
+        player.setDisplayName(PlayerInfo.getPrefix(info.level, info.prestige) + ChatColor.GRAY + " " + player.getName());
         if (board.getTeam("c") == null)
             board.registerNewTeam("c");
         if (board.getTeam("c") != null)

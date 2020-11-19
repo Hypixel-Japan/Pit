@@ -19,14 +19,14 @@ public class ShopItem
             stack = new ItemStack(Material.BEDROCK);
             stack.setItemMeta(error(ChatColor.RED + "Unknown", stack,ChatColor.RED + "購入に必要なPrestigeが足りません！"));
             stack = Items.addMetaData(stack, "r", UUID.randomUUID().toString());
+            stack = Items.addMetaData(stack, "notBuyable", "1b");
             return stack;
         }
 
         if (gold < needGold)
         {
-            String title = stack.getItemMeta().getDisplayName();
-            stack = new ItemStack(Material.BEDROCK);
-            stack.setItemMeta(error(title,stack, ChatColor.RED + "購入に必要なGoldが足りません！"));
+            stack.setItemMeta(error(stack.getItemMeta().getDisplayName(),stack, ChatColor.RED + "購入に必要なGoldが足りません！"));
+            stack = Items.addMetaData(stack, "notBuyable", "1b");
             stack = Items.addMetaData(stack, "r", UUID.randomUUID().toString());
             return stack;
         }

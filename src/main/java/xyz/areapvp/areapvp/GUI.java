@@ -1,5 +1,6 @@
 package xyz.areapvp.areapvp;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -9,6 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import xyz.areapvp.areapvp.inventory.Shop;
@@ -18,10 +20,24 @@ import xyz.areapvp.areapvp.perk.Perks;
 
 public class GUI implements Listener
 {
+    private void viewPlayer(Player player, Player viewer)
+    {
+        Inventory inventory = Bukkit.createInventory(null, 45, "Profile Viewer");
+        //Armor
+        inventory.setItem(0, player.getInventory().getHelmet());
+        inventory.setItem(10, player.getInventory().getChestplate());
+        inventory.setItem(19, player.getInventory().getLeggings());
+        inventory.setItem(28, player.getInventory().getBoots());
+        //HotBar
+
+    }
 
     @EventHandler
     private void onEntityRight(PlayerInteractEntityEvent e)
     {
+        if (e.getPlayer().isSneaking() && e.getRightClicked() instanceof Player)
+            viewPlayer(e.getPlayer(), (Player) e.getRightClicked());
+
         if (e.getRightClicked().getType() != EntityType.VILLAGER)
             return;
 
@@ -121,7 +137,7 @@ public class GUI implements Listener
         if (item == null)
             return;
 
-        if (item.getType() == Material.BEDROCK)
+        if (Items.hasMetadata(item, "notBuyable"))
         {
             player.sendMessage(ChatColor.RED + "あなたはこれを購入することができません！");
             return;

@@ -10,7 +10,7 @@ public class DiamondChestPlate implements IShopItem
     @Override
     public ItemStack getItem()
     {
-        return Items.addMetaData(new ItemStack(Material.DIAMOND_CHESTPLATE), "type", getName());
+        return Items.addMetaData(Items.removeAttribute(new ItemStack(Material.DIAMOND_CHESTPLATE)), "type", getName());
     }
 
     @Override

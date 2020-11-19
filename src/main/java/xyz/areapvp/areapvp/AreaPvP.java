@@ -64,12 +64,7 @@ public class AreaPvP extends JavaPlugin
             getServer().getPluginManager().disablePlugin(this);
         }
 
-        Items.addItem(new DiamondChestPlate());
-        Items.addItem(new DiamondBoots());
-        Items.addItem(new ItemAir());
-        Items.addItem(new DiamondSword());
-        Items.addItem(new ItemAir());
-        Items.addItem(new Obsidian());
+        initShop();
 
         RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
 
@@ -116,6 +111,28 @@ public class AreaPvP extends JavaPlugin
                         }
                     });
         },0L, 1L);
+    }
+
+    private static void initShop()
+    {
+        Items.addItem(new ItemAir());
+        Items.addItem(new ItemAir());
+        Items.addItem(new ItemAir());
+        Items.addItem(new ItemAir());
+        Items.addItem(new ItemAir());
+        Items.addItem(new ItemAir());
+        Items.addItem(new ItemAir());
+        Items.addItem(new ItemAir());
+        Items.addItem(new ItemAir());
+        Items.addItem(new ItemAir());
+        Items.addItem(new ItemAir());
+        Items.addItem(new DiamondSword());
+        Items.addItem(new Obsidian());
+        Items.addItem(new ItemAir());
+        Items.addItem(new DiamondChestPlate());
+        Items.addItem(new DiamondBoots());
+        Items.addItem(new ItemAir());
+        Items.addItem(new ItemAir());
     }
 
     @Override

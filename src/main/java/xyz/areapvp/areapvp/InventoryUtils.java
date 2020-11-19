@@ -24,16 +24,14 @@ public class InventoryUtils
         PlayerInventory inventory = player.getInventory();
         addOrElse(inventory, 0, Items.changeDamage(Items.setUnbreakable(new ItemStack(Material.IRON_SWORD)), 6), true);
         addOrElse(inventory, 1, Items.setUnbreakable(new ItemStack(Material.BOW)), true);
-        addOrElse(inventory, 8, Items.setUnbreakable(new ItemStack(Material.ARROW, 31)), true);
-
-        boolean c100n = new Random().nextBoolean();
+        addOrElse(inventory, 8, new ItemStack(Material.ARROW, 32), true);
 
         if (inventory.getBoots() == null)
-            inventory.setBoots(Items.setUnbreakable(new ItemStack(c100n ? Material.IRON_BOOTS: Material.CHAINMAIL_BOOTS)));
+            inventory.setBoots(Items.setUnbreakable(new ItemStack(new Random().nextBoolean() ? Material.IRON_BOOTS: Material.CHAINMAIL_BOOTS)));
         if (inventory.getLeggings() == null)
-            inventory.setLeggings(Items.setUnbreakable(new ItemStack(c100n ? Material.IRON_LEGGINGS: Material.CHAINMAIL_LEGGINGS)));
+            inventory.setLeggings(Items.setUnbreakable(new ItemStack(new Random().nextBoolean() ? Material.IRON_LEGGINGS: Material.CHAINMAIL_LEGGINGS)));
         if (inventory.getChestplate() == null)
-            inventory.setChestplate(Items.setUnbreakable(new ItemStack(!c100n ? Material.IRON_CHESTPLATE: Material.CHAINMAIL_CHESTPLATE)));
+            inventory.setChestplate(Items.setUnbreakable(new ItemStack(new Random().nextBoolean() ? Material.IRON_CHESTPLATE: Material.CHAINMAIL_CHESTPLATE)));
 
     }
 

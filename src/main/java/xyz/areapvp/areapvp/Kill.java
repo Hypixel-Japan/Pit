@@ -32,6 +32,7 @@ public class Kill
 
     public static void processKill(final Player killer, final Player deather)
     {
+        deather.spigot().respawn();
         Player cK = killer;
         if (cK == null)
         {
@@ -92,6 +93,8 @@ public class Kill
 
                 String name = PlayerInfo.getPrefix(info.level, info.prestige) +
                         ChatColor.GRAY + " " + deather.getDisplayName();
+
+                st.put(killer.getUniqueId(), getStreak(killer.getUniqueId()) + 1);
 
                 killer.sendMessage(ChatColor.GREEN +
                         ChatColor.BOLD.toString() +

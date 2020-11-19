@@ -21,6 +21,8 @@ public class Exp
 
     public static long getExp(int level, int prestige )
     {
+        if (level == 120)
+            return 0;
         if (prestige == 0)
             return ab(level);
         return ab(level) * (prestige * 110 / 100);

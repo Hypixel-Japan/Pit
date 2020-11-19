@@ -10,7 +10,7 @@ public class DiamondSword implements IShopItem
     @Override
     public ItemStack getItem()
     {
-        return Items.addMetaData(Items.changeDamage(new ItemStack(Material.DIAMOND_SWORD), 7), "type", getName());
+        return Items.addMetaData(Items.removeAttribute(Items.changeDamage(new ItemStack(Material.DIAMOND_SWORD), 7)), "type", getName());
     }
 
     @Override

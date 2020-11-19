@@ -7,14 +7,12 @@ import net.minecraft.server.v1_12_R1.NBTTagList;
 import net.minecraft.server.v1_12_R1.NBTTagString;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
-import java.util.Stack;
 import java.util.UUID;
 
 public class Items
@@ -22,6 +20,16 @@ public class Items
     public static final String keptOnDeath = ChatColor.GRAY + ChatColor.ITALIC.toString() + "Kept on death";
     public static final String perkItem = ChatColor.GRAY + ChatColor.ITALIC.toString() + "Perk item";
     public static final String specialItem = ChatColor.YELLOW + "Special item";
+
+    public static ItemStack removeAttribute(ItemStack b)
+    {
+        ItemStack copy = b.clone();
+        ItemMeta meta = copy.getItemMeta();
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        copy.setItemMeta(meta);
+        return b;
+    }
+
 
     public static ItemStack quickLore(ItemStack b, String t)
     {
@@ -81,7 +89,7 @@ public class Items
     {
         net.minecraft.server.v1_12_R1.ItemStack nmStack = CraftItemStack.asNMSCopy(stack);
         NBTTagCompound tagCompound = nmStack.getTag() != null ? nmStack.getTag(): new NBTTagCompound();
-        return tagCompound.getString(name) != null;
+        return tagCompound.getString(name) != null && !tagCompound.getString(name).equals("");
     }
 
     public static String getMetaData(ItemStack stack, String name)

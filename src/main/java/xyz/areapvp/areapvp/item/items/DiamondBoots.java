@@ -10,7 +10,7 @@ public class DiamondBoots implements IShopItem
     @Override
     public ItemStack getItem()
     {
-        return Items.addMetaData(new ItemStack(Material.DIAMOND_BOOTS), "type", getName());
+        return Items.addMetaData(Items.removeAttribute(new ItemStack(Material.DIAMOND_BOOTS)), "type", getName());
     }
 
     @Override
