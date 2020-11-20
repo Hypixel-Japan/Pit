@@ -5,5 +5,5 @@ jdk:
 os:
   - linux
   - osx
-
+dist: trusty
 script: mvn clean package
