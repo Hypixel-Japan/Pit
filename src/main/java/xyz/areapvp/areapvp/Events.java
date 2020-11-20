@@ -7,7 +7,6 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -73,7 +72,7 @@ public class Events implements Listener
     @EventHandler
     public void onArrowHit(EntityDamageByEntityEvent e)
     {
-        if (e.getDamager().getType() != EntityType.ARROW)
+        if (e.getDamager().getType() != EntityType.ARROW || e.getDamager().getType() == EntityType.FISHING_HOOK)
             return;
 
         if (!(e.getEntity() instanceof Player))
@@ -90,7 +89,7 @@ public class Events implements Listener
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent e)
     {
-        if (!(e.getEntity() instanceof Player) || !(e.getDamager() instanceof Player || e.getDamager() instanceof Projectile))
+        if (!(e.getEntity() instanceof Player) || !(e.getDamager() instanceof Player))
             return;
 
         Player damager = (Player)  e.getEntity();
