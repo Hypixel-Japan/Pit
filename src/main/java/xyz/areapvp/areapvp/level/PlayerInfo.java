@@ -19,6 +19,11 @@ public class PlayerInfo
         this.perk = perk;
     }
 
+    public static String getPrestigeString(int n)
+    {
+        return ChatColor.RESET.toString() + getBracketColor(n) + arabicToRoman(n);
+    }
+
     /**
      *
      * 参考: http://lovedvoraklayout.hatenablog.com/entry/roman-numerals-to-arabic

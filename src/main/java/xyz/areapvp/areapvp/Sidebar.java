@@ -33,8 +33,10 @@ public class Sidebar
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
         objective.setDisplayName(ChatColor.YELLOW + ChatColor.BOLD.toString() + "THE PIT");
 
-        objective.getScore(ChatColor.GRAY + format.format(new Date())).setScore(10);
-        objective.getScore(ChatColor.WHITE.toString()).setScore(9);
+        objective.getScore(ChatColor.GRAY + format.format(new Date())).setScore(info.prestige == 0 ? 10: 11);
+        objective.getScore(ChatColor.WHITE.toString()).setScore(info.prestige == 0 ? 9: 10);
+        if (info.prestige != 0)
+            objective.getScore(ChatColor.WHITE + "Prestige: " + PlayerInfo.getPrestigeString(info.prestige)).setScore(9);
         objective.getScore(ChatColor.WHITE + "Level: " + PlayerInfo.getPrefix(info.level, info.prestige)).setScore(8);
         objective.getScore(ChatColor.WHITE + "Needed XP: " +
                 ChatColor.AQUA + (info.level != 120 ? Exp.getExp(info.level + 1, info.prestige) - info.exp: "MAXED!")).setScore(7);
