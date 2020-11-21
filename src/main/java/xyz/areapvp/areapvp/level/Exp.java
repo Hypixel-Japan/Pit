@@ -14,7 +14,7 @@ public class Exp
             base += 10;
         if (prestige == 0)
             return base;
-        base += (prestige * 1.25);
+        base += (int) (prestige * 1.25);
         return base;
     }
 
