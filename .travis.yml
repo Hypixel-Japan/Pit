@@ -4,5 +4,4 @@ jdk:
   - openjdk8
 os:
   - linux
-  - windows
 script: mvn clean package
