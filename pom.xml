@@ -74,7 +74,7 @@
         </repository>
         <repository>
             <id>tunnel</id>
-            <url>http://repo.mikeprimm.com//</url>
+            <url>https://repo.mikeprimm.com/</url>
         </repository>
     </repositories>
 

@@ -98,19 +98,17 @@ public class AreaPvP extends JavaPlugin
 
         int b = getConfig().getInt("spawnLoc");
 
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
-            Bukkit.getOnlinePlayers()
-                    .forEach(player -> {
-                        int y = (int) player.getLocation().getY();
-                        if (y >= b)
-                        {
-                            player.removeMetadata("x-hitter", AreaPvP.getPlugin());
-                            player.removeMetadata("x-hitted", AreaPvP.getPlugin());
-                            player.removeMetadata("x-streak", AreaPvP.getPlugin());
-                            Kill.reset(player);
-                        }
-                    });
-        },0L, 1L);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> Bukkit.getOnlinePlayers()
+                .forEach(player -> {
+                    int y = (int) player.getLocation().getY();
+                    if (y >= b)
+                    {
+                        player.removeMetadata("x-hitter", AreaPvP.getPlugin());
+                        player.removeMetadata("x-hitted", AreaPvP.getPlugin());
+                        player.removeMetadata("x-streak", AreaPvP.getPlugin());
+                        Kill.reset(player);
+                    }
+                }),0L, 1L);
     }
 
     private static void initShop()
@@ -140,9 +138,7 @@ public class AreaPvP extends JavaPlugin
     {
         if (data != null)
             data.close();
-        blockPlace.keySet().forEach((b) -> {
-            b.getWorld().getBlockAt(b).setType(Material.AIR);
-        });
+        blockPlace.keySet().forEach((b) -> b.getWorld().getBlockAt(b).setType(Material.AIR));
     }
 
     private static void initDatabase()
