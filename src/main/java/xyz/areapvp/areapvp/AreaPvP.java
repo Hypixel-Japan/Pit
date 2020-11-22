@@ -7,7 +7,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -30,7 +29,6 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.UUID;
-import java.util.WeakHashMap;
 
 public class AreaPvP extends JavaPlugin
 {
@@ -42,6 +40,7 @@ public class AreaPvP extends JavaPlugin
     public static HikariDataSource data;
     public static HashMap<UUID, String> gui;
     public static Economy economy;
+    public static int spawnloc;
 
     public static AreaPvP getPlugin()
     {
@@ -60,6 +59,8 @@ public class AreaPvP extends JavaPlugin
         getCommand("oof").setExecutor(new Oof());
         saveDefaultConfig();
         config = getConfig();
+        spawnloc = config.getInt("spawnLoc");
+
         blockPlace = new HashMap<>();
         arrows = new HashMap<>();
         gui = new HashMap<>();

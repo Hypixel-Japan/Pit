@@ -31,12 +31,12 @@ public class Spawn implements CommandExecutor
             sender.sendMessage(ChatColor.RED + "エラー！/respawnは15秒に1回可能です！");
             return true;
         }
-        if (player.getLocation().getY() >= AreaPvP.config.getInt("spawnLoc"))
+        if (player.getLocation().getY() >= AreaPvP.spawnloc)
         {
             player.sendMessage(ChatColor.RED + "あなたは現在スポーンポイント範囲内にいます！");
             return true;
         }
-        if (player.getEyeLocation().getY() >= AreaPvP.config.getInt("spawnLoc"))
+        if (player.getEyeLocation().getY() >= AreaPvP.spawnloc)
             player.sendMessage(ChatColor.RED + "あなたは現在スポーンポイント範囲内にいます！");
         else
         {

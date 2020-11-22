@@ -58,7 +58,7 @@ public class Events implements Listener
             return;
         Player launcher = (Player) arrow.getShooter();
 
-        if (launcher.getLocation().getY() >= AreaPvP.config.getInt("spawnLoc"))
+        if (launcher.getLocation().getY() >=  AreaPvP.spawnloc)
         {
             e.setCancelled(true);
             return;
@@ -76,7 +76,7 @@ public class Events implements Listener
         if (!(e.getEntity() instanceof Player))
             return;
 
-        if (e.getEntity().getLocation().getY() >= AreaPvP.config.getInt("spawnLoc"))
+        if (e.getEntity().getLocation().getY() >=  AreaPvP.spawnloc)
         {
             e.setCancelled(true);
             e.getDamager().remove();
@@ -89,6 +89,12 @@ public class Events implements Listener
     {
         if (!(e.getEntity() instanceof Player) || !(e.getDamager() instanceof Player))
             return;
+
+        if (e.getEntity().getLocation().getY() >= AreaPvP.spawnloc || e.getDamager().getLocation().getY() >= AreaPvP.spawnloc)
+        {
+            e.setCancelled(true);
+            return;
+        }
 
         Player damager = (Player)  e.getEntity();
         Player hitter = (Player) e.getDamager();
@@ -148,7 +154,7 @@ public class Events implements Listener
         if (e.getPlayer().getGameMode() == GameMode.CREATIVE)
             return;
 
-        if (e.getBlockPlaced().getLocation().getY() >= AreaPvP.config.getInt("spawnLoc"))
+        if (e.getBlockPlaced().getLocation().getY() >=  AreaPvP.spawnloc)
         {
             e.setCancelled(true);
             return;

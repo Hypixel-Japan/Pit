@@ -23,7 +23,7 @@ public class GUI implements Listener
     private static void onEntityRight(PlayerInteractEntityEvent e)
     {
         if (e.getPlayer().isSneaking() && e.getRightClicked() instanceof Player &&
-                e.getPlayer().getLocation().getY() >= AreaPvP.config.getInt("spawnLoc"))
+                e.getPlayer().getLocation().getY() >=  AreaPvP.spawnloc)
             ProfileViewer.viewPlayer((Player) e.getRightClicked(), e.getPlayer());
             //下でReturnを想定
 

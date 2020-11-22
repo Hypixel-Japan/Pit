@@ -26,7 +26,7 @@ public class Oof implements CommandExecutor
         }
 
         Player player = (Player) sender;
-        if (player.getLocation().getY() >= AreaPvP.config.getInt("spawnLoc"))
+        if (player.getLocation().getY() >= AreaPvP.spawnloc)
         {
             player.sendMessage(ChatColor.RED + "あなたは現在スポーンポイント範囲内にいます！");
             return true;
