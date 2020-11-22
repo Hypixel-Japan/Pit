@@ -13,6 +13,7 @@ import xyz.areapvp.areapvp.level.Exp;
 import xyz.areapvp.areapvp.level.PlayerInfo;
 import xyz.areapvp.areapvp.level.PlayerModify;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -38,10 +39,25 @@ public class Sidebar
         if (info.prestige != 0)
             objective.getScore(ChatColor.WHITE + "Prestige: " + PlayerInfo.getPrestigeString(info.prestige)).setScore(9);
         objective.getScore(ChatColor.WHITE + "Level: " + PlayerInfo.getPrefix(info.level, info.prestige)).setScore(8);
-        objective.getScore(ChatColor.WHITE + "Needed XP: " +
-                ChatColor.AQUA + (info.level != 120 ? Exp.getExp(info.level + 1, info.prestige) - info.exp: "MAXED!")).setScore(7);
+
+        long exp = Exp.getExp(info.level + 1, info.prestige) - info.exp;
+
+        objective.getScore(ChatColor.WHITE + (info.level != 120 ? "Needed": "") + " XP: " +
+                ChatColor.AQUA + (info.level != 120 ? String.format("%,d", exp): "MAXED!")).setScore(7);
+
         objective.getScore(ChatColor.ITALIC.toString()).setScore(6);
-        objective.getScore(ChatColor.WHITE + "Gold: " + ChatColor.GOLD + AreaPvP.economy.getBalance(player)).setScore(5);
+
+        BigDecimal decimal = BigDecimal.valueOf(AreaPvP.economy.getBalance(player));
+
+        String decimalOf;
+
+        if (decimal.compareTo(new BigDecimal(1000)) <= 0)
+            decimalOf = String.valueOf(decimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+        else
+            decimalOf = String.format("%,d", decimal.setScale(1, BigDecimal.ROUND_HALF_UP).longValue());
+
+        objective.getScore(ChatColor.WHITE + "Gold: " + ChatColor.GOLD + decimalOf + "g").setScore(5);
+
         objective.getScore(ChatColor.YELLOW.toString()).setScore(4);
         if (!player.hasMetadata("x-hitted"))
             objective.getScore(ChatColor.WHITE + "Status: " + ChatColor.GREEN + "Idling").setScore(3);
