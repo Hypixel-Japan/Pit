@@ -58,11 +58,13 @@ public class PlayerModify
         UUID uuid = player.getUniqueId();
         try (Connection connection = AreaPvP.data.getConnection();
              PreparedStatement statement = connection.prepareStatement("SELECT * FROM player WHERE UUID=?");
-             PreparedStatement wh = connection.prepareStatement("SELECT PERK from perk WHERE UUID=?"))
+             PreparedStatement wh = connection.prepareStatement("SELECT PERK from perk WHERE UUID=?");
+             PreparedStatement ow = connection.prepareStatement("SELECT PERK from holdperk WHERE UUID=?"))
 
         {
             statement.setString(1, uuid.toString().replace("-", ""));
             wh.setString(1, uuid.toString().replace("-", ""));
+            ow.setString(1, uuid.toString().replace("-", ""));
 
             ResultSet data = statement.executeQuery();
             if (!data.next())
@@ -81,7 +83,11 @@ public class PlayerModify
             while (perks.next())
                 perkStr.add(perks.getString("PERK"));
 
-            return new PlayerInfo(level, exp, prestige, perkStr);
+            ArrayList<String> ownPerkStr = new ArrayList<>();
+            ResultSet own = ow.executeQuery();
+            while (own.next())
+                ownPerkStr.add(own.getString("PERK"));
+            return new PlayerInfo(level, exp, prestige, perkStr, ownPerkStr);
         }
         catch (Exception e)
         {

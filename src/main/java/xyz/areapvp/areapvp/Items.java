@@ -8,6 +8,7 @@ import net.minecraft.server.v1_12_R1.NBTTagString;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -150,5 +151,15 @@ public class Items
         return CraftItemStack.asBukkitCopy(craftItem);
     }
 
-
+    public static ItemStack addGlow(ItemStack target)
+    {
+        if (target.getType() == Material.AIR)
+            return target;
+        ItemStack stack = target.clone();
+        ItemMeta meta = stack.getItemMeta();
+        meta.addEnchant(Enchantment.DAMAGE_UNDEAD, 1, false);
+        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        stack.setItemMeta(meta);
+        return stack;
+    }
 }

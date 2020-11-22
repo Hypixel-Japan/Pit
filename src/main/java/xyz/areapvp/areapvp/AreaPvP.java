@@ -154,17 +154,7 @@ public class AreaPvP extends JavaPlugin
 
     private static void initShop()
     {
-        Items.addItem(new ItemAir());
-        Items.addItem(new ItemAir());
-        Items.addItem(new ItemAir());
-        Items.addItem(new ItemAir());
-        Items.addItem(new ItemAir());
-        Items.addItem(new ItemAir());
-        Items.addItem(new ItemAir());
-        Items.addItem(new ItemAir());
-        Items.addItem(new ItemAir());
-        Items.addItem(new ItemAir());
-        Items.addItem(new ItemAir());
+        Items.newLine();
         Items.addItem(new DiamondSword());
         Items.addItem(new Obsidian());
         Items.addItem(new ItemAir());
@@ -172,6 +162,7 @@ public class AreaPvP extends JavaPlugin
         Items.addItem(new DiamondBoots());
         Items.addItem(new ItemAir());
         Items.addItem(new ItemAir());
+        Items.newLine();
     }
 
     @Override
@@ -193,6 +184,10 @@ public class AreaPvP extends JavaPlugin
                     "EXP bigint" +
                     ")");
             statement.execute("CREATE TABLE IF NOT EXISTS perk(" +
+                    "UUID text," +
+                    "PERK text" +
+                    ")");
+            statement.execute("CREATE TABLE IF NOT EXISTS holdperk(" +
                     "UUID text," +
                     "PERK text" +
                     ")");

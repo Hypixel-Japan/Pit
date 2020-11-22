@@ -18,6 +18,12 @@ public class Perk
     {
         if (perk.length < 4)
             return;
+
+        PlayerModify.removeMetaData(player, "perk1");
+        PlayerModify.removeMetaData(player, "perk2");
+        PlayerModify.removeMetaData(player, "perk3");
+        PlayerModify.removeMetaData(player, "perk4");
+
         PlayerModify.setMetaData(player, "perk1", perk[0]);
         PlayerModify.setMetaData(player, "perk2", perk[1]);
         PlayerModify.setMetaData(player, "perk3", perk[2]);

@@ -13,13 +13,15 @@ public class PlayerInfo
     public final long exp;
     public final int prestige;
     public final ArrayList<String> perk;
+    public final ArrayList<String> ownPerk;
 
-    public PlayerInfo(int level, long exp, int prestige, ArrayList<String> perk)
+    public PlayerInfo(int level, long exp, int prestige, ArrayList<String> perk, ArrayList<String> ownPerk)
     {
         this.level = level;
         this.exp = exp;
         this.prestige = prestige;
         this.perk = perk;
+        this.ownPerk = ownPerk;
     }
 
     public static String getPrestigeString(int n)

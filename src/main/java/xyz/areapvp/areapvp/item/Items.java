@@ -1,5 +1,7 @@
 package xyz.areapvp.areapvp.item;
 
+import xyz.areapvp.areapvp.item.items.ItemAir;
+
 import java.util.ArrayList;
 
 public class Items
@@ -17,4 +19,20 @@ public class Items
                 return item;
         return null;
     }
+
+    public static void newLine()
+    {
+        Items.addItem(new ItemAir());
+        Items.addItem(new ItemAir());
+        Items.addItem(new ItemAir());
+        Items.addItem(new ItemAir());
+        Items.addItem(new ItemAir());
+        Items.addItem(new ItemAir());
+        Items.addItem(new ItemAir());
+        Items.addItem(new ItemAir());
+        Items.addItem(new ItemAir());
+        Items.addItem(new ItemAir());
+        Items.addItem(new ItemAir());
+    }
+
 }

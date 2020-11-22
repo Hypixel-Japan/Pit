@@ -27,6 +27,8 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import xyz.areapvp.areapvp.level.PlayerInfo;
 import xyz.areapvp.areapvp.level.PlayerModify;
+import xyz.areapvp.areapvp.perk.Perk;
+import xyz.areapvp.areapvp.perk.Perks;
 
 public class Events implements Listener
 {
@@ -110,6 +112,7 @@ public class Events implements Listener
         Player player = e.getPlayer();
         player.setFoodLevel(19);
 
+        Perk.update(player);
 
         player.teleport(player.getWorld().getSpawnLocation());
         new BukkitRunnable()
