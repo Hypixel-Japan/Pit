@@ -93,9 +93,7 @@ public class Kill
                 PlayerModify.addExp(killer, exp);
 
                 String name = PlayerInfo.getPrefix(info.level, info.prestige) +
-                        ChatColor.GRAY + " " + deather.getDisplayName();
-
-                st.put(killer.getUniqueId(), getStreak(killer.getUniqueId()) + 1);
+                        ChatColor.GRAY + " " + deather.getName();
 
                 killer.sendMessage(ChatColor.GREEN +
                         ChatColor.BOLD.toString() +
@@ -107,17 +105,33 @@ public class Kill
 
                 PlayerInfo kInfo = PlayerModify.getInfo(killer);
 
+                long streak = getStreak(killer.getUniqueId());
+                st.put(killer.getUniqueId(), streak + 1);
+
                 if (kInfo == null)
                 {
                     unknownRestart(deather);
                     return;
                 }
 
+                if ((streak + 1) % 5 == 0)
+                {
+                    Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(ChatColor.RED + ChatColor.BOLD.toString() + "STREAK! " +
+                            ChatColor.RESET + ChatColor.GRAY + "of " + ChatColor.RED + streak + 1 + ChatColor.GRAY +
+                            " kills by " + PlayerInfo.getPrefix(kInfo.level, kInfo.prestige) + ChatColor.GRAY + " " +
+                            killer.getName()));
+                }
+
+                deather.spigot().respawn();
                 deather.sendMessage(ChatColor.RED + ChatColor.BOLD.toString() + "DEATH!" +
                         ChatColor.RESET + ChatColor.GRAY + " by " +
                         PlayerInfo.getPrefix(kInfo.level, kInfo.prestige) + " " + ChatColor.GRAY + killer.getName());
+                InventoryUtils.reItem(deather);
+
             }
         }.runTaskAsynchronously(AreaPvP.getPlugin());
+
+
     }
 
 

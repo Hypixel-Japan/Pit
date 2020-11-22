@@ -1,6 +1,9 @@
 package xyz.areapvp.areapvp.level;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.ArrayList;
 
@@ -121,4 +124,14 @@ public class PlayerInfo
         return c.toString();
 
     }
+
+    public static ItemStack getHead(String playerName)
+    {
+        ItemStack stack = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+        SkullMeta meta = (SkullMeta) stack.getItemMeta();
+        meta.setOwner(playerName);
+        stack.setItemMeta(meta);
+        return stack;
+    }
+
 }

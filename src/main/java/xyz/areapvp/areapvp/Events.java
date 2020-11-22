@@ -38,13 +38,6 @@ public class Events implements Listener
     }
 
     @EventHandler
-    public void onMove(PlayerMoveEvent e)
-    {
-        if (e.getTo().getY() > AreaPvP.config.getInt("spawnLoc"))
-            e.getPlayer().setHealth(20);
-    }
-
-    @EventHandler
     public void onPlayerDamage(EntityDamageEvent e)
     {
         Entity ee = e.getEntity();

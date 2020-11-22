@@ -107,6 +107,8 @@ public class AreaPvP extends JavaPlugin
                         player.removeMetadata("x-hitted", AreaPvP.getPlugin());
                         player.removeMetadata("x-streak", AreaPvP.getPlugin());
                         Kill.reset(player);
+                        player.setHealth(20);
+
                     }
                 }),0L, 1L);
     }
