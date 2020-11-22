@@ -59,7 +59,12 @@ public class Events implements Listener
         Player launcher = (Player) arrow.getShooter();
 
         if (launcher.getLocation().getY() >= AreaPvP.config.getInt("spawnLoc"))
+        {
             e.setCancelled(true);
+            return;
+        }
+
+        AreaPvP.arrows.put(arrow.getUniqueId(), 26);
     }
 
     @EventHandler

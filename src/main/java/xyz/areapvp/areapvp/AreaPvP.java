@@ -7,13 +7,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Entity;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.Team;
 import xyz.areapvp.areapvp.command.Main;
 import xyz.areapvp.areapvp.command.Oof;
 import xyz.areapvp.areapvp.command.Spawn;
@@ -27,13 +28,16 @@ import xyz.areapvp.areapvp.perk.PerkProcess;
 
 import java.sql.Statement;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.UUID;
+import java.util.WeakHashMap;
 
 public class AreaPvP extends JavaPlugin
 {
     public static FileConfiguration config;
     public static AreaPvP plugin;
     public static HashMap<Location, Integer> blockPlace;
+    public static HashMap<UUID, Integer> arrows; //宣伝
     public static Timer timer;
     public static HikariDataSource data;
     public static HashMap<UUID, String> gui;
@@ -57,6 +61,7 @@ public class AreaPvP extends JavaPlugin
         saveDefaultConfig();
         config = getConfig();
         blockPlace = new HashMap<>();
+        arrows = new HashMap<>();
         gui = new HashMap<>();
         if (getServer().getPluginManager().getPlugin("Vault") == null)
         {
@@ -111,6 +116,39 @@ public class AreaPvP extends JavaPlugin
 
                     }
                 }),0L, 1L);
+
+        Bukkit.getScheduler().runTaskTimer(this, () -> {
+            final LinkedList<UUID> removal = new LinkedList<>();
+            arrows.forEach((k,v) -> {
+                v = v - 1;
+
+                Entity arrow = Bukkit.getEntity(k);
+
+                if (arrow == null)
+                {
+                    removal.add(k);
+                    return;
+                }
+
+                if (arrow.isDead())
+                {
+                    removal.add(k);
+                    return;
+                }
+                if (v < 0)
+                {
+                    arrow.remove();
+                    removal.add(k);
+                    return;
+                }
+
+                arrows.put(k, v);
+
+            });
+            removal.parallelStream().forEach(arrow -> arrows.remove(arrow));
+
+        }, 0L, 10L);
+
     }
 
     private static void initShop()
