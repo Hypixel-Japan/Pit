@@ -43,5 +43,5 @@ jobs:
       - name: "Change labels when add Resolved label"
         if: "github.event.action == 'labeled' && github.event.label.name == 'Status: Resolved'"
         uses: andymckay/labeler@master
-          with:
-            remove-labels: "Status: Accepted"
+        with:
+          remove-labels: "Status: Accepted"
