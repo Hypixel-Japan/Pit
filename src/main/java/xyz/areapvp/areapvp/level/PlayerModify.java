@@ -1,13 +1,17 @@
 package xyz.areapvp.areapvp.level;
 
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 import xyz.areapvp.areapvp.AreaPvP;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.UUID;
 
 public class PlayerModify
@@ -54,7 +58,7 @@ public class PlayerModify
         UUID uuid = player.getUniqueId();
         try (Connection connection = AreaPvP.data.getConnection();
              PreparedStatement statement = connection.prepareStatement("SELECT * FROM player WHERE UUID=?");
-             PreparedStatement wh = connection.prepareStatement("SELECT perk from perk WHERE UUID=?"))
+             PreparedStatement wh = connection.prepareStatement("SELECT PERK from perk WHERE UUID=?"))
 
         {
             statement.setString(1, uuid.toString().replace("-", ""));
@@ -146,5 +150,23 @@ public class PlayerModify
             xp = xp - a;
             add++;
         }
+    }
+
+    public static Optional<MetadataValue> getMetaData(Entity entity, String key)
+    {
+        for (MetadataValue value: entity.getMetadata(key))
+            if (value.getOwningPlugin().getName().equals(AreaPvP.getPlugin().getName()))
+                return Optional.of(value);
+        return Optional.empty();
+    }
+
+    public static void setMetaData(Entity entity, String key, Object value)
+    {
+        entity.setMetadata(key, new FixedMetadataValue(AreaPvP.getPlugin(), value));
+    }
+
+    public static void removeMetaData(Entity entity, String key)
+    {
+        entity.removeMetadata(key, AreaPvP.getPlugin());
     }
 }

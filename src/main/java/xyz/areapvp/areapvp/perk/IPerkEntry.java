@@ -10,5 +10,5 @@ public interface IPerkEntry
     int getNeedPrestige();
     int getNeedGold();
     void onBuy(Player player);
-    void onSell();
+    void onRemove();
 }
