@@ -84,6 +84,12 @@ public class Events implements Listener
             e.getDamager().remove();
         }
 
+        Arrow arrow = (Arrow) e.getEntity();
+
+        if (!(arrow.getShooter() instanceof Player))
+            return;
+        e.getEntity().setMetadata("x-hitted", new FixedMetadataValue(AreaPvP.getPlugin(), 15));
+        e.getEntity().setMetadata("x-hitter", new FixedMetadataValue(AreaPvP.getPlugin(), ((Player) arrow.getShooter()).getUniqueId()));
     }
 
     @EventHandler

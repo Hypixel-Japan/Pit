@@ -34,7 +34,10 @@ public class Kill
 
     public static void processKill(final Player killer, final Player deather)
     {
-        deather.spigot().respawn();
+        if (deather.isDead())
+            deather.spigot().respawn();
+        else
+            deather.teleport(deather.getWorld().getSpawnLocation());
         deather.sendTitle(ChatColor.RED + "YOU DIED", "", 10, 20, 10);
         Player cK = killer;
         if (cK == null)

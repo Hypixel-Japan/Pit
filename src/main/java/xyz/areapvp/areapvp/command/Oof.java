@@ -56,6 +56,7 @@ public class Oof implements CommandExecutor
             {
                 Player killer = Bukkit.getPlayer(UUID.fromString(uuid));
                 Kill.processKill(killer, (Player) sender);
+
                 return true;
             }
 
