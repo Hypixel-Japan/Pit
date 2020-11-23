@@ -16,4 +16,6 @@ public interface IPerkEntry
     void onBuy(Player player);
 
     void onRemove();
+
+    void onWork(Player player);
 }

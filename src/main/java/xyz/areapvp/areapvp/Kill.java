@@ -1,5 +1,6 @@
 package xyz.areapvp.areapvp;
 
+import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -85,6 +86,7 @@ public class Kill
             }
 
             process(cK, deather);
+            cK.spigot().sendMessage(new ComponentBuilder(ChatColor.GRAY + deather.getName() + " " + ChatColor.GREEN + ChatColor.BOLD + "KILL!").create());
         }
     }
 

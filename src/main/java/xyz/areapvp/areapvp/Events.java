@@ -74,14 +74,6 @@ public class Events implements Listener
         return base.toString();
     }
 
-    private static boolean isCrit(Player p)
-    {
-        return !p.isOnGround() && p.getFallDistance() > 0 &&
-                !p.getLocation().getBlock().isLiquid() &&
-                !p.isInsideVehicle() && !p.isSprinting() &&
-                !p.hasPotionEffect(PotionEffectType.BLINDNESS);
-    }
-
     @EventHandler
     public void onKill(PlayerDeathEvent e)
     {

@@ -1,8 +1,11 @@
 package xyz.areapvp.areapvp.perk;
 
 import org.bukkit.entity.Player;
+import org.bukkit.metadata.MetadataValue;
 import xyz.areapvp.areapvp.level.PlayerInfo;
 import xyz.areapvp.areapvp.level.PlayerModify;
+
+import java.util.Optional;
 
 public class Perk
 {
@@ -29,5 +32,21 @@ public class Perk
         PlayerModify.setMetaData(player, "perk3", perk[2]);
         if (perk.length > 4)
             PlayerModify.setMetaData(player, "perk4", perk[3]);
+    }
+
+    public static boolean contains(Player player, String perk)
+    {
+        Optional<MetadataValue> perk1 = PlayerModify.getMetaData(player, "perk1");
+        Optional<MetadataValue> perk2 = PlayerModify.getMetaData(player, "perk2");
+        Optional<MetadataValue> perk3 = PlayerModify.getMetaData(player, "perk3");
+        Optional<MetadataValue> perk4 = PlayerModify.getMetaData(player, "perk4");
+
+        if (perk1.isPresent() && perk1.get().asString().equals(perk))
+            return true;
+        else if (perk2.isPresent() && perk2.get().asString().equals(perk))
+            return true;
+        else if (perk3.isPresent() && perk3.get().asString().equals(perk))
+            return true;
+        else return perk4.isPresent() && perk4.get().asString().equals(perk);
     }
 }
