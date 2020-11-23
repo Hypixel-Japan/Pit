@@ -7,3 +7,5 @@ commands:
   spawn:
     aliases: ["respawn"]
   oof:
+  pvpd:
+    aliases: ["debug", "pitdebug", "pdb"]

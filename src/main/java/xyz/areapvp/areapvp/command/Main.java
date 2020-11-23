@@ -59,14 +59,6 @@ public class Main implements CommandExecutor
                     ((Player) sender).getInventory().addItem(stack);
                     break;
                 }
-                case "exp":
-                case "xp":
-                    sender.sendMessage(ChatColor.RED + "引数が足りません！正しい使用法は、/areapvp xp <add|remove> <amount>  です！");
-                    break;
-                case "gold":
-                case "g":
-                    sender.sendMessage(ChatColor.RED + "引数が足りません！正しい使用法は、/areapvp gold <add|remove> <amount>  です！");
-                    break;
                 default:
                     sender.sendMessage(ChatColor.RED + "不明なコマンドです！引数を確認してください！");
             }
