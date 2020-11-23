@@ -24,9 +24,9 @@ public class GUI implements Listener
     private static void onEntityRight(PlayerInteractEntityEvent e)
     {
         if (e.getPlayer().isSneaking() && e.getRightClicked() instanceof Player &&
-                e.getPlayer().getLocation().getY() >=  AreaPvP.spawnloc)
+                e.getPlayer().getLocation().getY() >= AreaPvP.spawnloc)
             ProfileViewer.viewPlayer((Player) e.getRightClicked(), e.getPlayer());
-            //下でReturnを想定
+        //下でReturnを想定
 
 
         if (e.getRightClicked().getType() != EntityType.VILLAGER)
@@ -91,7 +91,6 @@ public class GUI implements Listener
             player.closeInventory();
         }
     }
-
 
     public static void playerItemBuyProcess(Player player, IShopItem item)
     {

@@ -40,7 +40,6 @@ public class Items
         return b;
     }
 
-
     public static ItemStack quickLore(ItemStack b, String t)
     {
         ItemMeta meta = b.getItemMeta();
@@ -66,7 +65,6 @@ public class Items
         return quickLore(stack, perkItem);
     }
 
-
     public static ItemStack setSpecial(ItemStack b)
     {
         if (b == null || b.getType() == Material.AIR)
@@ -75,7 +73,6 @@ public class Items
 
         return quickLore(stack, specialItem);
     }
-
 
     public static ItemStack setKeptOnDeath(ItemStack b)
     {
@@ -95,7 +92,7 @@ public class Items
         return CraftItemStack.asCraftMirror(nmStack);
     }
 
-    public static boolean hasMetadata(ItemStack stack,  String name)
+    public static boolean hasMetadata(ItemStack stack, String name)
     {
         net.minecraft.server.v1_12_R1.ItemStack nmStack = CraftItemStack.asNMSCopy(stack);
         NBTTagCompound tagCompound = nmStack.getTag() != null ? nmStack.getTag(): new NBTTagCompound();

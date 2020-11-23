@@ -3,14 +3,10 @@ package xyz.areapvp.areapvp;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.event.EventHandler;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.awt.geom.Area;
 import java.util.ArrayList;
 
 public class Timer extends BukkitRunnable
@@ -30,7 +26,7 @@ public class Timer extends BukkitRunnable
                     if (player.hasMetadata("x-spawn"))
                     {
                         Integer spawn = null;
-                        for (MetadataValue hitter: player.getMetadata("x-spawn"))
+                        for (MetadataValue hitter : player.getMetadata("x-spawn"))
                             if (hitter.getOwningPlugin().getName().equals(AreaPvP.getPlugin().getName()))
                                 spawn = hitter.asInt();
 
@@ -52,7 +48,7 @@ public class Timer extends BukkitRunnable
                     }
 
                     int hitted = 15;
-                    for (MetadataValue hitter: player.getMetadata("x-hitted"))
+                    for (MetadataValue hitter : player.getMetadata("x-hitted"))
                         if (hitter.getOwningPlugin().getName().equals(AreaPvP.getPlugin().getName()))
                             hitted = hitter.asInt();
                     hitted = hitted - 1;

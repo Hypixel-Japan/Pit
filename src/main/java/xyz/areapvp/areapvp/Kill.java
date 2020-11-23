@@ -27,7 +27,6 @@ public class Kill
         return str == null ? 0: str;
     }
 
-
     public static void reset(Player player)
     {
         st.remove(player.getUniqueId());
@@ -51,7 +50,7 @@ public class Kill
             }
 
             String uuid = null;
-            for (MetadataValue hitter: deather.getMetadata("x-hitter"))
+            for (MetadataValue hitter : deather.getMetadata("x-hitter"))
                 if (hitter.getOwningPlugin().getName().equals(AreaPvP.getPlugin().getName()))
                     uuid = hitter.asString();
             if (uuid == null)

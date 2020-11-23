@@ -20,7 +20,6 @@ import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.vehicle.VehicleEntityCollisionEvent;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -28,7 +27,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import xyz.areapvp.areapvp.level.PlayerInfo;
 import xyz.areapvp.areapvp.level.PlayerModify;
 import xyz.areapvp.areapvp.perk.Perk;
-import xyz.areapvp.areapvp.perk.Perks;
 
 public class Events implements Listener
 {
@@ -56,11 +54,11 @@ public class Events implements Listener
         if (e.getEntity().getType() != EntityType.ARROW)
             return;
         Arrow arrow = (Arrow) e.getEntity();
-        if (!(arrow.getShooter() instanceof  Player))
+        if (!(arrow.getShooter() instanceof Player))
             return;
         Player launcher = (Player) arrow.getShooter();
 
-        if (launcher.getLocation().getY() >=  AreaPvP.spawnloc)
+        if (launcher.getLocation().getY() >= AreaPvP.spawnloc)
         {
             e.setCancelled(true);
             return;
@@ -78,7 +76,7 @@ public class Events implements Listener
         if (!(e.getEntity() instanceof Player))
             return;
 
-        if (e.getEntity().getLocation().getY() >=  AreaPvP.spawnloc)
+        if (e.getEntity().getLocation().getY() >= AreaPvP.spawnloc)
         {
             e.setCancelled(true);
             e.getDamager().remove();
@@ -104,7 +102,7 @@ public class Events implements Listener
             return;
         }
 
-        Player damager = (Player)  e.getEntity();
+        Player damager = (Player) e.getEntity();
         Player hitter = (Player) e.getDamager();
 
         hitter.setMetadata("x-hitted", new FixedMetadataValue(AreaPvP.getPlugin(), 15));
@@ -163,7 +161,7 @@ public class Events implements Listener
         if (e.getPlayer().getGameMode() == GameMode.CREATIVE)
             return;
 
-        if (e.getBlockPlaced().getLocation().getY() >=  AreaPvP.spawnloc)
+        if (e.getBlockPlaced().getLocation().getY() >= AreaPvP.spawnloc)
         {
             e.setCancelled(true);
             return;
@@ -204,7 +202,6 @@ public class Events implements Listener
     {
         AreaPvP.gui.remove(e.getPlayer().getUniqueId());
     }
-
 
     @EventHandler(priority = EventPriority.LOWEST)
     private void onAsyncChat(AsyncPlayerChatEvent e)

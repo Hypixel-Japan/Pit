@@ -35,7 +35,6 @@ public class InventoryUtils
 
     }
 
-
     public static void reItem(Player player)
     {
         new BukkitRunnable()
@@ -54,7 +53,7 @@ public class InventoryUtils
     public static ItemStack[] equip(ItemStack[] current)
     {
         ArrayList<ItemStack> newI = new ArrayList<>();
-        for (ItemStack stack: current)
+        for (ItemStack stack : current)
         {
             if (stack == null || stack.getType() == Material.AIR || stack.getItemMeta() == null || !stack.getItemMeta().hasLore())
             {

@@ -22,13 +22,14 @@ public class PlayerModify
              PreparedStatement statement = connection.prepareStatement("SELECT UUID FROm player WHERE UUID=?"))
         {
             statement.setString(1, player.getUniqueId().toString().replace("-", ""));
-            return  statement.executeQuery().next();
+            return statement.executeQuery().next();
         }
         catch (Exception ignored)
         {
             return false;
         }
     }
+
     public static void createBalance(Player player)
     {
         createBalance(player, false);
@@ -113,13 +114,16 @@ public class PlayerModify
             statement.setString(3, player.getUniqueId().toString().replace("-", ""));
             statement.execute();
         }
-        catch (Exception ignored) { }
+        catch (Exception ignored)
+        {
+        }
         if (level == 0)
             return;
         player.sendTitle(ChatColor.AQUA + ChatColor.BOLD.toString() + "LEVEL UP!",
                 PlayerInfo.getPrefix(info.level, info.prestige) + ChatColor.GRAY + " → " +
                         PlayerInfo.getPrefix(info.level + level, info.prestige),
-                10, 20, 10);
+                10, 20, 10
+        );
     }
 
     public static void addExp(Player player, long exp)
@@ -147,7 +151,7 @@ public class PlayerModify
         while (true)
         {
             long a = Exp.getExp(level + add, prestige);
-            if(a > xp)
+            if (a > xp)
             {
                 int l = add - 1;
                 if (l == 0)
@@ -162,7 +166,7 @@ public class PlayerModify
 
     public static Optional<MetadataValue> getMetaData(Entity entity, String key)
     {
-        for (MetadataValue value: entity.getMetadata(key))
+        for (MetadataValue value : entity.getMetadata(key))
             if (value.getOwningPlugin().getName().equals(AreaPvP.getPlugin().getName()))
                 return Optional.of(value);
         return Optional.empty();

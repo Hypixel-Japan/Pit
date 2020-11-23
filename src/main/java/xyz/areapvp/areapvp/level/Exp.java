@@ -18,8 +18,7 @@ public class Exp
         return base;
     }
 
-
-    public static long getExp(int level, int prestige )
+    public static long getExp(int level, int prestige)
     {
         if (level == 120)
             return 0;
@@ -27,6 +26,7 @@ public class Exp
             return ab(level);
         return ab(level) * (prestige * 110 / 100);
     }
+
     private static int ab(int level)
     {
         int real = 1;
@@ -49,7 +49,7 @@ public class Exp
         else if (level < 90)
             real = 900;
         else if (level < 100)
-            real  = 1000;
+            real = 1000;
         else if (level < 110)
             real = 1200;
         else if (level < 120)

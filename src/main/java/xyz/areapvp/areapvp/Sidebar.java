@@ -64,7 +64,7 @@ public class Sidebar
         else
         {
             Integer hitted = null;
-            for (MetadataValue hitter: player.getMetadata("x-hitted"))
+            for (MetadataValue hitter : player.getMetadata("x-hitted"))
                 if (hitter.getOwningPlugin().getName().equals(AreaPvP.getPlugin().getName()))
                     hitted = hitter.asInt();
             if (hitted == null)
@@ -85,7 +85,7 @@ public class Sidebar
             objective.getScore(ChatColor.BLUE.toString()).setScore(2);
         else
             objective.getScore("Streak: " + ChatColor.GREEN + streak).setScore(2);
-        objective.getScore(ChatColor. BLACK.toString()).setScore(1);
+        objective.getScore(ChatColor.BLACK.toString()).setScore(1);
         player.setPlayerListName(PlayerInfo.getPrefix(info.level, info.prestige) + ChatColor.GRAY + " " + player.getName());
         player.setDisplayName(PlayerInfo.getPrefix(info.level, info.prestige) + ChatColor.GRAY + " " + player.getName());
         if (board.getTeam("c") == null)

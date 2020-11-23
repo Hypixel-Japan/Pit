@@ -44,10 +44,10 @@ public class Oof implements CommandExecutor
         {
             String uuid = null;
             int v = 0;
-            for (MetadataValue hitter: player.getMetadata("x-hitter"))
+            for (MetadataValue hitter : player.getMetadata("x-hitter"))
                 if (hitter.getOwningPlugin().getName().equals(AreaPvP.getPlugin().getName()))
                     uuid = hitter.asString();
-            for (MetadataValue hitter: player.getMetadata("x-hitted"))
+            for (MetadataValue hitter : player.getMetadata("x-hitted"))
                 if (hitter.getOwningPlugin().getName().equals(AreaPvP.getPlugin().getName()))
                     v = hitter.asInt();
             player.removeMetadata("x-hitted", AreaPvP.getPlugin());

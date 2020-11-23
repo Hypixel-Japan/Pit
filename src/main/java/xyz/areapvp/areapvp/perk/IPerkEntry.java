@@ -6,9 +6,14 @@ import org.bukkit.inventory.ItemStack;
 public interface IPerkEntry
 {
     ItemStack getItem();
+
     String getName();
+
     int getNeedPrestige();
+
     int getNeedGold();
+
     void onBuy(Player player);
+
     void onRemove();
 }

@@ -17,7 +17,7 @@ public class ShopItem
         if (prestige < needPrestige)
         {
             stack = new ItemStack(Material.BEDROCK);
-            stack.setItemMeta(error(ChatColor.RED + "Unknown", stack,ChatColor.RED + "購入に必要なPrestigeが足りません！"));
+            stack.setItemMeta(error(ChatColor.RED + "Unknown", stack, ChatColor.RED + "購入に必要なPrestigeが足りません！"));
             stack = Items.addMetaData(stack, "r", UUID.randomUUID().toString());
             stack = Items.addMetaData(stack, "notBuyable", "1b");
             return stack;
@@ -25,7 +25,7 @@ public class ShopItem
 
         if (gold < needGold)
         {
-            stack.setItemMeta(error(stack.getItemMeta().getDisplayName(),stack, ChatColor.RED + "購入に必要なGoldが足りません！"));
+            stack.setItemMeta(error(stack.getItemMeta().getDisplayName(), stack, ChatColor.RED + "購入に必要なGoldが足りません！"));
             stack = Items.addMetaData(stack, "notBuyable", "1b");
             stack = Items.addMetaData(stack, "r", UUID.randomUUID().toString());
             return stack;
@@ -37,7 +37,7 @@ public class ShopItem
         return stack;
     }
 
-    public static ItemMeta error(String title,  ItemStack stack, String why)
+    public static ItemMeta error(String title, ItemStack stack, String why)
     {
         ItemMeta meta = stack.getItemMeta();
         meta.setDisplayName(title);

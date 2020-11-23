@@ -22,7 +22,7 @@ public class PerkInventory
         int balance = (int) AreaPvP.economy.getBalance(player);
 
         Inventory inventory = Bukkit.createInventory(null, (Perks.perks.size() % 9 == 0 ? 1: Perks.perks.size() % 9) * 9, ChatColor.BLUE + "Perk Shop");
-        for (IPerkEntry item: Perks.perks)
+        for (IPerkEntry item : Perks.perks)
         {
             if (info.perk.contains(item.getName()))
                 inventory.addItem(Items.quickLore(Items.addGlow(item.getItem()), ChatColor.RED + "あなたはすでにこのPerkを適用しています！"));
@@ -30,11 +30,13 @@ public class PerkInventory
                 inventory.addItem(Items.quickLore(item.getItem(), ChatColor.YELLOW + "クリックして適用！"));
             else
             {
-                ItemStack stack = ShopItem.getItem(item.getItem(),
+                ItemStack stack = ShopItem.getItem(
+                        item.getItem(),
                         balance,
                         item.getNeedGold(),
                         info.prestige,
-                        item.getNeedPrestige());
+                        item.getNeedPrestige()
+                );
                 inventory.addItem(stack);
             }
         }

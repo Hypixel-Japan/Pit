@@ -28,9 +28,12 @@ public class ProfileViewer
         inventory.setItem(43, Items.addMetaData(player.getInventory().getItem(7), "AreaPvP::NotPickable", "true"));
         inventory.setItem(44, Items.addMetaData(player.getInventory().getItem(8), "AreaPvP::NotPickable", "true"));
         //Info
-        inventory.setItem(11,
+        inventory.setItem(
+                11,
                 Items.addMetaData(Items.setDisplayName(PlayerInfo.getHead(player.getName()), ChatColor.GRAY + player.getName()),
-                        "AreaPvP::NotPickable", "true"));
+                        "AreaPvP::NotPickable", "true"
+                )
+        );
 
         viewer.openInventory(inventory);
         AreaPvP.gui.put(viewer.getUniqueId(), "profile");

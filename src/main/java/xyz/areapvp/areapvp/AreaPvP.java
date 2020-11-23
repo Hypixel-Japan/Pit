@@ -47,6 +47,44 @@ public class AreaPvP extends JavaPlugin
         return plugin;
     }
 
+    private static void initShop()
+    {
+        Items.newLine();
+        Items.addItem(new DiamondSword());
+        Items.addItem(new Obsidian());
+        Items.addItem(new ItemAir());
+        Items.addItem(new DiamondChestPlate());
+        Items.addItem(new DiamondBoots());
+        Items.addItem(new ItemAir());
+        Items.addItem(new ItemAir());
+        Items.newLine();
+    }
+
+    private static void initDatabase()
+    {
+        try (Statement statement = data.getConnection().createStatement())
+        {
+            statement.execute("CREATE TABLE IF NOT EXISTS player(" +
+                    "UUID text," +
+                    "LEVEL integer," +
+                    "PRESTIGE integer," +
+                    "EXP bigint" +
+                    ")");
+            statement.execute("CREATE TABLE IF NOT EXISTS perk(" +
+                    "UUID text," +
+                    "PERK text" +
+                    ")");
+            statement.execute("CREATE TABLE IF NOT EXISTS holdperk(" +
+                    "UUID text," +
+                    "PERK text" +
+                    ")");
+        }
+        catch (Exception ignored)
+        {
+
+        }
+    }
+
     @Override
     public void onEnable()
     {
@@ -116,11 +154,11 @@ public class AreaPvP extends JavaPlugin
                         player.setHealth(20);
 
                     }
-                }),0L, 1L);
+                }), 0L, 1L);
 
         Bukkit.getScheduler().runTaskTimer(this, () -> {
             final LinkedList<UUID> removal = new LinkedList<>();
-            arrows.forEach((k,v) -> {
+            arrows.forEach((k, v) -> {
                 v = v - 1;
 
                 Entity arrow = Bukkit.getEntity(k);
@@ -152,49 +190,11 @@ public class AreaPvP extends JavaPlugin
 
     }
 
-    private static void initShop()
-    {
-        Items.newLine();
-        Items.addItem(new DiamondSword());
-        Items.addItem(new Obsidian());
-        Items.addItem(new ItemAir());
-        Items.addItem(new DiamondChestPlate());
-        Items.addItem(new DiamondBoots());
-        Items.addItem(new ItemAir());
-        Items.addItem(new ItemAir());
-        Items.newLine();
-    }
-
     @Override
     public void onDisable()
     {
         if (data != null)
             data.close();
         blockPlace.keySet().forEach((b) -> b.getWorld().getBlockAt(b).setType(Material.AIR));
-    }
-
-    private static void initDatabase()
-    {
-        try (Statement statement = data.getConnection().createStatement())
-        {
-            statement.execute("CREATE TABLE IF NOT EXISTS player(" +
-                    "UUID text," +
-                    "LEVEL integer," +
-                    "PRESTIGE integer," +
-                    "EXP bigint" +
-                    ")");
-            statement.execute("CREATE TABLE IF NOT EXISTS perk(" +
-                    "UUID text," +
-                    "PERK text" +
-                    ")");
-            statement.execute("CREATE TABLE IF NOT EXISTS holdperk(" +
-                    "UUID text," +
-                    "PERK text" +
-                    ")");
-        }
-        catch (Exception ignored)
-        {
-
-        }
     }
 }
