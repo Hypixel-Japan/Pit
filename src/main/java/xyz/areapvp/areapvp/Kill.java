@@ -42,7 +42,6 @@ public class Kill
         }
     }
 
-
     public static void reset(Player player)
     {
         st.remove(player.getUniqueId());

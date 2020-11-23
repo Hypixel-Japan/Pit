@@ -17,88 +17,9 @@ import xyz.areapvp.areapvp.inventory.Shop;
 import xyz.areapvp.areapvp.level.PlayerModify;
 
 import java.util.Arrays;
-import java.util.HashMap;
 
 public class PitDebug implements CommandExecutor
 {
-
-    @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
-    {
-        if (!(sender instanceof Player) || !Arrays.asList(AreaPvP.debugger).contains(((Player) sender).getUniqueId().toString()))
-        {
-            sender.sendMessage(ChatColor.RED + "エラー：使用許諾がありません！");
-            return true;
-        }
-
-        if (args.length < 1)
-        {
-            sender.sendMessage(ChatColor.RED + "エラー：引数の大きさが不正です！");
-            return true;
-        }
-
-        Player player = (Player) sender;
-
-        switch (args[0])
-        {
-            case "exp":
-            case "xp":
-            case "gold":
-            case "g":
-                if (args.length != 3)
-                {
-                    sender.sendMessage(ChatColor.RED + "エラー：引数の大きさが不正です！");
-                    return true;
-                }
-                expMoney(sender, args);
-                break;
-            case "damage":
-                if (args.length != 2)
-                {
-                    sender.sendMessage(ChatColor.RED + "エラー：引数の大きさが不正です！");
-                    return true;
-                }
-                changeDamage(player, args);
-                break;
-            case "meta":
-                if (args.length > 4 || args.length < 2)
-                {
-                    sender.sendMessage(ChatColor.RED + "エラー：引数の大きさが不正です！");
-                    return true;
-                }
-                metaData(player, args);
-                break;
-            case "evacute":
-            case "ev":
-                player.teleport(player.getWorld().getSpawnLocation());
-                ((Player) sender).sendTitle(ChatColor.RED  + "EVACUTE!", "", 10, 20, 10);
-                break;
-            case "shop":
-                if (args.length != 2)
-                {
-                    sender.sendMessage(ChatColor.RED + "エラー：引数の大きさが不正です！");
-                    return true;
-                }
-                shop(player, args);
-                break;
-            case "streak":
-                if (args.length != 2)
-                {
-                    sender.sendMessage(ChatColor.RED + "エラー：引数の大きさが不正です！");
-                    return true;
-                }
-                Long l;
-                if ((l = parseLong(args[1])) == null)
-                {
-                    sender.sendMessage(ChatColor.RED + "エラー：引数が数値ではありません！");
-                    return true;
-                }
-                Kill.setStreak(player, l);
-                break;
-        }
-
-        return true;
-    }
 
     private static void shop(Player player, String[] args)
     {
@@ -116,7 +37,6 @@ public class PitDebug implements CommandExecutor
                 player.sendMessage("エラー：不正なタイプ");
         }
     }
-
 
     private static void metaData(Player player, String[] args)
     {
@@ -167,7 +87,7 @@ public class PitDebug implements CommandExecutor
 
                             ComponentBuilder builder =
                                     new ComponentBuilder(ChatColor.GREEN + s + "   " + ChatColor.AQUA + "->" +
-                                    ChatColor.LIGHT_PURPLE + "   " + s2.replace("\n", "\n" + ChatColor.LIGHT_PURPLE));
+                                            ChatColor.LIGHT_PURPLE + "   " + s2.replace("\n", "\n" + ChatColor.LIGHT_PURPLE));
                             builder.event(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, s2.replace("\n", "")));
 
                             player.spigot().sendMessage(builder.create());
@@ -182,7 +102,6 @@ public class PitDebug implements CommandExecutor
             e.printStackTrace();
         }
     }
-
 
     private static void changeDamage(Player player, String[] args)
     {
@@ -221,7 +140,6 @@ public class PitDebug implements CommandExecutor
             return null;
         }
     }
-
 
     private static void expMoney(CommandSender sender, String[] args)
     {
@@ -276,6 +194,84 @@ public class PitDebug implements CommandExecutor
                 sender.sendMessage(ChatColor.GOLD.toString() + a + "g" + ChatColor.GRAY + "をオンラインのプレイヤー全員から強奪しました。");
         }
 
+    }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
+    {
+        if (!(sender instanceof Player) || !Arrays.asList(AreaPvP.debugger).contains(((Player) sender).getUniqueId().toString()))
+        {
+            sender.sendMessage(ChatColor.RED + "エラー：使用許諾がありません！");
+            return true;
+        }
+
+        if (args.length < 1)
+        {
+            sender.sendMessage(ChatColor.RED + "エラー：引数の大きさが不正です！");
+            return true;
+        }
+
+        Player player = (Player) sender;
+
+        switch (args[0])
+        {
+            case "exp":
+            case "xp":
+            case "gold":
+            case "g":
+                if (args.length != 3)
+                {
+                    sender.sendMessage(ChatColor.RED + "エラー：引数の大きさが不正です！");
+                    return true;
+                }
+                expMoney(sender, args);
+                break;
+            case "damage":
+                if (args.length != 2)
+                {
+                    sender.sendMessage(ChatColor.RED + "エラー：引数の大きさが不正です！");
+                    return true;
+                }
+                changeDamage(player, args);
+                break;
+            case "meta":
+                if (args.length > 4 || args.length < 2)
+                {
+                    sender.sendMessage(ChatColor.RED + "エラー：引数の大きさが不正です！");
+                    return true;
+                }
+                metaData(player, args);
+                break;
+            case "evacute":
+            case "ev":
+                player.teleport(player.getWorld().getSpawnLocation());
+                ((Player) sender).sendTitle(ChatColor.RED + "EVACUTE!", "", 10, 20, 10);
+                break;
+            case "shop":
+                if (args.length != 2)
+                {
+                    sender.sendMessage(ChatColor.RED + "エラー：引数の大きさが不正です！");
+                    return true;
+                }
+                shop(player, args);
+                break;
+            case "streak":
+                if (args.length != 2)
+                {
+                    sender.sendMessage(ChatColor.RED + "エラー：引数の大きさが不正です！");
+                    return true;
+                }
+                Long l;
+                if ((l = parseLong(args[1])) == null)
+                {
+                    sender.sendMessage(ChatColor.RED + "エラー：引数が数値ではありません！");
+                    return true;
+                }
+                Kill.setStreak(player, l);
+                break;
+        }
+
+        return true;
     }
 
 }

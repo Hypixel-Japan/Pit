@@ -144,7 +144,6 @@ public class Items
 
     }
 
-
     public static ItemStack addMetaData(ItemStack stack, String key, String value)
     {
         net.minecraft.server.v1_12_R1.ItemStack nmStack = CraftItemStack.asNMSCopy(stack);
@@ -158,7 +157,6 @@ public class Items
     {
         return Items.addMetaData(b, "noDrop", "1b");
     }
-
 
     public static ItemStack setUnbreakable(ItemStack b)
     {
