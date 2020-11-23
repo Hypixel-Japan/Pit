@@ -124,6 +124,8 @@ public class PlayerModify
 
     public static void addExp(Player player, long exp)
     {
+        if (exp == 0L)
+            return;
         PlayerInfo info = getInfo(player);
         if (info == null)
             return;

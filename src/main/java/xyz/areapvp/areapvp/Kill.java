@@ -2,10 +2,7 @@ package xyz.areapvp.areapvp;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import xyz.areapvp.areapvp.level.Exp;
@@ -14,11 +11,15 @@ import xyz.areapvp.areapvp.level.PlayerModify;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.UUID;
 
 public class Kill
 {
     private static final HashMap<UUID, Long> st = new HashMap<>();
+
+    private static final LinkedHashMap<UUID, UUID> reduceKill = new LinkedHashMap<>();
+    private static final LinkedHashMap<UUID, Integer> reducer = new LinkedHashMap<>();
 
     public static Long getStreak(UUID player)
     {
@@ -73,6 +74,17 @@ public class Kill
         }
     }
 
+    private static void reduce(Player kill, Player death)
+    {
+        if (reduceKill.get(kill.getUniqueId()) == death.getUniqueId())
+            reducer.merge(kill.getUniqueId(), 1, Integer::sum);
+        else
+        {
+            reduceKill.put(kill.getUniqueId(), death.getUniqueId());
+            reducer.put(kill.getUniqueId(), 1);
+        }
+    }
+
     private static void process(Player killer, Player deather)
     {
         new BukkitRunnable()
@@ -85,6 +97,13 @@ public class Kill
                 if (info == null)
                     return;
 
+                reduce(killer, deather);
+                Integer reduce = reducer.get(killer.getUniqueId());
+                boolean reduced = false;
+
+                if (reduce != null && reduce > 30)
+                    reduced = true;
+
                 long exp = Exp.calcKillExp(killer, deather, info.level, info.prestige);
 
                 double money = 12;
@@ -94,24 +113,33 @@ public class Kill
 
                 money = bd.doubleValue();
 
+                if (reduced)
+                {
+                    money = 0.0;
+                    exp = 0;
+                }
+
                 AreaPvP.economy.depositPlayer(killer, money);
                 PlayerModify.addExp(killer, exp);
 
                 String name = PlayerInfo.getPrefix(info.level, info.prestige) +
                         ChatColor.GRAY + " " + deather.getName();
 
+
                 killer.sendMessage(ChatColor.GREEN +
                         ChatColor.BOLD.toString() +
                         "KILL! " + ChatColor.RESET + ChatColor.GRAY + "on " +
                         name +
                         ChatColor.AQUA + " +" + exp + "XP " +
-                        ChatColor.GOLD + " +" + money + "g"
+                        ChatColor.GOLD + " +" + money + "g" +
+                        (reduced ? ChatColor.GRAY + " (reduced)": "")
                 );
 
                 PlayerInfo kInfo = PlayerModify.getInfo(killer);
 
                 long streak = getStreak(killer.getUniqueId());
-                st.put(killer.getUniqueId(), streak + 1);
+                if (!reduced)
+                    st.put(killer.getUniqueId(), streak + 1);
 
                 if (kInfo == null)
                 {
