@@ -68,8 +68,8 @@ public class GUI implements Listener
         switch (type)
         {
             case "item":
-                AreaPvP.gui.put(e.getPlayer().getUniqueId(), "item");
                 Shop.openInventory(e.getPlayer());
+                AreaPvP.gui.put(e.getPlayer().getUniqueId(), "item");
                 break;
             case "perk":
                 AreaPvP.gui.put(e.getPlayer().getUniqueId(), "firstPerk");

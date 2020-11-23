@@ -5,16 +5,18 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockFadeEvent;
+import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -26,21 +28,59 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.vehicle.VehicleEntityCollisionEvent;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import sun.security.ssl.HandshakeOutStream;
 import xyz.areapvp.areapvp.level.PlayerInfo;
 import xyz.areapvp.areapvp.level.PlayerModify;
 import xyz.areapvp.areapvp.perk.Perk;
 
-import java.awt.peer.CanvasPeer;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.stream.IntStream;
 
 public class Events implements Listener
 {
+    private static String getDamageIndicator(double damage, Player damager)
+    {
+        StringBuilder base = new StringBuilder();
+
+        BigDecimal damD = new BigDecimal(String.valueOf(damage))
+                .divide(new BigDecimal(2), BigDecimal.ROUND_DOWN)
+                .setScale(0, BigDecimal.ROUND_HALF_DOWN);
+        BigDecimal hpD = new BigDecimal(String.valueOf(damager.getHealth()))
+                .divide(new BigDecimal(2), BigDecimal.ROUND_DOWN)
+                .setScale(0, BigDecimal.ROUND_HALF_DOWN);
+        BigDecimal maxD = new BigDecimal(String.valueOf(damager.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue()))
+                .divide(new BigDecimal(2), BigDecimal.ROUND_DOWN)
+                .setScale(0, BigDecimal.ROUND_HALF_DOWN);
+
+        if (hpD.compareTo(new BigDecimal(0)) < 1.0 || hpD.compareTo(damD) <= 0)
+        {
+            base.append(ChatColor.RED).append("❤");
+            IntStream.range(0, maxD.subtract(new BigDecimal(1)).intValue())
+                    .forEach(i -> base.append(ChatColor.BLACK).append("❤"));
+            return base.toString();
+        }
+
+
+        IntStream.range(0, hpD.subtract(damD).intValue())
+                .forEach(i -> base.append(ChatColor.DARK_RED).append("❤"));
+        IntStream.range(0, damD.intValue())
+                .forEach(i -> base.append(ChatColor.RED).append("❤"));
+        IntStream.range(0, maxD.subtract(hpD).intValue())
+                .forEach(i -> base.append(ChatColor.BLACK).append("❤"));
+        return base.toString();
+    }
+
+    private static boolean isCrit(Player p)
+    {
+        return !p.isOnGround() && p.getFallDistance() > 0 &&
+                !p.getLocation().getBlock().isLiquid() &&
+                !p.isInsideVehicle() && !p.isSprinting() &&
+                !p.hasPotionEffect(PotionEffectType.BLINDNESS);
+    }
+
     @EventHandler
     public void onKill(PlayerDeathEvent e)
     {
@@ -97,6 +137,8 @@ public class Events implements Listener
 
         if (!(arrow.getShooter() instanceof Player))
             return;
+
+        ((Player) arrow.getShooter()).setMetadata("x-hitted", new FixedMetadataValue(AreaPvP.getPlugin(), 15));
         e.getEntity().setMetadata("x-hitted", new FixedMetadataValue(AreaPvP.getPlugin(), 15));
         e.getEntity().setMetadata("x-hitter", new FixedMetadataValue(AreaPvP.getPlugin(), ((Player) arrow.getShooter()).getUniqueId()));
     }
@@ -128,51 +170,11 @@ public class Events implements Listener
         e.setDamage(damage);
         System.out.println(e.getDamage());
         damager.setNoDamageTicks(0);
-        hitter.spigot().sendMessage(ChatMessageType.ACTION_BAR,
+        hitter.spigot().sendMessage(
+                ChatMessageType.ACTION_BAR,
                 new ComponentBuilder(ChatColor.GRAY + damager.getName() + " "
-                        + getDamageIndicator(damage, damager)).create());
-    }
-
-    private static String getDamageIndicator(double damage, Player damager)
-    {
-        StringBuilder base = new StringBuilder();
-
-        BigDecimal damD = new BigDecimal(String.valueOf(damage))
-                .divide(new BigDecimal(2), BigDecimal.ROUND_DOWN)
-                .setScale(0, BigDecimal.ROUND_HALF_DOWN);
-        BigDecimal hpD = new BigDecimal(String.valueOf(damager.getHealth()))
-                .divide(new BigDecimal(2), BigDecimal.ROUND_DOWN)
-                .setScale(0, BigDecimal.ROUND_HALF_DOWN);
-        BigDecimal maxD = new BigDecimal(String.valueOf(damager.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue()))
-                .divide(new BigDecimal(2), BigDecimal.ROUND_DOWN)
-                .setScale(0, BigDecimal.ROUND_HALF_DOWN);
-
-        if (hpD.compareTo(new BigDecimal(0)) < 1.0 || hpD.compareTo(damD) <= 0)
-        {
-            base.append(ChatColor.RED).append("❤");
-            IntStream.range(0, maxD.subtract(new BigDecimal(1)).intValue())
-                    .forEach(i -> base.append(ChatColor.BLACK).append("❤"));
-            return base.toString();
-        }
-
-
-        IntStream.range(0, hpD.subtract(damD).intValue())
-                .forEach(i -> base.append(ChatColor.DARK_RED).append("❤"));
-        IntStream.range(0, damD.intValue())
-                .forEach(i -> base.append(ChatColor.RED).append("❤"));
-        IntStream.range(0, maxD.subtract(hpD).intValue())
-                .forEach(i -> base.append(ChatColor.BLACK).append("❤"));
-        return base.toString();
-    }
-
-
-
-    private static boolean isCrit(Player p)
-    {
-        return !p.isOnGround() && p.getFallDistance() > 0 &&
-                !p.getLocation().getBlock().isLiquid() &&
-                !p.isInsideVehicle() && !p.isSprinting() &&
-                !p.hasPotionEffect(PotionEffectType.BLINDNESS);
+                        + getDamageIndicator(damage, damager)).create()
+        );
     }
 
     @EventHandler
@@ -265,6 +267,9 @@ public class Events implements Listener
     @EventHandler
     private void onClose(InventoryCloseEvent e)
     {
+        if (e.getInventory() instanceof PlayerInventory)
+            return;
+        System.out.println("Called");
         AreaPvP.gui.remove(e.getPlayer().getUniqueId());
     }
 
@@ -293,4 +298,17 @@ public class Events implements Listener
         e.setCancelled(true);
     }
 
+    @EventHandler
+    private void onBlockForm(BlockFromToEvent e)
+    {
+        if (e.getBlock().getType() == Material.DRAGON_EGG)
+            return;
+        e.setCancelled(true);
+    }
+
+    @EventHandler
+    private void onBlockFade(BlockFadeEvent e)
+    {
+        e.setCancelled(true);
+    }
 }
