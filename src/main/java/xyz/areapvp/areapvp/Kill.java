@@ -19,13 +19,29 @@ public class Kill
     private static final HashMap<UUID, Long> st = new HashMap<>();
 
     private static final LinkedHashMap<UUID, UUID> reduceKill = new LinkedHashMap<>();
-    private static final LinkedHashMap<UUID, Integer> reducer = new LinkedHashMap<>();
+    private static final LinkedHashMap<UUID, Long> reducer = new LinkedHashMap<>();
 
     public static Long getStreak(UUID player)
     {
         Long str = st.get(player);
         return str == null ? 0: str;
     }
+
+    public static void setStreak(Player player, long st)
+    {
+        Kill.st.put(player.getUniqueId(), st);
+        if (st % 5 == 0)
+        {
+            PlayerInfo info = PlayerModify.getInfo(player);
+            if (info == null)
+                return;
+            Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(ChatColor.RED + ChatColor.BOLD.toString() + "STREAK! " +
+                    ChatColor.RESET + ChatColor.GRAY + "of " + ChatColor.RED + st + ChatColor.GRAY +
+                    " kills by " + PlayerInfo.getPrefix(info.level, info.prestige) + ChatColor.GRAY + " " +
+                    player.getName()));
+        }
+    }
+
 
     public static void reset(Player player)
     {
@@ -76,11 +92,11 @@ public class Kill
     private static void reduce(Player kill, Player death)
     {
         if (reduceKill.get(kill.getUniqueId()) == death.getUniqueId())
-            reducer.merge(kill.getUniqueId(), 1, Integer::sum);
+            reducer.merge(kill.getUniqueId(), 1L, Long::sum);
         else
         {
             reduceKill.put(kill.getUniqueId(), death.getUniqueId());
-            reducer.put(kill.getUniqueId(), 1);
+            reducer.put(kill.getUniqueId(), 1L);
         }
     }
 
@@ -97,7 +113,7 @@ public class Kill
                     return;
 
                 reduce(killer, deather);
-                Integer reduce = reducer.get(killer.getUniqueId());
+                Long reduce = reducer.get(killer.getUniqueId());
                 boolean reduced = false;
 
                 if (reduce != null && reduce > 30)

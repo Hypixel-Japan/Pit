@@ -1,5 +1,7 @@
 package xyz.areapvp.areapvp.command;
 
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -10,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import xyz.areapvp.areapvp.AreaPvP;
 import xyz.areapvp.areapvp.Items;
+import xyz.areapvp.areapvp.Kill;
 import xyz.areapvp.areapvp.inventory.Shop;
 import xyz.areapvp.areapvp.level.PlayerModify;
 
@@ -77,6 +80,20 @@ public class PitDebug implements CommandExecutor
                     return true;
                 }
                 shop(player, args);
+                break;
+            case "streak":
+                if (args.length != 2)
+                {
+                    sender.sendMessage(ChatColor.RED + "エラー：引数の大きさが不正です！");
+                    return true;
+                }
+                Long l;
+                if ((l = parseLong(args[1])) == null)
+                {
+                    sender.sendMessage(ChatColor.RED + "エラー：引数が数値ではありません！");
+                    return true;
+                }
+                Kill.setStreak(player, l);
                 break;
         }
 
@@ -147,8 +164,13 @@ public class PitDebug implements CommandExecutor
                 boolean[] flag = {false};
                 Items.getMetadataList(player.getInventory().getItemInMainHand())
                         .forEach((s, s2) -> {
-                            player.sendMessage(ChatColor.GREEN + s + "   " + ChatColor.AQUA + "->" +
-                                    ChatColor.LIGHT_PURPLE + "   " + s2);
+
+                            ComponentBuilder builder =
+                                    new ComponentBuilder(ChatColor.GREEN + s + "   " + ChatColor.AQUA + "->" +
+                                    ChatColor.LIGHT_PURPLE + "   " + s2.replace("\n", "\n" + ChatColor.LIGHT_PURPLE));
+                            builder.event(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, s2.replace("\n", "")));
+
+                            player.spigot().sendMessage(builder.create());
                             flag[0] = true;
                         });
                 if (!flag[0])
