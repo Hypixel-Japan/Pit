@@ -1,5 +1,8 @@
 package xyz.areapvp.areapvp;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import net.minecraft.server.v1_12_R1.NBTBase;
 import net.minecraft.server.v1_12_R1.NBTTagCompound;
 import net.minecraft.server.v1_12_R1.NBTTagDouble;
 import net.minecraft.server.v1_12_R1.NBTTagInt;
@@ -13,7 +16,9 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.UUID;
 
 public class Items
@@ -99,12 +104,46 @@ public class Items
         return tagCompound.getString(name) != null && !tagCompound.getString(name).equals("");
     }
 
-    public static String getMetaData(ItemStack stack, String name)
+    public static String getMetadata(ItemStack stack, String name)
     {
         net.minecraft.server.v1_12_R1.ItemStack nmStack = CraftItemStack.asNMSCopy(stack);
         NBTTagCompound tagCompound = nmStack.getTag() != null ? nmStack.getTag(): new NBTTagCompound();
         return tagCompound.getString(name);
     }
+
+    public static HashMap<String, String> getMetadataList(ItemStack stack)
+    {
+        net.minecraft.server.v1_12_R1.ItemStack nmStack = CraftItemStack.asNMSCopy(stack);
+        NBTTagCompound tagCompound = nmStack.getTag() != null ? nmStack.getTag(): new NBTTagCompound();
+
+        try
+        {
+            Field field = NBTTagCompound.class.getDeclaredField("map");
+            field.setAccessible(true);
+            HashMap<String, NBTBase> map = (HashMap<String, NBTBase>) field.get(tagCompound);
+
+            HashMap<String, String> result = new HashMap<>();
+            map.forEach((s, nbtBase) -> {
+                try
+                {
+                    new Gson().fromJson(nbtBase.toString(), Object.class);
+                    result.put(s, new GsonBuilder().serializeNulls().setPrettyPrinting().create()
+                            .toJson(new Gson().fromJson(nbtBase.toString(), Object.class)));
+                }
+                catch (Exception ignored)
+                {
+                    result.put(s, nbtBase.toString());
+                }
+            });
+            return result;
+        }
+        catch (Exception e)
+        {
+            return new HashMap<>();
+        }
+
+    }
+
 
     public static ItemStack addMetaData(ItemStack stack, String key, String value)
     {

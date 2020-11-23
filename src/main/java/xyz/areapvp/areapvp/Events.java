@@ -163,7 +163,6 @@ public class Events implements Listener
         damager.setMetadata("x-hitted", new FixedMetadataValue(AreaPvP.getPlugin(), 15));
         damager.setMetadata("x-hitter", new FixedMetadataValue(AreaPvP.getPlugin(), hitter.getUniqueId().toString()));
 
-        System.out.println(e.getDamage());
         hitter.spigot().sendMessage(
                 ChatMessageType.ACTION_BAR,
                 new ComponentBuilder(ChatColor.GRAY + damager.getName() + " "
@@ -263,7 +262,6 @@ public class Events implements Listener
     {
         if (e.getInventory() instanceof PlayerInventory)
             return;
-        System.out.println("Called");
         AreaPvP.gui.remove(e.getPlayer().getUniqueId());
     }
 

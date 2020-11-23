@@ -10,9 +10,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import xyz.areapvp.areapvp.AreaPvP;
 import xyz.areapvp.areapvp.Items;
+import xyz.areapvp.areapvp.inventory.Shop;
 import xyz.areapvp.areapvp.level.PlayerModify;
 
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class PitDebug implements CommandExecutor
 {
@@ -56,7 +58,7 @@ public class PitDebug implements CommandExecutor
                 changeDamage(player, args);
                 break;
             case "meta":
-                if (args.length > 3 || args.length < 2)
+                if (args.length > 4 || args.length < 2)
                 {
                     sender.sendMessage(ChatColor.RED + "エラー：引数の大きさが不正です！");
                     return true;
@@ -64,31 +66,69 @@ public class PitDebug implements CommandExecutor
                 metaData(player, args);
                 break;
             case "evacute":
+            case "ev":
                 player.teleport(player.getWorld().getSpawnLocation());
                 ((Player) sender).sendTitle(ChatColor.RED  + "EVACUTE!", "", 10, 20, 10);
+                break;
+            case "shop":
+                if (args.length != 2)
+                {
+                    sender.sendMessage(ChatColor.RED + "エラー：引数の大きさが不正です！");
+                    return true;
+                }
+                shop(player, args);
                 break;
         }
 
         return true;
     }
 
+    private static void shop(Player player, String[] args)
+    {
+        String type = args[1];
+        switch (type)
+        {
+            case "item":
+                Shop.openInventory(player);
+                AreaPvP.gui.put(player.getUniqueId(), "item");
+                break;
+            case "perk":
+                AreaPvP.gui.put(player.getUniqueId(), "firstPerk");
+                Shop.openPerkInventory(player.getPlayer());
+            default:
+                player.sendMessage("エラー：不正なタイプ");
+        }
+    }
+
+
     private static void metaData(Player player, String[] args)
     {
-        String type = args[0];
-        if (!type.equals("add") && !type.equals("remove"))
+        String type = args[1];
+        if (!type.equals("add") && !type.equals("remove") && !type.equals("list"))
         {
             player.sendMessage(ChatColor.RED + "エラー：タイプが無効です。");
             return;
         }
 
-        String data = args[1];
-        String value = args[2];
+        String data = null;
+        if (args.length > 2)
+            data = args[2];
+        String value = null;
+        if (args.length > 3)
+            value = args[3];
+
+        if (data == null && value == null && type.equals("remove"))
+        {
+            player.sendMessage(ChatColor.RED + "エラー：引数が不足しています！");
+            return;
+        }
 
         if (value == null && type.equals("add"))
         {
             player.sendMessage(ChatColor.RED + "エラー：値は必要です！");
             return;
         }
+
         if (player.getInventory().getItemInMainHand() == null ||
                 player.getInventory().getItemInMainHand().getType() == Material.AIR)
         {
@@ -100,9 +140,20 @@ public class PitDebug implements CommandExecutor
         {
             if (type.equals("add"))
                 player.getInventory().setItemInMainHand(Items.addMetaData(player.getInventory().getItemInMainHand(), data, value));
-            else
+            else if (type.equals("remove"))
                 player.getInventory().setItemInMainHand(Items.removeMetadata(player.getInventory().getItemInMainHand(), data));
-
+            else
+            {
+                boolean[] flag = {false};
+                Items.getMetadataList(player.getInventory().getItemInMainHand())
+                        .forEach((s, s2) -> {
+                            player.sendMessage(ChatColor.GREEN + s + "   " + ChatColor.AQUA + "->" +
+                                    ChatColor.LIGHT_PURPLE + "   " + s2);
+                            flag[0] = true;
+                        });
+                if (!flag[0])
+                    player.sendMessage(ChatColor.LIGHT_PURPLE + "No metadata(s) founded.");
+            }
         }
         catch (Exception e)
         {

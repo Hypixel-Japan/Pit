@@ -137,13 +137,13 @@ public class GUI implements Listener
             case "item":
                 if (!e.getClickedInventory().getName().equals(ChatColor.BLUE + "Item Shop"))
                     return;
-                IShopItem shopItem = xyz.areapvp.areapvp.item.Items.getItem(Items.getMetaData(item, "type"));
+                IShopItem shopItem = xyz.areapvp.areapvp.item.Items.getItem(Items.getMetadata(item, "type"));
                 playerItemBuyProcess(player, shopItem);
                 break;
             case "perk":
                 if (!e.getClickedInventory().getName().equals(ChatColor.BLUE + "Perk Shop"))
                     return;
-                IPerkEntry entry = Perks.getPerk(Items.getMetaData(item, "type"));
+                IPerkEntry entry = Perks.getPerk(Items.getMetadata(item, "type"));
                 playerPerkBuyProcess(player, entry);
                 break;
             case "firstPerk":
