@@ -135,6 +135,7 @@ public class AreaPvP extends JavaPlugin
             {
                 Bukkit.getOnlinePlayers()
                         .forEach(player -> {
+                            player.removePotionEffect(PotionEffectType.NIGHT_VISION);
                             player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 810, 0, true));
                             Scoreboard b = Sidebar.getBoard(player);
                             if (b == null)

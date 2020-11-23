@@ -134,7 +134,7 @@ public class Events implements Listener
             e.getDamager().remove();
         }
 
-        Arrow arrow = (Arrow) e.getEntity();
+        Arrow arrow = (Arrow) e.getDamager();
 
         if (!(arrow.getShooter() instanceof Player))
             return;
