@@ -22,8 +22,8 @@ public class InventoryUtils
     public static void initItem(Player player)
     {
         PlayerInventory inventory = player.getInventory();
-        addOrElse(inventory, 0, Items.changeDamage(Items.setUnbreakable(new ItemStack(Material.IRON_SWORD)), 6), true);
-        addOrElse(inventory, 1, Items.setUnbreakable(new ItemStack(Material.BOW)), true);
+        addOrElse(inventory, 0, Items.noDrop(Items.changeDamage(Items.setUnbreakable(new ItemStack(Material.IRON_SWORD)), 6)), true);
+        addOrElse(inventory, 1, Items.noDrop(Items.setUnbreakable(new ItemStack(Material.BOW))), true);
         addOrElse(inventory, 8, new ItemStack(Material.ARROW, 32), true);
 
         if (inventory.getBoots() == null)

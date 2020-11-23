@@ -32,6 +32,8 @@ import java.util.UUID;
 
 public class AreaPvP extends JavaPlugin
 {
+    public static final String[] debugger = {"6b93a8e6-58ee-4794-b69a-56a3c2287010", "69e5aea0-dd5e-4cf8-8fca-d8b4dd8b2243"};
+
     public static FileConfiguration config;
     public static AreaPvP plugin;
     public static HashMap<Location, Integer> blockPlace;
@@ -131,7 +133,7 @@ public class AreaPvP extends JavaPlugin
             {
                 Bukkit.getOnlinePlayers()
                         .forEach(player -> {
-                            player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 100, 0, true));
+                            player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 810, 0, true));
                             Scoreboard b = Sidebar.getBoard(player);
                             if (b == null)
                                 return;

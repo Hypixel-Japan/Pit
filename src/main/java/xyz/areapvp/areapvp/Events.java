@@ -25,6 +25,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.vehicle.VehicleEntityCollisionEvent;
@@ -162,18 +163,11 @@ public class Events implements Listener
         damager.setMetadata("x-hitted", new FixedMetadataValue(AreaPvP.getPlugin(), 15));
         damager.setMetadata("x-hitter", new FixedMetadataValue(AreaPvP.getPlugin(), hitter.getUniqueId().toString()));
 
-        double damage = e.getDamage();
-
-        if (isCrit(hitter))
-            damage = damage * 1.5;
-
-        e.setDamage(damage);
         System.out.println(e.getDamage());
-        damager.setNoDamageTicks(0);
         hitter.spigot().sendMessage(
                 ChatMessageType.ACTION_BAR,
                 new ComponentBuilder(ChatColor.GRAY + damager.getName() + " "
-                        + getDamageIndicator(damage, damager)).create()
+                        + getDamageIndicator(e.getDamage(), damager)).create()
         );
     }
 
@@ -310,5 +304,15 @@ public class Events implements Listener
     private void onBlockFade(BlockFadeEvent e)
     {
         e.setCancelled(true);
+    }
+
+    @EventHandler
+    private void onDrop(PlayerDropItemEvent e)
+    {
+        if (Items.hasMetadata(e.getItemDrop().getItemStack(), "noDrop"))
+        {
+            e.getPlayer().sendMessage(ChatColor.RED + ChatColor.BOLD.toString() + "OOPS! " + ChatColor.RESET + ChatColor.RED + "このアイテムはドロップできません！");
+            e.setCancelled(true);
+        }
     }
 }

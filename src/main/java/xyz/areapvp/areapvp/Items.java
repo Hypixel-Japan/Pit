@@ -115,6 +115,12 @@ public class Items
         return CraftItemStack.asCraftMirror(nmStack);
     }
 
+    public static ItemStack noDrop(ItemStack b)
+    {
+        return Items.addMetaData(b, "noDrop", "1b");
+    }
+
+
     public static ItemStack setUnbreakable(ItemStack b)
     {
         if (b == null || b.getType() == Material.AIR)
