@@ -1,5 +1,6 @@
 package xyz.areapvp.areapvp;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -11,8 +12,12 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.scheduler.BukkitRunnable;
+import xyz.areapvp.areapvp.command.PitDebug;
 import xyz.areapvp.areapvp.inventory.Shop;
 import xyz.areapvp.areapvp.item.IShopItem;
+import xyz.areapvp.areapvp.level.PlayerInfo;
+import xyz.areapvp.areapvp.level.PlayerModify;
 import xyz.areapvp.areapvp.perk.IPerkEntry;
 import xyz.areapvp.areapvp.perk.PerkInventory;
 import xyz.areapvp.areapvp.perk.Perks;
@@ -83,10 +88,38 @@ public class GUI implements Listener
         if (item == null)
             return;
 
+        PlayerInfo info = PlayerModify.getInfo(player);
+        if (info == null)
+            return;
+
+        if (info.perk.contains(item.getName()))
+        {
+            player.sendMessage(ChatColor.RED + "あなたはすでにこのPerkを使用しています。");
+            player.closeInventory();
+            return;
+        }
+
+        if (info.ownPerk.contains(item.getName()))
+        {
+            player.sendMessage(ChatColor.GREEN + "Perkを選択しました。");
+            PlayerModify.addPerk(player, item.getName());
+            item.onBuy(player);
+            player.closeInventory();
+        }
+
         if (AreaPvP.economy.getBalance(player) >= item.getNeedGold())
         {
             player.sendMessage(ChatColor.GREEN + "Perkを購入しました！");
             AreaPvP.economy.withdrawPlayer(player, item.getNeedGold());
+            new BukkitRunnable()
+            {
+                @Override
+                public void run()
+                {
+                    PlayerModify.addOwnPerk(player, item.getName());
+                    PlayerModify.addPerk(player, item.getName());
+                }
+            }.runTaskAsynchronously(AreaPvP.getPlugin());
             item.onBuy(player);
             player.closeInventory();
         }
@@ -143,12 +176,10 @@ public class GUI implements Listener
             case "perk":
                 if (!e.getClickedInventory().getName().equals(ChatColor.BLUE + "Perk Shop"))
                     return;
-                IPerkEntry entry = Perks.getPerk(Items.getMetadata(item, "type"));
-                playerPerkBuyProcess(player, entry);
-                break;
-            case "firstPerk":
-                if (!e.getClickedInventory().getName().equals(ChatColor.BLUE + "Perk Shop"))
+
+                if (item.getType() == Material.AIR)
                     return;
+
                 if (item.getType() == Material.BEDROCK)
                 {
                     player.sendMessage(ChatColor.RED + "レベルが不足しています！");
@@ -158,11 +189,42 @@ public class GUI implements Listener
 
                 if (item.getType() == Material.DIAMOND_BLOCK)
                 {
+                    String ty;
+                    if ((ty = Items.getMetadata(item, "slot")) == null)
+                        return;
+
+                    PlayerInfo info = PlayerModify.getInfo(player);
+
+                    if (info == null)
+                        return;
+                    Long k;
+                    if ((k = PitDebug.parseLong(ty)) == null)
+                        return;
+                    int i = Math.toIntExact(k) - 1;
+
+                    if (info.perk.size() > i)
+                        PlayerModify.removePerk(player, info.perk.get(i));
+
                     player.closeInventory();
-                    AreaPvP.gui.put(player.getUniqueId(), "perk");
-                    player.openInventory(PerkInventory.getPerksInventory(player));
                     return;
-                }
+                }  //使わない処理
+
+                IPerkEntry entry = Perks.getPerk(Items.getMetadata(item, "type"));
+                playerPerkBuyProcess(player, entry);
+                break;
+            case "firstPerk":
+                if (!e.getClickedInventory().getName().equals(ChatColor.BLUE + "Perk Shop"))
+                    return;
+
+                if (item.getType() == Material.AIR)
+                    return;
+                player.closeInventory();
+                AreaPvP.gui.put(player.getUniqueId(), "perk");
+                Long v;
+                if ((v = PitDebug.parseLong(Items.getMetadata(item, "perkSlot"))) == null)
+                    return;
+
+                player.openInventory(PerkInventory.getPerksInventory(player, Math.toIntExact(v)));
                 break;
             case "profile":
                 ProfileViewer.onPickUp(player, item);

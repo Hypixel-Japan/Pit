@@ -1,16 +1,20 @@
 package xyz.areapvp.areapvp.level;
 
+import develop.p2p.lib.SQLModifier;
+import org.apache.commons.io.filefilter.IOFileFilter;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import xyz.areapvp.areapvp.AreaPvP;
+import xyz.areapvp.areapvp.perk.Perk;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -124,6 +128,97 @@ public class PlayerModify
                         PlayerInfo.getPrefix(info.level + level, info.prestige),
                 10, 20, 10
         );
+    }
+
+    public static void removeOwnPerk(Player player, String perk)
+    {
+        PlayerInfo info = getInfo(player);
+        if (info == null)
+            return;
+
+        if (!info.perk.contains(perk))
+            return;
+
+        try(Connection connection = AreaPvP.data.getConnection();
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM holdperk WHERE UUID=? AND PERK=?"))
+        {
+            statement.setString(1, player.getUniqueId().toString().replace("-", ""));
+            statement.setString(2, perk);
+            statement.execute();
+            Perk.update(player);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static void addOwnPerk(Player player, String perk)
+    {
+        PlayerInfo info = getInfo(player);
+        if (info == null)
+            return;
+
+        if (info.ownPerk.contains(perk))
+            return;
+        try(Connection connection = AreaPvP.data.getConnection();
+        PreparedStatement statement = connection.prepareStatement("INSERT INTO holdperk VALUES (?, ?)"))
+        {
+            statement.setString(1, player.getUniqueId().toString().replace("-", ""));
+            statement.setString(2, perk);
+            statement.execute();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public static void addPerk(Player player, String perk)
+    {
+        PlayerInfo info = getInfo(player);
+        if (info == null)
+            return;
+
+        if (info.perk.contains(perk))
+            return;
+
+        try(Connection connection = AreaPvP.data.getConnection();
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO perk VALUES (?, ?)"))
+        {
+            statement.setString(1, player.getUniqueId().toString().replace("-", ""));
+            statement.setString(2, perk);
+            statement.execute();
+            Perk.update(player);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public static void removePerk(Player player, String perk)
+    {
+        PlayerInfo info = getInfo(player);
+        if (info == null)
+            return;
+
+        if (!info.perk.contains(perk))
+            return;
+
+        try(Connection connection = AreaPvP.data.getConnection();
+        PreparedStatement statement = connection.prepareStatement("DELETE FROM perk WHERE UUID=? AND PERK=?"))
+        {
+            statement.setString(1, player.getUniqueId().toString().replace("-", ""));
+            statement.setString(2, perk);
+            statement.execute();
+            Perk.update(player);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public static void addExp(Player player, long exp)

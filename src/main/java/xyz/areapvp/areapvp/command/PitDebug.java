@@ -33,6 +33,7 @@ public class PitDebug implements CommandExecutor
             case "perk":
                 AreaPvP.gui.put(player.getUniqueId(), "firstPerk");
                 Shop.openPerkInventory(player.getPlayer());
+                break;
             default:
                 player.sendMessage("エラー：不正なタイプ");
         }
@@ -129,7 +130,7 @@ public class PitDebug implements CommandExecutor
         }
     }
 
-    private static Long parseLong(String str)
+    public static Long parseLong(String str)
     {
         try
         {

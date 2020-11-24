@@ -44,6 +44,7 @@ public class Spawn implements CommandExecutor
             player.teleport(player.getWorld().getSpawnLocation());
             player.removePotionEffect(PotionEffectType.REGENERATION);
             player.removePotionEffect(PotionEffectType.ABSORPTION);
+            player.removePotionEffect(PotionEffectType.SPEED);
             player.setMetadata("x-spawn", new FixedMetadataValue(AreaPvP.getPlugin(), 15));
         }
         return true;

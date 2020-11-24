@@ -43,6 +43,7 @@
                                 <includes>
                                     <include>org.slf4j:*</include>
                                     <include>com.zaxxer:*</include>
+                                    <include>com.github.P2P-Develop:*</include>
                                 </includes>
                             </artifactSet>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
@@ -83,19 +84,16 @@
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.12-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
             <version>1.12.2-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
             <version>1.12.2-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -107,13 +105,11 @@
             <groupId>com.github.MilkBowl</groupId>
             <artifactId>VaultAPI</artifactId>
             <version>1.7</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.github.P2P-Develop</groupId>
             <artifactId>PeyangSuperLibrary</artifactId>
             <version>11.451.4810</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -46,6 +47,9 @@ public class InventoryUtils
                 inventory.setArmorContents(equip(inventory.getArmorContents()));
                 inventory.setStorageContents(equip(inventory.getStorageContents()));
                 initItem(player);
+                player.removePotionEffect(PotionEffectType.REGENERATION);
+                player.removePotionEffect(PotionEffectType.ABSORPTION);
+                player.removePotionEffect(PotionEffectType.SPEED);
             }
         }.runTaskAsynchronously(AreaPvP.getPlugin());
     }

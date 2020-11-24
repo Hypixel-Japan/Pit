@@ -5,7 +5,9 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
@@ -54,7 +56,7 @@ public class PerkProcess implements Listener
 
 
         if (Perk.contains(killer, "gHead") && countItem(killer, "ghead") < 2)
-            Objects.requireNonNull(Perks.getPerk("gHead")).onWork(killer);
+            killer.getInventory().addItem(Items.addMetaData(Objects.requireNonNull(Perks.getPerk("gHead")).getItem(), "type", "gHead"));
         else if (countItem(killer, "gapple") < 2)
             killer.getInventory().addItem(
                     Items.addMetaData(new ItemStack(Material.GOLDEN_APPLE), "type", "gapple"));
@@ -75,10 +77,13 @@ public class PerkProcess implements Listener
 
         Player player = e.getPlayer();
 
+        ItemStack stack = e.getItem().clone();
+        stack.setAmount(1);
+
         switch (type)
         {
             case "gapple":
-                player.getInventory().remove(e.getItem());
+                player.getInventory().remove(stack);
                 if (player.hasPotionEffect(PotionEffectType.ABSORPTION))
                 {
                     player.removePotionEffect(PotionEffectType.ABSORPTION);
@@ -96,5 +101,31 @@ public class PerkProcess implements Listener
                 break;
         }
 
+    }
+
+    @EventHandler
+    public static void onInteract(PlayerInteractEvent e)
+    {
+        if (e.getAction() != Action.RIGHT_CLICK_AIR && e.getAction() != Action.RIGHT_CLICK_BLOCK)
+            return;
+
+        Player player = e.getPlayer();
+
+        ItemStack stack = e.getItem();
+        if (stack == null || stack.getType() == Material.AIR)
+            return;
+        ItemStack st = stack.clone();
+        st.setAmount(1);
+        String type;
+        if ((type = Items.getMetadata(st, "type")) == null)
+            return;
+
+        switch (type.toLowerCase())
+        {
+            case "ghead":
+                player.getInventory().remove(st);
+                Objects.requireNonNull(Perks.getPerk("gHead")).onWork(player);
+                break;
+        }
     }
 }

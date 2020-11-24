@@ -19,6 +19,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.UUID;
 
 public class Items
@@ -191,15 +192,22 @@ public class Items
         return CraftItemStack.asBukkitCopy(craftItem);
     }
 
-    public static ItemStack addGlow(ItemStack target)
+    public static ItemStack addGlow(ItemStack item)
     {
-        if (target.getType() == Material.AIR)
-            return target;
-        ItemStack stack = target.clone();
-        ItemMeta meta = stack.getItemMeta();
-        meta.addEnchant(Enchantment.DAMAGE_UNDEAD, 1, false);
-        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        stack.setItemMeta(meta);
-        return stack;
+        net.minecraft.server.v1_12_R1.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
+        NBTTagCompound tag = null;
+        if (!nmsStack.hasTag())
+        {
+            tag = new NBTTagCompound();
+            nmsStack.setTag(tag);
+        }
+
+        if (tag == null)
+            tag = nmsStack.getTag();
+
+        NBTTagList enchant = new NBTTagList();
+        Objects.requireNonNull(tag).set("ench", enchant);
+        nmsStack.setTag(tag);
+        return CraftItemStack.asCraftMirror(nmsStack);
     }
 }

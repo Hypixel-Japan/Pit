@@ -19,18 +19,19 @@ public class Perk
 
     public static void setPerk(Player player, String... perk)
     {
-        if (perk.length < 4)
-            return;
 
         PlayerModify.removeMetaData(player, "perk1");
         PlayerModify.removeMetaData(player, "perk2");
         PlayerModify.removeMetaData(player, "perk3");
         PlayerModify.removeMetaData(player, "perk4");
 
+        if (perk.length >= 1)
         PlayerModify.setMetaData(player, "perk1", perk[0]);
+        if (perk.length >= 2)
         PlayerModify.setMetaData(player, "perk2", perk[1]);
+        if (perk.length >= 3)
         PlayerModify.setMetaData(player, "perk3", perk[2]);
-        if (perk.length > 4)
+        if (perk.length >= 4)
             PlayerModify.setMetaData(player, "perk4", perk[3]);
     }
 

@@ -59,9 +59,9 @@ public class Shop
             return;
 
         Inventory inventory = Bukkit.createInventory(null, 27, ChatColor.BLUE + "Perk Shop");
-        inventory.setItem(11, getPerkItem(1, 10, info.level, info.perk.size() <= 1 ? null: info.perk.get(0)));
-        inventory.setItem(13, getPerkItem(2, 35, info.level, info.perk.size() <= 2 ? null: info.perk.get(1)));
-        inventory.setItem(15, getPerkItem(3, 70, info.level, info.perk.size() <= 3 ? null: info.perk.get(2)));
+        inventory.setItem(11, xyz.areapvp.areapvp.Items.addMetaData(getPerkItem(1, 10, info.level, info.perk.size() < 1 ? null: info.perk.get(0)), "perkSlot", "1"));
+        inventory.setItem(13, xyz.areapvp.areapvp.Items.addMetaData(getPerkItem(2, 35, info.level, info.perk.size() < 2 ? null: info.perk.get(1)), "perkSlot", "2"));
+        inventory.setItem(15, xyz.areapvp.areapvp.Items.addMetaData(getPerkItem(3, 70, info.level, info.perk.size() < 3 ? null: info.perk.get(2)), "perkSlot", "3"));
 
         player.openInventory(inventory);
     }

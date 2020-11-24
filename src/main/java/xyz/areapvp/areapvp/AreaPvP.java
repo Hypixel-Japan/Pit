@@ -25,6 +25,8 @@ import xyz.areapvp.areapvp.item.items.DiamondSword;
 import xyz.areapvp.areapvp.item.items.ItemAir;
 import xyz.areapvp.areapvp.item.items.Obsidian;
 import xyz.areapvp.areapvp.perk.PerkProcess;
+import xyz.areapvp.areapvp.perk.Perks;
+import xyz.areapvp.areapvp.perk.perks.GoldenHead;
 
 import java.sql.Statement;
 import java.util.HashMap;
@@ -61,6 +63,9 @@ public class AreaPvP extends JavaPlugin
         Items.addItem(new ItemAir());
         Items.addItem(new ItemAir());
         Items.newLine();
+
+        Perks.addPerk(new GoldenHead());
+
     }
 
     private static void initDatabase()
