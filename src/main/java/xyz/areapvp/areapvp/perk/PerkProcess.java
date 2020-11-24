@@ -88,7 +88,6 @@ public class PerkProcess implements Listener
                 {
                     player.removePotionEffect(PotionEffectType.ABSORPTION);
                     player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION,114514, 2, false));
-
                 }
                 else
                 {
