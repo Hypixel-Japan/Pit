@@ -23,7 +23,7 @@ public class GoldenHead implements IPerkEntry
     @Override
     public ItemStack getItem()
     {
-        GameProfile profile = new GameProfile(UUID.randomUUID(), "GoldenHead");
+        GameProfile profile = new GameProfile(UUID.fromString("e71d6198-4015-459e-b3e3-8192c0d19360"), "GoldenHead");
         profile.getProperties().put("textures", new Property("textures", data, signature));
         ItemStack stack = new ItemStack(Material.SKULL_ITEM, 1, (short)3);
         SkullMeta meta = (SkullMeta) stack.getItemMeta();

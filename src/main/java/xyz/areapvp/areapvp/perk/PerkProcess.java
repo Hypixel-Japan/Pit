@@ -15,6 +15,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import xyz.areapvp.areapvp.AreaPvP;
 import xyz.areapvp.areapvp.Items;
+import xyz.areapvp.areapvp.Kill;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -35,7 +36,6 @@ public class PerkProcess implements Listener
     @EventHandler
     public static void onKill(PlayerDeathEvent e)
     {
-
         Player deather = e.getEntity();
         Player killer = deather.getKiller();
         if (killer == null)
@@ -54,12 +54,16 @@ public class PerkProcess implements Listener
             killer = Bukkit.getPlayer(UUID.fromString(uuid));
         }
 
+        if (Kill.hasReduce(killer))
+            return;
 
-        if (Perk.contains(killer, "gHead") && countItem(killer, "ghead") < 2)
-            killer.getInventory().addItem(Items.addMetaData(Objects.requireNonNull(Perks.getPerk("gHead")).getItem(), "type", "gHead"));
+        if (Perk.contains(killer, "gHead"))
+        {
+            if (countItem(killer, "gHead") < 2)
+                killer.getInventory().addItem(Items.addMetaData(Objects.requireNonNull(Perks.getPerk("gHead")).getItem(), "type", "gHead"));
+        }
         else if (countItem(killer, "gapple") < 2)
-            killer.getInventory().addItem(
-                    Items.addMetaData(new ItemStack(Material.GOLDEN_APPLE), "type", "gapple"));
+            killer.getInventory().addItem(Items.addMetaData(new ItemStack(Material.GOLDEN_APPLE), "type", "gapple"));
 
     }
 
@@ -105,9 +109,6 @@ public class PerkProcess implements Listener
     @EventHandler
     public static void onInteract(PlayerInteractEvent e)
     {
-        if (e.getAction() != Action.RIGHT_CLICK_AIR && e.getAction() != Action.RIGHT_CLICK_BLOCK)
-            return;
-
         Player player = e.getPlayer();
 
         ItemStack stack = e.getItem();
@@ -118,11 +119,12 @@ public class PerkProcess implements Listener
         String type;
         if ((type = Items.getMetadata(st, "type")) == null)
             return;
-
         switch (type.toLowerCase())
         {
             case "ghead":
-                player.getInventory().remove(st);
+                player.getInventory().remove(stack);
+                player.getInventory().addItem(st);
+                e.setCancelled(true);
                 Objects.requireNonNull(Perks.getPerk("gHead")).onWork(player);
                 break;
         }

@@ -91,6 +91,18 @@ public class Kill
         }
     }
 
+    public static boolean hasReduce(Player player)
+    {
+        Long reduce = reducer.get(player.getUniqueId());
+
+        boolean reduced = false;
+
+        if (reduce != null && reduce > 30)
+            reduced = true;
+
+        return reduced;
+    }
+
     private static void reduce(Player kill, Player death)
     {
         if (reduceKill.get(kill.getUniqueId()) == death.getUniqueId())
@@ -115,11 +127,7 @@ public class Kill
                     return;
 
                 reduce(killer, deather);
-                Long reduce = reducer.get(killer.getUniqueId());
-                boolean reduced = false;
-
-                if (reduce != null && reduce > 30)
-                    reduced = true;
+                boolean reduced = hasReduce(killer);
 
                 long exp = Exp.calcKillExp(killer, deather, info.level, info.prestige);
 
@@ -164,10 +172,10 @@ public class Kill
                     return;
                 }
 
-                if ((streak + 1) % 5 == 0)
+                if (!reduced && (streak + 1) % 5 == 0)
                 {
                     Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(ChatColor.RED + ChatColor.BOLD.toString() + "STREAK! " +
-                            ChatColor.RESET + ChatColor.GRAY + "of " + ChatColor.RED + streak + 1 + ChatColor.GRAY +
+                            ChatColor.RESET + ChatColor.GRAY + "of " + ChatColor.RED + (streak + 1) + ChatColor.GRAY +
                             " kills by " + PlayerInfo.getPrefix(kInfo.level, kInfo.prestige) + ChatColor.GRAY + " " +
                             killer.getName()));
                 }
