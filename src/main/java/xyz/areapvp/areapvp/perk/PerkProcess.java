@@ -97,7 +97,7 @@ public class PerkProcess implements Listener
                 }
                 if (player.hasPotionEffect(PotionEffectType.REGENERATION))
                     player.removePotionEffect(PotionEffectType.REGENERATION);
-                player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION,100, 1, false));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION,120, 1, false));
                 break;
         }
 

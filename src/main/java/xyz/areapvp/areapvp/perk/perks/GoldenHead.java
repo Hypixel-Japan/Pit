@@ -82,10 +82,10 @@ public class GoldenHead implements IPerkEntry
     {
         if (player.hasPotionEffect(PotionEffectType.SPEED))
             player.removePotionEffect(PotionEffectType.SPEED);
-        player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 16, 1, false));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 180, 1, false));
         if (player.hasPotionEffect(PotionEffectType.REGENERATION))
             player.removePotionEffect(PotionEffectType.REGENERATION);
-        player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 100, 1, false));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 120, 1, false));
 
         if (player.hasPotionEffect(PotionEffectType.ABSORPTION))
         {
