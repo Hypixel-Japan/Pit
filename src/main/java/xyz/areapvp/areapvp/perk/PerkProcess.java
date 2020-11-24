@@ -115,7 +115,6 @@ public class PerkProcess implements Listener
         if (stack == null || stack.getType() == Material.AIR)
             return;
         ItemStack st = stack.clone();
-        st.setAmount(1);
         String type;
         if ((type = Items.getMetadata(st, "type")) == null)
             return;
@@ -123,7 +122,11 @@ public class PerkProcess implements Listener
         {
             case "ghead":
                 player.getInventory().remove(stack);
-                player.getInventory().addItem(st);
+                if (stack.getAmount() >= 2)
+                {
+                    st.setAmount(st.getAmount() - 1);
+                    player.getInventory().addItem(st);
+                }
                 e.setCancelled(true);
                 Objects.requireNonNull(Perks.getPerk("gHead")).onWork(player);
                 break;
