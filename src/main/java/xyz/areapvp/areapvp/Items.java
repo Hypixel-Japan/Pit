@@ -19,6 +19,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -44,6 +45,17 @@ public class Items
         meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         copy.setItemMeta(meta);
         return b;
+    }
+
+    public static ItemStack lore(ItemStack b, List<String> t)
+    {
+        ItemMeta meta = b.getItemMeta();
+        if (b.getType() == Material.AIR)
+            return b;
+        meta.setLore(t);
+        ItemStack stack = b.clone();
+        stack.setItemMeta(meta);
+        return stack;
     }
 
     public static ItemStack quickLore(ItemStack b, String t)

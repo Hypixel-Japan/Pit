@@ -9,6 +9,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import xyz.areapvp.areapvp.AreaPvP;
 import xyz.areapvp.areapvp.Items;
@@ -104,30 +105,14 @@ public class PitDebug implements CommandExecutor
         }
     }
 
-    private static void changeDamage(Player player, String[] args)
+    private static void changeDamage(Player player)
     {
-        Long a;
-        if ((a = parseLong(args[1])) == null)
-        {
-            player.sendMessage(ChatColor.RED + "エラー：第2引数が数字ではありません！");
-            return;
-        }
-
-        if (player.getInventory().getItemInMainHand() == null ||
-                player.getInventory().getItemInMainHand().getType() == Material.AIR)
-        {
-            player.sendMessage(ChatColor.RED + "エラー：物を持って実行してください！");
-            return;
-        }
-
-        try
-        {
-            player.getInventory().setItemInMainHand(Items.changeDamage(player.getInventory().getItemInMainHand(), a));
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+        boolean meta = player.hasMetadata("damageDebug");
+        if (!meta)
+            player.setMetadata("damageDebug", new FixedMetadataValue(AreaPvP.getPlugin(), "1b"));
+        else
+            player.removeMetadata("damageDebug", AreaPvP.plugin);
+        player.sendMessage((meta ? ChatColor.RED: ChatColor.GREEN) + "ダメージデバッグを" + (meta ? "無効化": "有効化") + "しました。");
     }
 
     public static Long parseLong(String str)
@@ -228,12 +213,12 @@ public class PitDebug implements CommandExecutor
                 expMoney(sender, args);
                 break;
             case "damage":
-                if (args.length != 2)
+                if (args.length != 1)
                 {
                     sender.sendMessage(ChatColor.RED + "エラー：引数の大きさが不正です！");
                     return true;
                 }
-                changeDamage(player, args);
+                changeDamage(player);
                 break;
             case "meta":
                 if (args.length > 4 || args.length < 2)

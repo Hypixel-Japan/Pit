@@ -134,6 +134,16 @@ public class Events implements Listener
         ((Player) arrow.getShooter()).setMetadata("x-hitted", new FixedMetadataValue(AreaPvP.getPlugin(), 15));
         e.getEntity().setMetadata("x-hitted", new FixedMetadataValue(AreaPvP.getPlugin(), 15));
         e.getEntity().setMetadata("x-hitter", new FixedMetadataValue(AreaPvP.getPlugin(), ((Player) arrow.getShooter()).getUniqueId()));
+        if (!((Player) arrow.getShooter()).hasMetadata("damageDebug"))
+            ((Player) arrow.getShooter()).spigot().sendMessage(
+                    ChatMessageType.ACTION_BAR,
+                    new ComponentBuilder(ChatColor.GRAY + e.getEntity().getName() + " "
+                            + getDamageIndicator(e.getDamage(), (Player) e.getEntity())).create()
+            );
+        else
+            ((Player) arrow.getShooter()).spigot().sendMessage(
+                    ChatMessageType.ACTION_BAR,
+                    new ComponentBuilder(ChatColor.RED.toString() + e.getDamage() + " => " + ((Player) e.getEntity()).getHealth()).create());
     }
 
     @EventHandler
@@ -155,11 +165,17 @@ public class Events implements Listener
         damager.setMetadata("x-hitted", new FixedMetadataValue(AreaPvP.getPlugin(), 15));
         damager.setMetadata("x-hitter", new FixedMetadataValue(AreaPvP.getPlugin(), hitter.getUniqueId().toString()));
 
-        hitter.spigot().sendMessage(
-                ChatMessageType.ACTION_BAR,
-                new ComponentBuilder(ChatColor.GRAY + damager.getName() + " "
-                        + getDamageIndicator(e.getDamage(), damager)).create()
-        );
+        if (!hitter.hasMetadata("damageDebug"))
+            hitter.spigot().sendMessage(
+                    ChatMessageType.ACTION_BAR,
+                    new ComponentBuilder(ChatColor.GRAY + damager.getName() + " "
+                            + getDamageIndicator(e.getDamage(), damager)).create()
+            );
+        else
+            hitter.spigot().sendMessage(
+                    ChatMessageType.ACTION_BAR,
+                    new ComponentBuilder(ChatColor.RED.toString() + e.getDamage() + " => " + damager.getHealth()).create());
+
     }
 
     @EventHandler

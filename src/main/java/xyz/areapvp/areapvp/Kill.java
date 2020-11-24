@@ -5,11 +5,13 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import xyz.areapvp.areapvp.level.Exp;
 import xyz.areapvp.areapvp.level.PlayerInfo;
 import xyz.areapvp.areapvp.level.PlayerModify;
+import xyz.areapvp.areapvp.perk.PerkProcess;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -85,7 +87,7 @@ public class Kill
                 unknownRestart(deather);
                 return;
             }
-
+            PerkProcess.onKill(deather);
             process(cK, deather);
             cK.spigot().sendMessage(ChatMessageType.ACTION_BAR, new ComponentBuilder(ChatColor.GRAY + deather.getName() + " " + ChatColor.GREEN + ChatColor.BOLD + "KILL!").create());
         }

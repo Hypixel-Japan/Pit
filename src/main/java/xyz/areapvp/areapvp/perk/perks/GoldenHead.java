@@ -13,6 +13,8 @@ import xyz.areapvp.areapvp.perk.IPerkEntry;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 public class GoldenHead implements IPerkEntry
@@ -45,6 +47,12 @@ public class GoldenHead implements IPerkEntry
                 ChatColor.GOLD + "3❤ absorption!"));
         stack.setItemMeta(meta);
         return stack;
+    }
+
+    @Override
+    public List<String> getShopLore()
+    {
+        return Collections.singletonList(ChatColor.GRAY + "キル時のりんごを、" + ChatColor.GOLD + "Golden Head" + ChatColor.GRAY + "に置換します。");
     }
 
     @Override
@@ -88,15 +96,9 @@ public class GoldenHead implements IPerkEntry
         player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 120, 1, false));
 
         if (player.hasPotionEffect(PotionEffectType.ABSORPTION))
-        {
             player.removePotionEffect(PotionEffectType.ABSORPTION);
-            player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION,114514, 2, false));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION,114514,  1, false));
+        player.damage(2);
 
-        }
-        else
-        {
-            player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION,114514,  1, false));
-            player.damage(2);
-        }
     }
 }

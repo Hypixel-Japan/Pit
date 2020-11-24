@@ -5,8 +5,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
@@ -33,10 +31,8 @@ public class PerkProcess implements Listener
                 .mapToLong(ItemStack::getAmount).sum();
     }
 
-    @EventHandler
-    public static void onKill(PlayerDeathEvent e)
+    public static void onKill(Player deather)
     {
-        Player deather = e.getEntity();
         Player killer = deather.getKiller();
         if (killer == null)
         {
@@ -89,15 +85,10 @@ public class PerkProcess implements Listener
             case "gapple":
                 player.getInventory().remove(stack);
                 if (player.hasPotionEffect(PotionEffectType.ABSORPTION))
-                {
                     player.removePotionEffect(PotionEffectType.ABSORPTION);
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION,114514, 2, false));
-                }
-                else
-                {
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION,114514,  1, false));
-                    player.damage(2);
-                }
+                player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION,114514,  1, false));
+                player.damage(2);
+
                 if (player.hasPotionEffect(PotionEffectType.REGENERATION))
                     player.removePotionEffect(PotionEffectType.REGENERATION);
                 player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION,120, 1, false));
@@ -121,12 +112,7 @@ public class PerkProcess implements Listener
         switch (type.toLowerCase())
         {
             case "ghead":
-                player.getInventory().remove(stack);
-                if (stack.getAmount() >= 2)
-                {
-                    st.setAmount(st.getAmount() - 1);
-                    player.getInventory().addItem(st);
-                }
+                e.getItem().setAmount(e.getItem().getAmount() - 1);
                 e.setCancelled(true);
                 Objects.requireNonNull(Perks.getPerk("gHead")).onWork(player);
                 break;
