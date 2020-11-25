@@ -7,7 +7,6 @@ import org.bukkit.inventory.ItemStack;
 import xyz.areapvp.areapvp.Items;
 import xyz.areapvp.areapvp.perk.IPerkEntry;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -16,7 +15,7 @@ public class FishingRod implements IPerkEntry
     @Override
     public ItemStack getItem()
     {
-        return Items.noDrop(new ItemStack(Material.FISHING_ROD));
+        return Items.setPerk(Items.setUnbreakable(Items.noDrop(new ItemStack(Material.FISHING_ROD))));
     }
 
     @Override
@@ -46,13 +45,19 @@ public class FishingRod implements IPerkEntry
     @Override
     public int getNeedGold()
     {
-        return 0;
+        return 1000;
+    }
+
+    @Override
+    public void onRemove(Player player)
+    {
+        player.getInventory().remove(getItem());
     }
 
     @Override
     public void onBuy(Player player)
     {
-
+        player.getInventory().addItem(getItem());
     }
 
     @Override

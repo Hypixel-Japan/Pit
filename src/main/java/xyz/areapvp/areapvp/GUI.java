@@ -226,6 +226,14 @@ public class GUI implements Listener
 
                 if (item.getType() == Material.AIR)
                     return;
+
+                if (item.getType() == Material.BEDROCK)
+                {
+                    player.sendMessage(ChatColor.RED + "レベルが不足しています！");
+                    player.closeInventory();
+                    return;
+                }
+
                 player.closeInventory();
                 AreaPvP.gui.put(player.getUniqueId(), "perk");
                 Long v;

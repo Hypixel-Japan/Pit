@@ -1,5 +1,6 @@
 package xyz.areapvp.areapvp;
 
+import jdk.internal.dynalink.beans.StaticClass;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -8,6 +9,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 public class InventoryUtils
@@ -45,7 +47,14 @@ public class InventoryUtils
             {
                 PlayerInventory inventory = player.getInventory();
                 inventory.setArmorContents(equip(inventory.getArmorContents()));
-                inventory.setStorageContents(equip(inventory.getStorageContents()));
+                Arrays.stream(inventory.getContents())
+                        .parallel()
+                        .forEach(stack -> {
+                            if (stack == null)
+                                return;
+                            if (!Items.hasMetadata(stack, "keptOnDeath") && !Items.hasMetadata(stack, "perk"))
+                                stack.setAmount(0);
+                        });
                 initItem(player);
                 player.removePotionEffect(PotionEffectType.REGENERATION);
                 player.removePotionEffect(PotionEffectType.ABSORPTION);
@@ -65,7 +74,7 @@ public class InventoryUtils
                 continue;
             }
 
-            if (Items.hasMetadata(stack, "keptOnDeath") || Items.hasMetadata(stack, "special"))
+            if (Items.hasMetadata(stack, "keptOnDeath") || Items.hasMetadata(stack, "perk"))
                 newI.add(stack);
         }
 

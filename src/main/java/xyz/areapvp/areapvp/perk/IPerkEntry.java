@@ -19,6 +19,8 @@ public interface IPerkEntry
 
     int getNeedLevel();
 
+    void onRemove(Player player);
+
     void onBuy(Player player);
 
     void onWork(Player player);

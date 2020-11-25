@@ -32,7 +32,7 @@ public class Sidebar
         final Scoreboard board = manager.getNewScoreboard();
         final Objective objective = board.registerNewObjective("test", "dummy");
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-        objective.setDisplayName(ChatColor.YELLOW + ChatColor.BOLD.toString() + "THE PIT");
+        objective.setDisplayName(ChatColor.YELLOW + ChatColor.BOLD.toString() + "THE HYPIXEL PIT");
 
         objective.getScore(ChatColor.GRAY + format.format(new Date())).setScore(info.prestige == 0 ? 10: 11);
         objective.getScore(ChatColor.WHITE.toString()).setScore(info.prestige == 0 ? 9: 10);

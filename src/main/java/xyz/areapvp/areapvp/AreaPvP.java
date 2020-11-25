@@ -26,6 +26,7 @@ import xyz.areapvp.areapvp.item.items.ItemAir;
 import xyz.areapvp.areapvp.item.items.Obsidian;
 import xyz.areapvp.areapvp.perk.PerkProcess;
 import xyz.areapvp.areapvp.perk.Perks;
+import xyz.areapvp.areapvp.perk.perks.FishingRod;
 import xyz.areapvp.areapvp.perk.perks.GoldenHead;
 
 import java.sql.Statement;
@@ -65,6 +66,7 @@ public class AreaPvP extends JavaPlugin
         Items.newLine();
 
         Perks.addPerk(new GoldenHead());
+        Perks.addPerk(new FishingRod());
 
     }
 

@@ -5,6 +5,8 @@ import org.bukkit.metadata.MetadataValue;
 import xyz.areapvp.areapvp.level.PlayerInfo;
 import xyz.areapvp.areapvp.level.PlayerModify;
 
+import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Optional;
 
 public class Perk
@@ -14,7 +16,27 @@ public class Perk
         PlayerInfo info = PlayerModify.getInfo(player);
         if (info == null)
             return;
+
+        remove(info.perk, player);
+
         setPerk(player, info.perk.toArray(new String[0]));
+    }
+
+    private static void remove(ArrayList<String> perks, Player player)
+    {
+        Optional<MetadataValue> opt1 = PlayerModify.getMetaData(player, "perk1");
+        Optional<MetadataValue> opt2 = PlayerModify.getMetaData(player, "perk2");
+        Optional<MetadataValue> opt3 = PlayerModify.getMetaData(player, "perk3");
+        Optional<MetadataValue> opt4 = PlayerModify.getMetaData(player, "perk4");
+
+        if (opt1.isPresent() && !perks.contains(opt1.get().asString()))
+            Objects.requireNonNull(Perks.getPerk(opt1.get().asString())).onRemove(player);
+        if (opt2.isPresent() && !perks.contains(opt2.get().asString()))
+            Objects.requireNonNull(Perks.getPerk(opt2.get().asString())).onRemove(player);
+        if (opt3.isPresent() && !perks.contains(opt3.get().asString()))
+            Objects.requireNonNull(Perks.getPerk(opt3.get().asString())).onRemove(player);
+        if (opt4.isPresent() && !perks.contains(opt4.get().asString()))
+            Objects.requireNonNull(Perks.getPerk(opt4.get().asString())).onRemove(player);
     }
 
     public static void setPerk(Player player, String... perk)

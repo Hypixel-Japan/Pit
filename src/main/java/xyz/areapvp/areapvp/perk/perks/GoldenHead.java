@@ -80,6 +80,12 @@ public class GoldenHead implements IPerkEntry
     }
 
     @Override
+    public void onRemove(Player player)
+    {
+        player.getInventory().remove(getItem());
+    }
+
+    @Override
     public void onBuy(Player player)
     {
 
