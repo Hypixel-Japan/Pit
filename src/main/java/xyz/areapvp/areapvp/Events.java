@@ -31,7 +31,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.vehicle.VehicleEntityCollisionEvent;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import xyz.areapvp.areapvp.level.PlayerInfo;
 import xyz.areapvp.areapvp.level.PlayerModify;
@@ -95,6 +94,9 @@ public class Events implements Listener
     @EventHandler
     public void onArrow(ProjectileLaunchEvent e)
     {
+        if (e.getEntity().getType() == EntityType.FISHING_HOOK)
+            e.getEntity().setVelocity(e.getEntity().getVelocity().multiply(1.15));
+
         if (e.getEntity().getType() != EntityType.ARROW)
             return;
         Arrow arrow = (Arrow) e.getEntity();
@@ -143,7 +145,8 @@ public class Events implements Listener
         else
             ((Player) arrow.getShooter()).spigot().sendMessage(
                     ChatMessageType.ACTION_BAR,
-                    new ComponentBuilder(ChatColor.RED.toString() + e.getDamage() + " => " + ((Player) e.getEntity()).getHealth()).create());
+                    new ComponentBuilder(ChatColor.RED.toString() + e.getDamage() + " => " + ((Player) e.getEntity()).getHealth()).create()
+            );
     }
 
     @EventHandler
@@ -174,7 +177,8 @@ public class Events implements Listener
         else
             hitter.spigot().sendMessage(
                     ChatMessageType.ACTION_BAR,
-                    new ComponentBuilder(ChatColor.RED.toString() + e.getDamage() + " => " + damager.getHealth()).create());
+                    new ComponentBuilder(ChatColor.RED.toString() + e.getDamage() + " => " + damager.getHealth()).create()
+            );
 
     }
 

@@ -27,7 +27,7 @@ public class GoldenHead implements IPerkEntry
     {
         GameProfile profile = new GameProfile(UUID.fromString("e71d6198-4015-459e-b3e3-8192c0d19360"), "GoldenHead");
         profile.getProperties().put("textures", new Property("textures", data, signature));
-        ItemStack stack = new ItemStack(Material.SKULL_ITEM, 1, (short)3);
+        ItemStack stack = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
         SkullMeta meta = (SkullMeta) stack.getItemMeta();
 
         try
@@ -42,9 +42,11 @@ public class GoldenHead implements IPerkEntry
         }
 
         meta.setDisplayName(ChatColor.GOLD + "Golden Head");
-        meta.setLore(Arrays.asList(ChatColor.BLUE + "Speed I (0:08)",
+        meta.setLore(Arrays.asList(
+                ChatColor.BLUE + "Speed I (0:08)",
                 ChatColor.BLUE + "Regeneration II (0:05)",
-                ChatColor.GOLD + "3❤ absorption!"));
+                ChatColor.GOLD + "3❤ absorption!"
+        ));
         stack.setItemMeta(meta);
         return stack;
     }
@@ -103,7 +105,7 @@ public class GoldenHead implements IPerkEntry
 
         if (player.hasPotionEffect(PotionEffectType.ABSORPTION))
             player.removePotionEffect(PotionEffectType.ABSORPTION);
-        player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION,114514,  1, false));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 114514, 1, false));
         player.damage(2);
 
     }

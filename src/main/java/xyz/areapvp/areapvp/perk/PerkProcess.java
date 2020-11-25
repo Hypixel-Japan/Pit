@@ -86,12 +86,12 @@ public class PerkProcess implements Listener
                 player.getInventory().remove(stack);
                 if (player.hasPotionEffect(PotionEffectType.ABSORPTION))
                     player.removePotionEffect(PotionEffectType.ABSORPTION);
-                player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION,114514,  1, false));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 114514, 1, false));
                 player.damage(2);
 
                 if (player.hasPotionEffect(PotionEffectType.REGENERATION))
                     player.removePotionEffect(PotionEffectType.REGENERATION);
-                player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION,120, 1, false));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 120, 1, false));
                 break;
         }
 

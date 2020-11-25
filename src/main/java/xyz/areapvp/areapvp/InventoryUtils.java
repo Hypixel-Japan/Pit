@@ -1,6 +1,5 @@
 package xyz.areapvp.areapvp;
 
-import jdk.internal.dynalink.beans.StaticClass;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

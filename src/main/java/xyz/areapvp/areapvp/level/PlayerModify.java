@@ -1,7 +1,5 @@
 package xyz.areapvp.areapvp.level;
 
-import develop.p2p.lib.SQLModifier;
-import org.apache.commons.io.filefilter.IOFileFilter;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -14,7 +12,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -139,8 +136,8 @@ public class PlayerModify
         if (!info.perk.contains(perk))
             return;
 
-        try(Connection connection = AreaPvP.data.getConnection();
-            PreparedStatement statement = connection.prepareStatement("DELETE FROM holdperk WHERE UUID=? AND PERK=?"))
+        try (Connection connection = AreaPvP.data.getConnection();
+             PreparedStatement statement = connection.prepareStatement("DELETE FROM holdperk WHERE UUID=? AND PERK=?"))
         {
             statement.setString(1, player.getUniqueId().toString().replace("-", ""));
             statement.setString(2, perk);
@@ -153,7 +150,6 @@ public class PlayerModify
         }
     }
 
-
     public static void addOwnPerk(Player player, String perk)
     {
         PlayerInfo info = getInfo(player);
@@ -162,8 +158,8 @@ public class PlayerModify
 
         if (info.ownPerk.contains(perk))
             return;
-        try(Connection connection = AreaPvP.data.getConnection();
-        PreparedStatement statement = connection.prepareStatement("INSERT INTO holdperk VALUES (?, ?)"))
+        try (Connection connection = AreaPvP.data.getConnection();
+             PreparedStatement statement = connection.prepareStatement("INSERT INTO holdperk VALUES (?, ?)"))
         {
             statement.setString(1, player.getUniqueId().toString().replace("-", ""));
             statement.setString(2, perk);
@@ -184,8 +180,8 @@ public class PlayerModify
         if (info.perk.contains(perk))
             return;
 
-        try(Connection connection = AreaPvP.data.getConnection();
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO perk VALUES (?, ?)"))
+        try (Connection connection = AreaPvP.data.getConnection();
+             PreparedStatement statement = connection.prepareStatement("INSERT INTO perk VALUES (?, ?)"))
         {
             statement.setString(1, player.getUniqueId().toString().replace("-", ""));
             statement.setString(2, perk);
@@ -207,8 +203,8 @@ public class PlayerModify
         if (!info.perk.contains(perk))
             return;
 
-        try(Connection connection = AreaPvP.data.getConnection();
-        PreparedStatement statement = connection.prepareStatement("DELETE FROM perk WHERE UUID=? AND PERK=?"))
+        try (Connection connection = AreaPvP.data.getConnection();
+             PreparedStatement statement = connection.prepareStatement("DELETE FROM perk WHERE UUID=? AND PERK=?"))
         {
             statement.setString(1, player.getUniqueId().toString().replace("-", ""));
             statement.setString(2, perk);
