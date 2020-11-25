@@ -2,9 +2,13 @@ package xyz.areapvp.areapvp.perk;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
@@ -21,6 +25,30 @@ import java.util.UUID;
 
 public class PerkProcess implements Listener
 {
+    @EventHandler
+    private static void onArrowHit(EntityDamageByEntityEvent e)
+    {
+        if (e.getDamager().getType() != EntityType.ARROW)
+            return;
+
+        if (!(e.getEntity() instanceof Player))
+            return;
+
+        Arrow arrow = (Arrow) e.getDamager();
+
+        if (!(arrow.getShooter() instanceof Player))
+            return;
+
+        Player shooter = (Player) arrow.getShooter();
+        Player damager = (Player) e.getEntity();
+
+        if (shooter.getUniqueId() == damager.getUniqueId())
+            return;
+
+        if (Perk.contains(shooter, "endlessQuiver"))
+            Objects.requireNonNull(Perks.getPerk("endlessQuiver")).onWork(shooter);
+    }
+
 
     private static long countItem(Player player, String meta)
     {
