@@ -89,6 +89,8 @@ public class PerkProcess implements Listener
         else if (countItem(killer, "gapple") < 2)
             killer.getInventory().addItem(Items.addMetaData(new ItemStack(Material.GOLDEN_APPLE), "type", "gapple"));
 
+        if (Perk.contains(killer, "mineMan"))
+            Objects.requireNonNull(Perks.getPerk("mineMan")).onWork(killer);
     }
 
     @EventHandler

@@ -1,11 +1,14 @@
 package xyz.areapvp.areapvp;
 
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import xyz.areapvp.areapvp.perk.Perk;
+import xyz.areapvp.areapvp.perk.Perks;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,7 +37,8 @@ public class InventoryUtils
             inventory.setLeggings(Items.setUnbreakable(new ItemStack(new Random().nextBoolean() ? Material.IRON_LEGGINGS: Material.CHAINMAIL_LEGGINGS)));
         if (inventory.getChestplate() == null)
             inventory.setChestplate(Items.setUnbreakable(new ItemStack(new Random().nextBoolean() ? Material.IRON_CHESTPLATE: Material.CHAINMAIL_CHESTPLATE)));
-
+        if (Perk.contains(player, "mineMan"))
+            player.getInventory().addItem(Items.noDrop(new ItemStack(Material.COBBLESTONE, 24)));
     }
 
     public static void reItem(Player player)

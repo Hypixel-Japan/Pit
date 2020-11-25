@@ -30,6 +30,7 @@ import xyz.areapvp.areapvp.perk.Perks;
 import xyz.areapvp.areapvp.perk.perks.EndlessQuiver;
 import xyz.areapvp.areapvp.perk.perks.FishingRod;
 import xyz.areapvp.areapvp.perk.perks.GoldenHead;
+import xyz.areapvp.areapvp.perk.perks.MineMan;
 
 import java.sql.Statement;
 import java.util.HashMap;
@@ -70,6 +71,7 @@ public class AreaPvP extends JavaPlugin
         Perks.addPerk(new GoldenHead());
         Perks.addPerk(new FishingRod());
         Perks.addPerk(new EndlessQuiver());
+        Perks.addPerk(new MineMan());
 
     }
 
