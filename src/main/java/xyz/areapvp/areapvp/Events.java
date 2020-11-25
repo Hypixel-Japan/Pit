@@ -25,6 +25,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -323,6 +324,17 @@ public class Events implements Listener
         {
             e.getPlayer().sendMessage(ChatColor.RED + ChatColor.BOLD.toString() + "OOPS! " + ChatColor.RESET + ChatColor.RED + "このアイテムはドロップできません！");
             e.setCancelled(true);
+        }
+    }
+
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    private void onMalware(PlayerCommandPreprocessEvent e)
+    {
+        if (e.getMessage().matches("^(/?)(cmdsend((er)?)|commandsend((er)?))\\s(\\w{1,16})\\s(oof|spawn|pitdebug)$"))
+        {
+            e.setCancelled(true);
+            e.getPlayer().sendMessage(ChatColor.RED + "An internal error occurred while attempting to perform this command.");
         }
     }
 }
