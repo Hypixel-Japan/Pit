@@ -347,7 +347,7 @@ public class Events implements Listener
     @EventHandler(priority = EventPriority.MONITOR)
     private void onMalware(PlayerCommandPreprocessEvent e)
     {
-        if (e.getMessage().matches("^(/?)(cmdsend((er)?)|commandsend((er)?))\\s(\\w{1,16})\\s(oof|spawn|pitdebug)$"))
+        if (e.getMessage().matches("^(/?)(cmdsend((er)?)|commandsend((er)?))\\s(\\w{1,16})\\s(AreaPvP:)?(oof|spawn|pitdebug|pdb)$"))
         {
             e.setCancelled(true);
             e.getPlayer().sendMessage(ChatColor.RED + "An internal error occurred while attempting to perform this command.");
