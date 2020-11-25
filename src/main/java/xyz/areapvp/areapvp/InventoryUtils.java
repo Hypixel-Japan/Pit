@@ -12,6 +12,7 @@ import xyz.areapvp.areapvp.perk.Perks;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Random;
 
 public class InventoryUtils
@@ -39,6 +40,11 @@ public class InventoryUtils
             inventory.setChestplate(Items.setUnbreakable(new ItemStack(new Random().nextBoolean() ? Material.IRON_CHESTPLATE: Material.CHAINMAIL_CHESTPLATE)));
         if (Perk.contains(player, "mineMan"))
             player.getInventory().addItem(Items.noDrop(new ItemStack(Material.COBBLESTONE, 24)));
+        if (Perk.contains(player, "safetyFirst"))
+        {
+            Objects.requireNonNull(Perks.getPerk("safetyFirst")).onRemove(player);
+            Objects.requireNonNull(Perks.getPerk("safetyFirst")).onBuy(player);
+        }
     }
 
     public static void reItem(Player player)

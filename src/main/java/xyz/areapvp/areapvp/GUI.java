@@ -18,6 +18,7 @@ import xyz.areapvp.areapvp.item.IShopItem;
 import xyz.areapvp.areapvp.level.PlayerInfo;
 import xyz.areapvp.areapvp.level.PlayerModify;
 import xyz.areapvp.areapvp.perk.IPerkEntry;
+import xyz.areapvp.areapvp.perk.Perk;
 import xyz.areapvp.areapvp.perk.PerkInventory;
 import xyz.areapvp.areapvp.perk.Perks;
 
@@ -202,30 +203,28 @@ public class GUI implements Listener
                     return;
                 }
 
-                if (item.getType() == Material.DIAMOND_BLOCK)
-                {
-                    String ty;
-                    if ((ty = Items.getMetadata(item, "slot")) == null)
-                        return;
-
-                    PlayerInfo info = PlayerModify.getInfo(player);
-
-                    if (info == null)
-                        return;
-                    Long k;
-                    if ((k = PitDebug.parseLong(ty)) == null)
-                        return;
-                    int i = Math.toIntExact(k) - 1;
-
-                    if (info.perk.size() > i)
-                        PlayerModify.removePerk(player, info.perk.get(i));
-
-                    player.closeInventory();
+                String ty;
+                if ((ty = Items.getMetadata(item, "slot")) == null)
                     return;
-                }  //使わない処理
 
-                IPerkEntry entry = Perks.getPerk(Items.getMetadata(item, "type"));
-                playerPerkBuyProcess(player, entry);
+                PlayerInfo info = PlayerModify.getInfo(player);
+
+                if (info == null)
+                    return;
+                Long k;
+                if ((k = PitDebug.parseLong(ty)) == null)
+                    return;
+                int i = Math.toIntExact(k) - 1;
+
+                if (info.perk.size() > i)
+                    PlayerModify.removePerk(player, info.perk.get(i));
+
+                player.closeInventory();
+                if (item.getType() != Material.DIAMOND_BLOCK)
+                {
+                    IPerkEntry entry = Perks.getPerk(Items.getMetadata(item, "type"));
+                    playerPerkBuyProcess(player, entry);
+                }
                 break;
             case "firstPerk":
                 if (!e.getClickedInventory().getName().equals(ChatColor.BLUE + "Perk Shop"))

@@ -22,7 +22,7 @@ public class PerkInventory
 
         int balance = (int) AreaPvP.economy.getBalance(player);
 
-        Inventory inventory = Bukkit.createInventory(null, ((Perks.perks.size() % 9 == 0 ? 1: Perks.perks.size() % 9) * 9) + 9, ChatColor.BLUE + "Perk Shop");
+        Inventory inventory = Bukkit.createInventory(null, 18, ChatColor.BLUE + "Perk Shop");
         for (IPerkEntry item : Perks.perks)
         {
             if (info.perk.contains(item.getName()))

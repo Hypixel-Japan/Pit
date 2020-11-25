@@ -9,6 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
@@ -25,6 +26,22 @@ import java.util.UUID;
 
 public class PerkProcess implements Listener
 {
+    @EventHandler
+    private static void onHit(EntityDamageByEntityEvent e)
+    {
+        if (!(e.getDamager() instanceof Player) || !(e.getEntity() instanceof  Player))
+            return;
+
+        Player hitter = (Player) e.getDamager();
+        Player player = (Player) e.getEntity();
+
+        if (Perk.contains(hitter, "vampire"))
+            if (hitter.getHealth() > 19)
+                hitter.setHealth(20);
+            else
+                hitter.setHealth(hitter.getHealth() + 1);
+    }
+
     @EventHandler
     private static void onArrowHit(EntityDamageByEntityEvent e)
     {
@@ -49,8 +66,18 @@ public class PerkProcess implements Listener
             Objects.requireNonNull(Perks.getPerk("endlessQuiver")).onWork(shooter);
     }
 
+    public static long countItem(Player player, Material type)
+    {
+        if (type == null)
+            return 0;
+        return Arrays.stream(player.getInventory().getContents())
+                .parallel()
+                .filter(stack -> stack != null && stack.getType() == type)
+                .mapToLong(ItemStack::getAmount).sum();
+    }
 
-    private static long countItem(Player player, String meta)
+
+    public static long countItem(Player player, String meta)
     {
         return Arrays.stream(player.getInventory().getContents())
                 .parallel()
@@ -81,7 +108,9 @@ public class PerkProcess implements Listener
         if (Kill.hasReduce(killer))
             return;
 
-        if (Perk.contains(killer, "gHead"))
+        if (Perk.contains(killer, "vampire"))
+            Objects.requireNonNull(Perks.getPerk("vampire")).onWork(killer);
+        else if (Perk.contains(killer, "gHead"))
         {
             if (countItem(killer, "gHead") < 2)
                 killer.getInventory().addItem(Items.addMetaData(Objects.requireNonNull(Perks.getPerk("gHead")).getItem(), "type", "gHead"));
@@ -91,6 +120,7 @@ public class PerkProcess implements Listener
 
         if (Perk.contains(killer, "mineMan"))
             Objects.requireNonNull(Perks.getPerk("mineMan")).onWork(killer);
+
     }
 
     @EventHandler
@@ -147,5 +177,15 @@ public class PerkProcess implements Listener
                 Objects.requireNonNull(Perks.getPerk("gHead")).onWork(player);
                 break;
         }
+    }
+
+    @EventHandler
+    public static void onDrop(PlayerDropItemEvent e)
+    {
+        if (e.getItemDrop().getItemStack().getType() == Material.CHAINMAIL_BOOTS ||
+                e.getItemDrop().getItemStack().getType() == Material.CHAINMAIL_CHESTPLATE ||
+                e.getItemDrop().getItemStack().getType() == Material.CHAINMAIL_HELMET ||
+                e.getItemDrop().getItemStack().getType() == Material.CHAINMAIL_LEGGINGS)
+            e.getItemDrop().remove();
     }
 }

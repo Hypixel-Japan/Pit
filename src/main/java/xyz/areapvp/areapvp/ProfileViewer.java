@@ -1,18 +1,29 @@
 package xyz.areapvp.areapvp;
 
+import jdk.nashorn.internal.runtime.options.OptionTemplate;
+import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.MetadataValue;
+import sun.font.CharToGlyphMapper;
+import xyz.areapvp.areapvp.level.Exp;
 import xyz.areapvp.areapvp.level.PlayerInfo;
 import xyz.areapvp.areapvp.level.PlayerModify;
 import xyz.areapvp.areapvp.perk.Perks;
 
+import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
@@ -68,15 +79,105 @@ public class ProfileViewer
                         Items.addMetaData(new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15), "AreaPvP::notPickable", "1b"),
                         ChatColor.YELLOW + "#" + (value + 1) + " Perk slot"));
         });
+        //NameTag
+        ItemStack stack = new ItemStack(Material.NAME_TAG);
+        stack = Items.addMetaData(stack, "AreaPvP::NotPickable", "true");
+        stack = Items.setDisplayName(stack, PlayerInfo.getPrefixFull(info.level, info.prestige) + " " +
+                ChatColor.GRAY + player.getName());
 
+        BigDecimal decimal = BigDecimal.valueOf(AreaPvP.economy.getBalance(player));
+
+        String decimalOf;
+
+        if (decimal.compareTo(new BigDecimal(1000)) <= 0)
+            decimalOf = String.valueOf(decimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+        else
+            decimalOf = String.format("%,d", decimal.setScale(1, BigDecimal.ROUND_HALF_UP).longValue());
+
+        long exp = Exp.getExp(info.level, info.prestige) + info.exp;
+
+        stack = Items.lore(stack, Arrays.asList(
+                ChatColor.GRAY + "Gold: " + ChatColor.GOLD + decimalOf + "g",
+                ChatColor.GRAY + "Total XP: " + ChatColor.AQUA + exp + " XP"));
+
+        inventory.setItem(21, stack);
+        //Inventory
+        inventory.setItem(23,
+                Items.addMetaData(Items.lore(Items.setDisplayName(Items.addMetaData(new ItemStack(Material.CHEST),
+                        "AreaPvP::type", "inv"),
+                        ChatColor.GREEN + "Invenotry"),
+                        Arrays.asList(
+                                ChatColor.GRAY + "プレイヤーのインベントリをチェックします！",
+                                "",
+                                ChatColor.YELLOW + "クリックして開く！"
+                        )), "AreaPvP::uuid", player.getUniqueId().toString()));
+        //EnderChest
+        inventory.setItem(24,
+                Items.addMetaData(Items.lore(Items.setDisplayName(Items.addMetaData(new ItemStack(Material.ENDER_CHEST),
+                        "AreaPvP::type", "ender"),
+                        ChatColor.DARK_PURPLE + "Ender Chest"),
+                        Arrays.asList(
+                                ChatColor.GRAY + "プレイヤーのエンダーチェストをチェックします！",
+                                "",
+                                ChatColor.YELLOW + "クリックして開く！"
+                        )), "AreaPvP::uuid", player.getUniqueId().toString()));
 
         viewer.openInventory(inventory);
         AreaPvP.gui.put(viewer.getUniqueId(), "profile");
+    }
+
+    private static Inventory getInv(Player player)
+    {
+        Inventory inventory = Bukkit.createInventory(null, 36, "インベントリ");
+        if (player == null)
+            return inventory;
+        IntStream.range(0, 35)
+                .forEach(value ->{
+                    ItemStack stack = player.getInventory().getItem(value);
+                    if (stack == null)
+                        inventory.addItem(new ItemStack(Material.AIR));
+                    else
+                        inventory.addItem(Items.addMetaData(stack, "AreaPvP::NotPickable", "1b"));
+                });
+        return inventory;
+    }
+
+    public static Inventory getEnder(Player player)
+    {
+        Inventory inventory = Bukkit.createInventory(null, 27, "エンダーチェスト");
+        IntStream.range(0, 26)
+                .forEach(value ->{
+                    ItemStack stack = player.getEnderChest().getItem(value);
+                    if (stack == null)
+                        inventory.addItem(new ItemStack(Material.AIR));
+                    else
+                        inventory.addItem(Items.addMetaData(stack, "AreaPvP::NotPickable", "1b"));
+                });
+        return inventory;
     }
 
     public static void onPickUp(Player player, ItemStack stack)
     {
         if (Items.hasMetadata(stack, "AreaPvP::NotPickable"))
             return;
+        String type;
+        if ((type = Items.getMetadata(stack, "AreaPvP::type")) == null)
+            return;
+
+        String uuid;
+        if ((uuid = Items.getMetadata(stack, "AreaPvP::uuid")) == null)
+            return;
+        if (type.equals("inv"))
+        {
+            player.closeInventory();
+            player.openInventory(getInv(Bukkit.getPlayer(UUID.fromString(uuid))));
+            AreaPvP.gui.put(player.getUniqueId(), "profile");
+        }
+        else if (type.equals("ender"))
+        {
+            player.closeInventory();
+            player.openInventory(getEnder(Bukkit.getPlayer(UUID.fromString(uuid))));
+            AreaPvP.gui.put(player.getUniqueId(), "profile");
+        }
     }
 }

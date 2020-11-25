@@ -20,22 +20,27 @@ import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.vehicle.VehicleEntityCollisionEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import xyz.areapvp.areapvp.level.PlayerInfo;
 import xyz.areapvp.areapvp.level.PlayerModify;
 import xyz.areapvp.areapvp.perk.Perk;
+import xyz.areapvp.areapvp.perk.PerkProcess;
 
 import java.math.BigDecimal;
 import java.util.stream.IntStream;
@@ -115,9 +120,21 @@ public class Events implements Listener
     }
 
     @EventHandler
+    public void onCaught(ProjectileHitEvent e)
+    {
+        if (!(e.getEntityType() == EntityType.FISHING_HOOK))
+            return;
+        if (e.getHitEntity() == null || !(e.getHitEntity() instanceof Player))
+            return;
+        if (e.getHitEntity().getLocation().getY() >= AreaPvP.spawnloc)
+            ((Player) e.getHitEntity()).setNoDamageTicks(100);
+    }
+
+
+    @EventHandler
     public void onArrowHit(EntityDamageByEntityEvent e)
     {
-        if (e.getDamager().getType() != EntityType.ARROW || e.getDamager().getType() == EntityType.FISHING_HOOK)
+        if (e.getDamager().getType() != EntityType.ARROW)
             return;
 
         if (!(e.getEntity() instanceof Player))
@@ -327,7 +344,6 @@ public class Events implements Listener
         }
     }
 
-
     @EventHandler(priority = EventPriority.MONITOR)
     private void onMalware(PlayerCommandPreprocessEvent e)
     {
@@ -337,4 +353,75 @@ public class Events implements Listener
             e.getPlayer().sendMessage(ChatColor.RED + "An internal error occurred while attempting to perform this command.");
         }
     }
+
+    @EventHandler
+    private void onPickup(EntityPickupItemEvent e)
+    {
+        if (!(e.getEntity() instanceof Player))
+            return;
+
+        Player player = (Player) e.getEntity();
+        ItemStack stack = e.getItem().getItemStack();
+        if (ArmorUtils.hasArmor(stack))
+        {
+            if (ArmorUtils.getMaterialType(stack) != ArmorUtils.MaterialType.DIAMOND &&
+                    PerkProcess.countItem(player, stack.getType()) > 2)
+            {
+                e.setCancelled(true);
+                return;
+            }
+
+            switch (ArmorUtils.getType(stack))
+            {
+                case HELMET:
+                    if (ArmorUtils.hasStrong(player.getInventory().getHelmet(), stack))
+                    {
+                        ItemStack b = player.getInventory().getHelmet();
+                        player.getInventory().setHelmet(stack);
+                        if (b != null)
+                            player.getInventory().addItem(b);
+                    }
+                    else
+                        player.getInventory().addItem(stack);
+                    break;
+                case CHESTPLATE:
+                    if (ArmorUtils.hasStrong(player.getInventory().getChestplate(), stack))
+                    {
+                        ItemStack b = player.getInventory().getChestplate();
+                        player.getInventory().setChestplate(stack);
+                        if (b != null)
+                            player.getInventory().addItem(b);
+                    }
+                    else
+                        player.getInventory().addItem(stack);
+                    break;
+                case LEGGINGS:
+                    if (ArmorUtils.hasStrong(player.getInventory().getLeggings(), stack))
+                    {
+                        ItemStack b = player.getInventory().getLeggings();
+                        player.getInventory().setLeggings(stack);
+                        if (b != null)
+                            player.getInventory().addItem(b);
+                    }
+                    else
+                        player.getInventory().addItem(stack);
+                    break;
+                case BOOTS:
+                    if (ArmorUtils.hasStrong(player.getInventory().getBoots(), stack))
+                    {
+                        ItemStack b = player.getInventory().getBoots();
+                        player.getInventory().setBoots(stack);
+                        if (b != null)
+                            player.getInventory().addItem(b);
+                    }
+                    else
+                        player.getInventory().addItem(stack);
+                    break;
+                case UNKNOWN:
+            }
+            e.getItem().remove();
+            e.setCancelled(true);
+        }
+    }
+
 }

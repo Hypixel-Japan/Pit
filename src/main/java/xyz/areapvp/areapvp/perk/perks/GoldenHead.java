@@ -43,9 +43,9 @@ public class GoldenHead implements IPerkEntry
 
         meta.setDisplayName(ChatColor.GOLD + "Golden Head");
         meta.setLore(Arrays.asList(
-                ChatColor.BLUE + "Speed I (0:08)",
-                ChatColor.BLUE + "Regeneration II (0:05)",
-                ChatColor.GOLD + "3❤ absorption!"
+                ChatColor.BLUE + "スピード I (0:08)",
+                ChatColor.BLUE + "回復 II (0:05)",
+                ChatColor.GOLD + "3❤ ライフ!"
         ));
         stack.setItemMeta(meta);
         return stack;
@@ -54,7 +54,7 @@ public class GoldenHead implements IPerkEntry
     @Override
     public List<String> getShopLore()
     {
-        return Collections.singletonList(ChatColor.GRAY + "キル時のりんごを、" + ChatColor.GOLD + "Golden Head" + ChatColor.GRAY + "に置換します。");
+        return Collections.singletonList(ChatColor.GRAY + "敵を倒したときの金りんごが、" + ChatColor.GOLD + "Golden Head" + ChatColor.GRAY + "に置換します。");
     }
 
     @Override
@@ -98,7 +98,7 @@ public class GoldenHead implements IPerkEntry
     {
         if (player.hasPotionEffect(PotionEffectType.SPEED))
             player.removePotionEffect(PotionEffectType.SPEED);
-        player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 180, 1, false));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 180, 0, false));
         if (player.hasPotionEffect(PotionEffectType.REGENERATION))
             player.removePotionEffect(PotionEffectType.REGENERATION);
         player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 120, 1, false));
