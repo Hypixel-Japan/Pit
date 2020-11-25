@@ -80,12 +80,6 @@ public class GoldenHead implements IPerkEntry
     }
 
     @Override
-    public void onRemove()
-    {
-
-    }
-
-    @Override
     public void onWork(Player player)
     {
         if (player.hasPotionEffect(PotionEffectType.SPEED))
