@@ -10,11 +10,13 @@ import org.bukkit.scheduler.BukkitRunnable;
 import xyz.areapvp.areapvp.level.Exp;
 import xyz.areapvp.areapvp.level.PlayerInfo;
 import xyz.areapvp.areapvp.level.PlayerModify;
+import xyz.areapvp.areapvp.perk.Perk;
 import xyz.areapvp.areapvp.perk.PerkProcess;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Random;
 import java.util.UUID;
 
 public class Kill
@@ -132,10 +134,23 @@ public class Kill
 
                 long exp = Exp.calcKillExp(killer, deather, info.level, info.prestige);
 
+
                 double money = 12;
                 money = money * ((info.prestige == 0 ? 1: info.prestige) * 120d / 100d);
                 BigDecimal bd = new BigDecimal(money);
                 bd = bd.setScale(3, BigDecimal.ROUND_DOWN);
+
+                long bonus = 0;
+                if (getStreak(killer.getUniqueId()) > 40)
+                    bonus += new Random().nextInt(50) + 40;
+                else if (getStreak(killer.getUniqueId()) + 1 > 5)
+                    bonus += new Random().nextInt(7) + 261;
+
+                if (Perk.contains(killer, "streaker"))
+                    exp += (bonus * 3);
+                else
+                    exp += bonus;
+                bd = bd.add(new BigDecimal(exp).multiply(new BigDecimal(5)));
 
                 money = bd.doubleValue();
 

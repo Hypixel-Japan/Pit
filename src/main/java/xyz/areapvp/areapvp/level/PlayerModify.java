@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class PlayerModify
 {
@@ -257,10 +258,12 @@ public class PlayerModify
 
     public static Optional<MetadataValue> getMetaData(Entity entity, String key)
     {
-        for (MetadataValue value : entity.getMetadata(key))
-            if (value.getOwningPlugin().getName().equals(AreaPvP.getPlugin().getName()))
-                return Optional.of(value);
-        return Optional.empty();
+        AtomicReference<Optional<MetadataValue>> val = new AtomicReference<>(Optional.empty());
+        entity.getMetadata(key)
+                .parallelStream()
+                .forEach(value -> {if(value.getOwningPlugin().getName().equals(AreaPvP.getPlugin().getName()))
+                        val.set(Optional.of(value));});
+        return val.get();
     }
 
     public static void setMetaData(Entity entity, String key, Object value)
