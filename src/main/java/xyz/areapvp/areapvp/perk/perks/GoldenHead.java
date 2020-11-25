@@ -74,6 +74,12 @@ public class GoldenHead implements IPerkEntry
     }
 
     @Override
+    public int getNeedLevel()
+    {
+        return 10;
+    }
+
+    @Override
     public void onBuy(Player player)
     {
 

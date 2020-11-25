@@ -105,6 +105,14 @@ public class GUI implements Listener
             PlayerModify.addPerk(player, item.getName());
             item.onBuy(player);
             player.closeInventory();
+            return;
+        }
+
+        if (info.level < item.getNeedLevel())
+        {
+            player.sendMessage(ChatColor.RED + "まだこのPerkを購入できません。");
+            player.closeInventory();
+            return;
         }
 
         if (AreaPvP.economy.getBalance(player) >= item.getNeedGold())

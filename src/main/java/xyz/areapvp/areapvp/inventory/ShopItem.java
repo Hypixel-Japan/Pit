@@ -11,6 +11,21 @@ import java.util.UUID;
 
 public class ShopItem
 {
+    public static ItemStack getItem(ItemStack itemStack, int gold, int needGold, int prestige, int needPrestige, int level, int needLevel)
+    {
+        ItemStack stack = itemStack.clone();
+
+        if (level < needLevel)
+        {
+            stack = new ItemStack(Material.BEDROCK);
+            stack.setItemMeta(error(ChatColor.RED + "Unknown", stack, ChatColor.RED + "購入に必要なLevelが足りません！"));
+            stack = Items.addMetaData(stack, "r", UUID.randomUUID().toString());
+            stack = Items.addMetaData(stack, "notBuyable", "1b");
+            return stack;
+        }
+        return getItem(itemStack, gold, needGold, prestige, needPrestige);
+    }
+
     public static ItemStack getItem(ItemStack itemStack, int gold, int needGold, int prestige, int needPrestige)
     {
         ItemStack stack = itemStack.clone();

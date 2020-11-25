@@ -17,6 +17,8 @@ public interface IPerkEntry
 
     int getNeedGold();
 
+    int getNeedLevel();
+
     void onBuy(Player player);
 
     void onWork(Player player);
