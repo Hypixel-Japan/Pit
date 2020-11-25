@@ -28,6 +28,18 @@ public class Items
     public static final String perkItem = ChatColor.GRAY + ChatColor.ITALIC.toString() + "Perk item";
     public static final String specialItem = ChatColor.YELLOW + "Special item";
 
+    public static ItemStack unDisplayName(ItemStack b, String append)
+    {
+        ItemStack copy = b.clone();
+        ItemMeta meta = copy.getItemMeta();
+        if (meta.getDisplayName() == null || meta.getDisplayName().equals(""))
+            meta.setDisplayName(append);
+        else
+            meta.setDisplayName(append + meta.getDisplayName());
+        copy.setItemMeta(meta);
+        return  copy;
+    }
+
     public static ItemStack setDisplayName(ItemStack b, String name)
     {
         ItemStack copy = b.clone();

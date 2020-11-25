@@ -9,3 +9,4 @@ commands:
   oof:
   pvpd:
     aliases: ["debug", "pitdebug", "pdb"]
+  view:

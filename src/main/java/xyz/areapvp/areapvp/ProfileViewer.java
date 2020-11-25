@@ -2,15 +2,29 @@ package xyz.areapvp.areapvp;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import xyz.areapvp.areapvp.level.PlayerInfo;
+import xyz.areapvp.areapvp.level.PlayerModify;
+import xyz.areapvp.areapvp.perk.Perks;
+
+import java.util.Collections;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.IntStream;
 
 public class ProfileViewer
 {
-    static void viewPlayer(Player player, Player viewer)
+    public static void viewPlayer(Player player, Player viewer)
     {
+        if (player == null)
+            return;
+
+        PlayerInfo info = PlayerModify.getInfo(player);
+
         Inventory inventory = Bukkit.createInventory(null, 45, "Profile Viewer");
         //Armor
         inventory.setItem(0, Items.addMetaData(player.getInventory().getHelmet(), "AreaPvP::NotPickable", "true"));
@@ -34,6 +48,27 @@ public class ProfileViewer
                         "AreaPvP::NotPickable", "true"
                 )
         );
+        if (info == null)
+        {
+            viewer.openInventory(inventory);
+            AreaPvP.gui.put(viewer.getUniqueId(), "profile");
+            return;
+        }
+
+        int[] i = {12};
+
+        info.perk.parallelStream()
+                .forEach(s -> inventory.setItem(++i[0],
+                        Items.lore(Items.addMetaData(Objects.requireNonNull(Perks.getPerk(s)).getItem(),
+                                "AreaPvP::NotPickable", "true")
+                                , Collections.emptyList())));
+        IntStream.range(0, 4).forEach(value -> {
+            if (inventory.getItem(value + 13) == null)
+                inventory.setItem(value + 13, Items.setDisplayName(
+                        Items.addMetaData(new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15), "AreaPvP::notPickable", "1b"),
+                        ChatColor.YELLOW + "#" + (value + 1) + " Perk slot"));
+        });
+
 
         viewer.openInventory(inventory);
         AreaPvP.gui.put(viewer.getUniqueId(), "profile");

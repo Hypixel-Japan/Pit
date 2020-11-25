@@ -18,6 +18,7 @@ import xyz.areapvp.areapvp.command.Main;
 import xyz.areapvp.areapvp.command.Oof;
 import xyz.areapvp.areapvp.command.PitDebug;
 import xyz.areapvp.areapvp.command.Spawn;
+import xyz.areapvp.areapvp.command.View;
 import xyz.areapvp.areapvp.item.Items;
 import xyz.areapvp.areapvp.item.items.DiamondBoots;
 import xyz.areapvp.areapvp.item.items.DiamondChestPlate;
@@ -108,6 +109,7 @@ public class AreaPvP extends JavaPlugin
         getCommand("spawn").setExecutor(new Spawn());
         getCommand("oof").setExecutor(new Oof());
         getCommand("pvpd").setExecutor(new PitDebug());
+        getCommand("view").setExecutor(new View());
         saveDefaultConfig();
         config = getConfig();
         spawnloc = config.getInt("spawnLoc");
