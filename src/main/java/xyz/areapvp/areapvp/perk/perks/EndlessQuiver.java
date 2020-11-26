@@ -64,6 +64,6 @@ public class EndlessQuiver implements IPerkEntry
     @Override
     public void onWork(Player player)
     {
-        player.getInventory().addItem(new ItemStack(Material.ARROW,  3));
+        player.getInventory().addItem(new ItemStack(Material.ARROW, 3));
     }
 }

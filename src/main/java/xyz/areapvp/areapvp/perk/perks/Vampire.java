@@ -1,6 +1,5 @@
 package xyz.areapvp.areapvp.perk.perks;
 
-import org.apache.logging.log4j.core.appender.db.jpa.converter.ContextDataJsonAttributeConverter;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -11,8 +10,6 @@ import xyz.areapvp.areapvp.Items;
 import xyz.areapvp.areapvp.perk.IPerkEntry;
 
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class Vampire implements IPerkEntry
@@ -30,7 +27,7 @@ public class Vampire implements IPerkEntry
                 ChatColor.GRAY + "敵を倒したときの金りんごがなくなります。",
                 ChatColor.GRAY + "敵に攻撃をするたびに、" + ChatColor.RED + "0.5❤" + ChatColor.GRAY + "を回復します。",
                 ChatColor.GRAY + "敵を倒した時、" + ChatColor.RED + "回復 I" + ChatColor.GRAY + " が8秒間付与されます。"
-                );
+        );
     }
 
     @Override

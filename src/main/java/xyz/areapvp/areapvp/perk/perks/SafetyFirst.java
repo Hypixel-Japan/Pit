@@ -62,7 +62,7 @@ public class SafetyFirst implements IPerkEntry
         if (player.getInventory().getHelmet() == null)
             player.getInventory().setHelmet(getItem());
         else if (player.getInventory().getHelmet().getType() == Material.LEATHER_HELMET ||
-        player.getInventory().getHelmet().getType() == Material.GOLD_HELMET)
+                player.getInventory().getHelmet().getType() == Material.GOLD_HELMET)
         {
             ItemStack helm = player.getInventory().getHelmet().clone();
             player.getInventory().setHelmet(getItem());

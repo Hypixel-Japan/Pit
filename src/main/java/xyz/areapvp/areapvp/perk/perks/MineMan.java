@@ -1,6 +1,5 @@
 package xyz.areapvp.areapvp.perk.perks;
 
-import jdk.internal.dynalink.beans.StaticClass;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -34,7 +33,8 @@ public class MineMan implements IPerkEntry
     public List<String> getShopLore()
     {
         return Arrays.asList(ChatColor.GRAY + "丸石24個と" + ChatColor.AQUA + "ダイヤモンドのピッケル" + ChatColor.GREEN + "を",
-                ChatColor.GRAY + "スポーンします。", "", ChatColor.GRAY + "プレイヤーを倒した時、" + ChatColor.WHITE + "丸石を3個与えます。");
+                ChatColor.GRAY + "スポーンします。", "", ChatColor.GRAY + "プレイヤーを倒した時、" + ChatColor.WHITE + "丸石を3個与えます。"
+        );
     }
 
     @Override

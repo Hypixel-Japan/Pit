@@ -18,7 +18,6 @@ import xyz.areapvp.areapvp.item.IShopItem;
 import xyz.areapvp.areapvp.level.PlayerInfo;
 import xyz.areapvp.areapvp.level.PlayerModify;
 import xyz.areapvp.areapvp.perk.IPerkEntry;
-import xyz.areapvp.areapvp.perk.Perk;
 import xyz.areapvp.areapvp.perk.PerkInventory;
 import xyz.areapvp.areapvp.perk.Perks;
 

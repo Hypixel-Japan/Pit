@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
@@ -29,7 +28,7 @@ public class PerkProcess implements Listener
     @EventHandler
     private static void onHit(EntityDamageByEntityEvent e)
     {
-        if (!(e.getDamager() instanceof Player) || !(e.getEntity() instanceof  Player))
+        if (!(e.getDamager() instanceof Player) || !(e.getEntity() instanceof Player))
             return;
 
         Player hitter = (Player) e.getDamager();
@@ -75,7 +74,6 @@ public class PerkProcess implements Listener
                 .filter(stack -> stack != null && stack.getType() == type)
                 .mapToLong(ItemStack::getAmount).sum();
     }
-
 
     public static long countItem(Player player, String meta)
     {

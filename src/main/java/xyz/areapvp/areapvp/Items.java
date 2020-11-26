@@ -37,7 +37,7 @@ public class Items
         else
             meta.setDisplayName(append + meta.getDisplayName());
         copy.setItemMeta(meta);
-        return  copy;
+        return copy;
     }
 
     public static ItemStack setDisplayName(ItemStack b, String name)

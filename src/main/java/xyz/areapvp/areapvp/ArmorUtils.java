@@ -1,29 +1,9 @@
 package xyz.areapvp.areapvp;
 
-import com.sun.org.apache.bcel.internal.generic.RETURN;
 import org.bukkit.inventory.ItemStack;
 
 public class ArmorUtils
 {
-    enum ArmorType
-    {
-        HELMET,
-        CHESTPLATE,
-        LEGGINGS,
-        BOOTS,
-        UNKNOWN
-    }
-
-    enum MaterialType
-    {
-        DIAMOND,
-        IRON,
-        GOLD,
-        LEATHER,
-        CHAIN,
-        UNKNOWN
-    }
-
     public static MaterialType getMaterialType(ItemStack stack)
     {
         if (stack == null)
@@ -86,7 +66,7 @@ public class ArmorUtils
         }
     }
 
-    public static boolean hasStrong(ItemStack stack,  ItemStack stack2)
+    public static boolean hasStrong(ItemStack stack, ItemStack stack2)
     {
         if (stack == null)
             return true;
@@ -151,5 +131,24 @@ public class ArmorUtils
             default:
                 return -1;
         }
+    }
+
+    enum ArmorType
+    {
+        HELMET,
+        CHESTPLATE,
+        LEGGINGS,
+        BOOTS,
+        UNKNOWN
+    }
+
+    enum MaterialType
+    {
+        DIAMOND,
+        IRON,
+        GOLD,
+        LEATHER,
+        CHAIN,
+        UNKNOWN
     }
 }

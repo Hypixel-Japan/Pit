@@ -29,7 +29,6 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.vehicle.VehicleEntityCollisionEvent;
@@ -128,7 +127,6 @@ public class Events implements Listener
         if (e.getHitEntity().getLocation().getY() >= AreaPvP.spawnloc)
             ((Player) e.getHitEntity()).setNoDamageTicks(100);
     }
-
 
     @EventHandler
     public void onArrowHit(EntityDamageByEntityEvent e)

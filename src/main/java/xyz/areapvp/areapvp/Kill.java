@@ -104,7 +104,7 @@ public class Kill
                     finalCK.spigot().sendMessage(ChatMessageType.ACTION_BAR, new ComponentBuilder(ChatColor.GRAY + deather.getName() + " " + ChatColor.GREEN + ChatColor.BOLD + "KILL!").create());
                 }
             }.runTask(AreaPvP.getPlugin());
-         }
+        }
     }
 
     public static boolean hasReduce(Player player)

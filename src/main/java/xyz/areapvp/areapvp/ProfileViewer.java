@@ -1,18 +1,11 @@
 package xyz.areapvp.areapvp;
 
-import jdk.nashorn.internal.runtime.options.OptionTemplate;
-import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.metadata.MetadataValue;
-import sun.font.CharToGlyphMapper;
 import xyz.areapvp.areapvp.level.Exp;
 import xyz.areapvp.areapvp.level.PlayerInfo;
 import xyz.areapvp.areapvp.level.PlayerModify;
@@ -22,9 +15,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
 public class ProfileViewer
@@ -69,15 +60,19 @@ public class ProfileViewer
         int[] i = {12};
 
         info.perk.parallelStream()
-                .forEach(s -> inventory.setItem(++i[0],
+                .forEach(s -> inventory.setItem(
+                        ++i[0],
                         Items.lore(Items.addMetaData(Objects.requireNonNull(Perks.getPerk(s)).getItem(),
-                                "AreaPvP::NotPickable", "true")
-                                , Collections.emptyList())));
+                                "AreaPvP::NotPickable", "true"
+                                )
+                                , Collections.emptyList())
+                ));
         IntStream.range(0, 4).forEach(value -> {
             if (inventory.getItem(value + 13) == null)
                 inventory.setItem(value + 13, Items.setDisplayName(
                         Items.addMetaData(new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15), "AreaPvP::notPickable", "1b"),
-                        ChatColor.YELLOW + "#" + (value + 1) + " Perk slot"));
+                        ChatColor.YELLOW + "#" + (value + 1) + " Perk slot"
+                ));
         });
         //NameTag
         ItemStack stack = new ItemStack(Material.NAME_TAG);
@@ -98,29 +93,44 @@ public class ProfileViewer
 
         stack = Items.lore(stack, Arrays.asList(
                 ChatColor.GRAY + "Gold: " + ChatColor.GOLD + decimalOf + "g",
-                ChatColor.GRAY + "Total XP: " + ChatColor.AQUA + exp + " XP"));
+                ChatColor.GRAY + "Total XP: " + ChatColor.AQUA + exp + " XP"
+        ));
 
         inventory.setItem(21, stack);
         //Inventory
-        inventory.setItem(23,
-                Items.addMetaData(Items.lore(Items.setDisplayName(Items.addMetaData(new ItemStack(Material.CHEST),
-                        "AreaPvP::type", "inv"),
-                        ChatColor.GREEN + "Invenotry"),
+        inventory.setItem(
+                23,
+                Items.addMetaData(Items.lore(
+                        Items.setDisplayName(
+                                Items.addMetaData(new ItemStack(Material.CHEST),
+                                        "AreaPvP::type", "inv"
+                                ),
+                                ChatColor.GREEN + "Invenotry"
+                        ),
                         Arrays.asList(
                                 ChatColor.GRAY + "プレイヤーのインベントリをチェックします！",
                                 "",
                                 ChatColor.YELLOW + "クリックして開く！"
-                        )), "AreaPvP::uuid", player.getUniqueId().toString()));
+                        )
+                ), "AreaPvP::uuid", player.getUniqueId().toString())
+        );
         //EnderChest
-        inventory.setItem(24,
-                Items.addMetaData(Items.lore(Items.setDisplayName(Items.addMetaData(new ItemStack(Material.ENDER_CHEST),
-                        "AreaPvP::type", "ender"),
-                        ChatColor.DARK_PURPLE + "Ender Chest"),
+        inventory.setItem(
+                24,
+                Items.addMetaData(Items.lore(
+                        Items.setDisplayName(
+                                Items.addMetaData(new ItemStack(Material.ENDER_CHEST),
+                                        "AreaPvP::type", "ender"
+                                ),
+                                ChatColor.DARK_PURPLE + "Ender Chest"
+                        ),
                         Arrays.asList(
                                 ChatColor.GRAY + "プレイヤーのエンダーチェストをチェックします！",
                                 "",
                                 ChatColor.YELLOW + "クリックして開く！"
-                        )), "AreaPvP::uuid", player.getUniqueId().toString()));
+                        )
+                ), "AreaPvP::uuid", player.getUniqueId().toString())
+        );
 
         viewer.openInventory(inventory);
         AreaPvP.gui.put(viewer.getUniqueId(), "profile");
@@ -132,7 +142,7 @@ public class ProfileViewer
         if (player == null)
             return inventory;
         IntStream.range(0, 35)
-                .forEach(value ->{
+                .forEach(value -> {
                     ItemStack stack = player.getInventory().getItem(value);
                     if (stack == null)
                         inventory.addItem(new ItemStack(Material.AIR));
@@ -146,7 +156,7 @@ public class ProfileViewer
     {
         Inventory inventory = Bukkit.createInventory(null, 27, "エンダーチェスト");
         IntStream.range(0, 26)
-                .forEach(value ->{
+                .forEach(value -> {
                     ItemStack stack = player.getEnderChest().getItem(value);
                     if (stack == null)
                         inventory.addItem(new ItemStack(Material.AIR));

@@ -261,8 +261,10 @@ public class PlayerModify
         AtomicReference<Optional<MetadataValue>> val = new AtomicReference<>(Optional.empty());
         entity.getMetadata(key)
                 .parallelStream()
-                .forEach(value -> {if(value.getOwningPlugin().getName().equals(AreaPvP.getPlugin().getName()))
-                        val.set(Optional.of(value));});
+                .forEach(value -> {
+                    if (value.getOwningPlugin().getName().equals(AreaPvP.getPlugin().getName()))
+                        val.set(Optional.of(value));
+                });
         return val.get();
     }
 
