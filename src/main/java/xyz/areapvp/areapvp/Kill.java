@@ -52,6 +52,11 @@ public class Kill
         st.remove(player.getUniqueId());
     }
 
+    public static void processKill(final Player deather)
+    {
+        processKill(null, deather);
+    }
+
     public static void processKill(final Player killer, final Player deather)
     {
         if (deather.isDead())
@@ -88,10 +93,18 @@ public class Kill
                 unknownRestart(deather);
                 return;
             }
-            PerkProcess.onKill(deather);
-            process(cK, deather);
-            cK.spigot().sendMessage(ChatMessageType.ACTION_BAR, new ComponentBuilder(ChatColor.GRAY + deather.getName() + " " + ChatColor.GREEN + ChatColor.BOLD + "KILL!").create());
-        }
+            Player finalCK = cK;
+            new BukkitRunnable()
+            {
+                @Override
+                public void run()
+                {
+                    PerkProcess.onKill(deather);
+                    process(finalCK, deather);
+                    finalCK.spigot().sendMessage(ChatMessageType.ACTION_BAR, new ComponentBuilder(ChatColor.GRAY + deather.getName() + " " + ChatColor.GREEN + ChatColor.BOLD + "KILL!").create());
+                }
+            }.runTask(AreaPvP.getPlugin());
+         }
     }
 
     public static boolean hasReduce(Player player)

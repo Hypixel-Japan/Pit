@@ -74,6 +74,6 @@ public class Vampire implements IPerkEntry
     {
         if (player.hasPotionEffect(PotionEffectType.REGENERATION))
             player.removePotionEffect(PotionEffectType.REGENERATION);
-        player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 180, 1, false));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 180, 0, false));
     }
 }

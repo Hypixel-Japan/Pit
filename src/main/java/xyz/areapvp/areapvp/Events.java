@@ -82,8 +82,7 @@ public class Events implements Listener
     @EventHandler
     public void onKill(PlayerDeathEvent e)
     {
-        Player killer = e.getEntity().getKiller();
-        Kill.processKill(killer, e.getEntity());
+        Kill.processKill(e.getEntity());
     }
 
     @EventHandler
