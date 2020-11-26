@@ -51,7 +51,7 @@ public class SafetyFirst implements IPerkEntry
     @Override
     public void onRemove(Player player)
     {
-        if (player.getInventory().getHelmet().getType() == Material.CHAINMAIL_HELMET)
+        if (player.getInventory().getHelmet() != null && player.getInventory().getHelmet().getType() == Material.CHAINMAIL_HELMET)
             player.getInventory().setHelmet(new ItemStack(Material.AIR));
         player.getInventory().remove(Material.CHAINMAIL_HELMET);
     }
