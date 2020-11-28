@@ -32,7 +32,7 @@ public class PlayerInfo
     /**
      * 参考: http://lovedvoraklayout.hatenablog.com/entry/roman-numerals-to-arabic
      */
-    private static String arabicToRoman(int n)
+    public static String arabicToRoman(int n)
     {
         if (n <= 0)
             return "";

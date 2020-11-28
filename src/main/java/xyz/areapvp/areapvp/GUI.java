@@ -55,10 +55,16 @@ public class GUI implements Listener
                     e.getPlayer().sendMessage(ChatColor.GREEN + "アイテムショップを作成しました。");
                     return;
                 }
-                if (e.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals(ChatColor.RED + "PerkShop Creator 3000"))
+                else if (e.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals(ChatColor.RED + "PerkShop Creator 3000"))
                 {
                     e.getRightClicked().addScoreboardTag("areaPvP::Perk");
                     e.getPlayer().sendMessage(ChatColor.GREEN + "Perkショップを作成しました。");
+                    return;
+                }
+                else if (e.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals(ChatColor.RED + "Prestige Creator 3000™"))
+                {
+                    e.getRightClicked().addScoreboardTag("areaPvP::Prestige");
+                    e.getPlayer().sendMessage(ChatColor.GREEN + "PrestigeNPCを作成しました。");
                     return;
                 }
             }
@@ -87,6 +93,7 @@ public class GUI implements Listener
                 AreaPvP.gui.put(e.getPlayer().getUniqueId(), "firstPerk");
                 Shop.openPerkInventory(e.getPlayer());
                 break;
+
         }
     }
 

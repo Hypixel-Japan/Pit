@@ -6,6 +6,9 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.PluginCommand;
+import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -35,10 +38,12 @@ import xyz.areapvp.areapvp.perk.perks.SafetyFirst;
 import xyz.areapvp.areapvp.perk.perks.Streaker;
 import xyz.areapvp.areapvp.perk.perks.Vampire;
 
+import java.lang.reflect.Field;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 public class AreaPvP extends JavaPlugin
 {
@@ -120,6 +125,8 @@ public class AreaPvP extends JavaPlugin
         getCommand("oof").setExecutor(new Oof());
         getCommand("pvpd").setExecutor(new PitDebug());
         getCommand("view").setExecutor(new View());
+        if (Bukkit.getPluginManager().isPluginEnabled("CmdSender") && Bukkit.getPluginCommand("cmdsender") != null)
+            unRegisterBukkitCommand(Bukkit.getPluginCommand("cmdsender"));
         saveDefaultConfig();
         config = getConfig();
         spawnloc = config.getInt("spawnLoc");
@@ -222,5 +229,39 @@ public class AreaPvP extends JavaPlugin
         if (data != null)
             data.close();
         blockPlace.keySet().forEach((b) -> b.getWorld().getBlockAt(b).setType(Material.AIR));
+    }
+
+    private static Object getPrivateField(Object object, String field)throws SecurityException,
+            NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+        Class<?> clazz = object.getClass();
+        Field objectField = clazz.getDeclaredField(field);
+        objectField.setAccessible(true);
+        Object result = objectField.get(object);
+        objectField.setAccessible(false);
+        return result;
+    }
+
+    public static void unRegisterBukkitCommand(PluginCommand cmd)
+    {
+        try
+        {
+            Object result = getPrivateField(Bukkit.getPluginManager(), "commandMap");
+            SimpleCommandMap commandMap = (SimpleCommandMap) result;
+            Object map = getPrivateField(commandMap, "knownCommands");
+            @SuppressWarnings("unchecked")
+            HashMap<String, Command> knownCommands = (HashMap<String, Command>) map;
+            knownCommands.remove(cmd.getName());
+            for (String alias : cmd.getAliases())
+            {
+                if (knownCommands.containsKey(alias) && knownCommands.get(alias).toString().contains("CmdSender"))
+                {
+                    knownCommands.remove(alias);
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 }

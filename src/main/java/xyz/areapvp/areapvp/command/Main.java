@@ -22,7 +22,7 @@ public class Main implements CommandExecutor
 
         if (args.length != 1)
         {
-            sender.sendMessage(ChatColor.RED + "エラー！ 引数の数が不正です！");
+            sender.sendMessage(ChatColor.RED + "エラー！ 引数の数が不正です！使用法:/areapvp <shop|perk|prestige>");
         }
 
         switch (args[0])
@@ -55,6 +55,18 @@ public class Main implements CommandExecutor
                 ((Player) sender).getInventory().addItem(stack);
                 break;
             }
+            case "prestige":
+                if (!(sender instanceof Player))
+                {
+                    sender.sendMessage(ChatColor.RED + "エラー！プレイヤーからのみ実行できます！");
+                    return true;
+                }
+                ItemStack stack = new ItemStack(Material.STICK);
+                ItemMeta meta = stack.getItemMeta();
+                meta.setDisplayName(ChatColor.RED + "Prestige Creator 3000™");
+                stack.setItemMeta(meta);
+                ((Player) sender).getInventory().addItem(stack);
+                break;
             default:
                 sender.sendMessage(ChatColor.RED + "不明なコマンドです！引数を確認してください！");
         }

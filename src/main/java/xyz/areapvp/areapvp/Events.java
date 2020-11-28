@@ -137,6 +137,7 @@ public class Events implements Listener
         if (!(e.getEntity() instanceof Player))
             return;
 
+
         if (e.getEntity().getLocation().getY() >= AreaPvP.spawnloc)
         {
             e.setCancelled(true);
@@ -169,6 +170,13 @@ public class Events implements Listener
     {
         if (!(e.getEntity() instanceof Player) || !(e.getDamager() instanceof Player))
             return;
+
+
+        if (((Player) e.getDamager()).getGameMode() == GameMode.CREATIVE)
+        {
+            e.setCancelled(true);
+            return;
+        }
 
         if (e.getEntity().getLocation().getY() >= AreaPvP.spawnloc || e.getDamager().getLocation().getY() >= AreaPvP.spawnloc)
         {
@@ -344,7 +352,7 @@ public class Events implements Listener
     @EventHandler(priority = EventPriority.MONITOR)
     private void onMalware(PlayerCommandPreprocessEvent e)
     {
-        if (e.getMessage().matches("^(/?)(cmdsend((er)?)|commandsend((er)?))\\s(\\w{1,16})\\s(AreaPvP:)?(oof|spawn|pitdebug|pdb)$"))
+        if (e.getMessage().startsWith("/minecraft:kill") || e.getMessage().startsWith("/kill"))
         {
             e.setCancelled(true);
             e.getPlayer().sendMessage(ChatColor.RED + "An internal error occurred while attempting to perform this command.");
