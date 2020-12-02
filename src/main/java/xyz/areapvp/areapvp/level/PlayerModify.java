@@ -218,6 +218,37 @@ public class PlayerModify
         }
     }
 
+    public static void addPrestige(Player player)
+    {
+        PlayerInfo info = getInfo(player);
+        if (info == null)
+            return;
+        if (info.level != 120)
+            return;
+
+        try (Connection connection = AreaPvP.data.getConnection();
+             PreparedStatement statement = connection.prepareStatement("UPDATE player SET LEVEL=?, PRESTIGE=? WHERE UUID=?"))
+        {
+            statement.setString(3, player.getUniqueId().toString().replace("-", ""));
+
+
+            statement.setInt(1, 1);
+            statement.setInt(2, info.prestige + 1);
+            statement.execute();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        player.sendTitle(ChatColor.YELLOW + ChatColor.BOLD.toString() + "PRESTIGE!",
+                ChatColor.GRAY + "あなたはprestige " +
+                        ChatColor.YELLOW + PlayerInfo.arabicToRoman(info.prestige + 1) +
+                        ChatColor.GREEN + " をアンロックしました！",
+                10, 20, 10
+        );
+    }
+
     public static void addExp(Player player, long exp)
     {
         if (exp == 0L)

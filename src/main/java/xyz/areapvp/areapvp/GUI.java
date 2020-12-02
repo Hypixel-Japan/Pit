@@ -93,6 +93,9 @@ public class GUI implements Listener
                 AreaPvP.gui.put(e.getPlayer().getUniqueId(), "firstPerk");
                 Shop.openPerkInventory(e.getPlayer());
                 break;
+            case "prestige":
+                Prestige.openInventry(e.getPlayer());
+                break;
 
         }
     }
@@ -256,6 +259,9 @@ public class GUI implements Listener
                 break;
             case "profile":
                 ProfileViewer.onPickUp(player, item);
+                break;
+            case "prestige":
+                Prestige.onPickUp(player, item);
                 break;
         }
 
