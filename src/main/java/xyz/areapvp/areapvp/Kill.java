@@ -100,6 +100,7 @@ public class Kill
                 public void run()
                 {
                     PerkProcess.onKill(deather);
+                    Sounds.play(finalCK, Sounds.SoundType.KILL);
                     process(finalCK, deather);
                     finalCK.spigot().sendMessage(ChatMessageType.ACTION_BAR, new ComponentBuilder(ChatColor.GRAY + deather.getName() + " " + ChatColor.GREEN + ChatColor.BOLD + "KILL!").create());
                 }

@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffectType;
 import xyz.areapvp.areapvp.AreaPvP;
+import xyz.areapvp.areapvp.InventoryUtils;
 
 public class Spawn implements CommandExecutor
 {
@@ -45,6 +46,7 @@ public class Spawn implements CommandExecutor
             player.removePotionEffect(PotionEffectType.REGENERATION);
             player.removePotionEffect(PotionEffectType.ABSORPTION);
             player.removePotionEffect(PotionEffectType.SPEED);
+            InventoryUtils.onRespawn(player);
             player.setMetadata("x-spawn", new FixedMetadataValue(AreaPvP.getPlugin(), 15));
         }
         return true;

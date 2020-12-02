@@ -150,6 +150,7 @@ public class Events implements Listener
             return;
 
         ((Player) arrow.getShooter()).setMetadata("x-hitted", new FixedMetadataValue(AreaPvP.getPlugin(), 15));
+        Sounds.play((Player) arrow.getShooter(), Sounds.SoundType.ARROW_HIT);
         e.getEntity().setMetadata("x-hitted", new FixedMetadataValue(AreaPvP.getPlugin(), 15));
         e.getEntity().setMetadata("x-hitter", new FixedMetadataValue(AreaPvP.getPlugin(), ((Player) arrow.getShooter()).getUniqueId()));
         if (!((Player) arrow.getShooter()).hasMetadata("damageDebug"))

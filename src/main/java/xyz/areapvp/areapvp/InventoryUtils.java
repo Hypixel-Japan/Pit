@@ -8,6 +8,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import xyz.areapvp.areapvp.perk.Perk;
 import xyz.areapvp.areapvp.perk.Perks;
+import xyz.areapvp.areapvp.perk.perks.GoldenHead;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,6 +45,12 @@ public class InventoryUtils
             Objects.requireNonNull(Perks.getPerk("safetyFirst")).onRemove(player);
             Objects.requireNonNull(Perks.getPerk("safetyFirst")).onBuy(player);
         }
+    }
+
+    public static void onRespawn(Player player)
+    {
+        player.getInventory().remove(Objects.requireNonNull(Perks.getPerk("gHead")).getItem());
+        player.getInventory().remove(Material.GOLDEN_APPLE);
     }
 
     public static void reItem(Player player)
