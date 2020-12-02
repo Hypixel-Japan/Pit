@@ -3,6 +3,7 @@ package xyz.areapvp.areapvp;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -60,15 +61,15 @@ public class Prestige
     {
         Inventory inventory = Bukkit.createInventory(null, 27, "Are you sure?");
         inventory.setItem(11,
-                Items.addMetaData(Items.addMetaData(Items.lore(Items.setDisplayName(new ItemStack(Material.STAINED_CLAY, 1, (short) 2),
+                Items.addMetaData(Items.addMetaData(Items.lore(Items.setDisplayName(new ItemStack(Material.STAINED_CLAY, 1, (short) 13),
                         ChatColor.DARK_GREEN + "Confirm"), Arrays.asList(getCautionLore()))
                         , "action", "prestige")
-                        , "do", "confirm"));
+                        , "phase", "confirm"));
         inventory.setItem(15,
-                Items.addMetaData(Items.addMetaData(Items.setDisplayName(new ItemStack(Material.STAINED_CLAY, 1, (short) 4),
+                Items.addMetaData(Items.addMetaData(Items.setDisplayName(new ItemStack(Material.STAINED_CLAY, 1, (short) 14),
                         ChatColor.DARK_RED + "Cancel"),
                         "action", "prestige"),
-                        "do", "cancel"));
+                        "phase", "cancel"));
         return inventory;
     }
 
@@ -85,6 +86,15 @@ public class Prestige
                 switch (phase)
                 {
                     case "do":
+                        PlayerInfo info = PlayerModify.getInfo(player);
+                        if (info == null)
+                            return;
+                        if (info.level < 120)
+                        {
+                            player.sendMessage(ChatColor.RED + "あなたはまだPrestigeできません！");
+                            return;
+                        }
+
                         player.openInventory(getConfirmPresInventory(player));
                         AreaPvP.gui.put(player.getUniqueId(), "prestige");
                         return;

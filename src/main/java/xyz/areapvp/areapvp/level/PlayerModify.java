@@ -201,7 +201,7 @@ public class PlayerModify
         if (info == null)
             return;
 
-        if (!info.perk.contains(perk))
+        if (!perk.equals("*") && !info.perk.contains(perk))
             return;
 
         try (Connection connection = AreaPvP.data.getConnection();
@@ -218,28 +218,62 @@ public class PlayerModify
         }
     }
 
-    public static void addPrestige(Player player)
+    public static void clearOwnPerk(Player player)
     {
-        PlayerInfo info = getInfo(player);
-        if (info == null)
-            return;
-        if (info.level != 120)
-            return;
-
         try (Connection connection = AreaPvP.data.getConnection();
-             PreparedStatement statement = connection.prepareStatement("UPDATE player SET LEVEL=?, PRESTIGE=? WHERE UUID=?"))
+             PreparedStatement statement = connection.prepareStatement("DELETE FROM holdperk WHERE UUID=?"))
         {
-            statement.setString(3, player.getUniqueId().toString().replace("-", ""));
-
-
-            statement.setInt(1, 1);
-            statement.setInt(2, info.prestige + 1);
+            statement.setString(1, player.getUniqueId().toString().replace("-", ""));
             statement.execute();
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
+    }
+
+    public static void clearPerk(Player player)
+    {
+        try (Connection connection = AreaPvP.data.getConnection();
+             PreparedStatement statement = connection.prepareStatement("DELETE FROM perk WHERE UUID=?"))
+        {
+            statement.setString(1, player.getUniqueId().toString().replace("-", ""));
+            statement.execute();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public static void addPrestige(Player player)
+    {
+        PlayerInfo info = getInfo(player);
+        if (info == null)
+            return;
+        if (info.level < 120)
+            return;
+
+        try (Connection connection = AreaPvP.data.getConnection();
+             PreparedStatement statement = connection.prepareStatement("UPDATE player SET LEVEL=?, PRESTIGE=?, EXP=? WHERE UUID=?"))
+        {
+            statement.setString(4, player.getUniqueId().toString().replace("-", ""));
+
+
+            statement.setInt(1, 1);
+            statement.setInt(2, info.prestige + 1);
+            statement.setInt(3, 0);
+            statement.execute();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return;
+        }
+
+        clearOwnPerk(player);
+        clearPerk(player);
+        AreaPvP.economy.withdrawPlayer(player, AreaPvP.economy.getBalance(player));
 
         player.sendTitle(ChatColor.YELLOW + ChatColor.BOLD.toString() + "PRESTIGE!",
                 ChatColor.GRAY + "あなたはprestige " +
@@ -279,7 +313,10 @@ public class PlayerModify
                 int l = add - 1;
                 if (l == 0)
                     break;
-                addLevel(player, l, xp);
+                if (info.level + l >= 120)
+                    addLevel(player, info.level - 120, 0);
+                else
+                    addLevel(player, l, xp);
                 break;
             }
             xp = xp - a;
