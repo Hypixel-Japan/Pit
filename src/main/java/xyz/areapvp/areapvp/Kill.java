@@ -158,7 +158,7 @@ public class Kill
                 if (getStreak(killer.getUniqueId()) > 40)
                     bonus += new Random().nextInt(50) + 40;
                 else if (getStreak(killer.getUniqueId()) + 1 > 5)
-                    bonus += new Random().nextInt(7) + 261;
+                    bonus += new Random().nextInt(7);
 
                 if (Perk.contains(killer, "streaker"))
                     exp += (bonus * 3);
