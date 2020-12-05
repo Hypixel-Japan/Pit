@@ -23,6 +23,7 @@ public class Main implements CommandExecutor
         if (args.length != 1)
         {
             sender.sendMessage(ChatColor.RED + "エラー！ 引数の数が不正です！使用法:/areapvp <shop|perk|prestige>");
+            return true;
         }
 
         switch (args[0])
