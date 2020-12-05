@@ -1,16 +1,24 @@
 package xyz.areapvp.areapvp.perk;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.block.EnderChest;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryAction;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.potion.PotionEffect;
@@ -25,8 +33,56 @@ import java.util.UUID;
 
 public class PerkProcess implements Listener
 {
+
     @EventHandler
-    private static void onHit(EntityDamageByEntityEvent e)
+    private static void onInvClick(InventoryClickEvent e) //Ender-Chest
+    {
+        Player player = (Player) e.getWhoClicked();
+        if (!e.getInventory().equals(player.getEnderChest()))
+            return;
+
+        if (e.getAction() != InventoryAction.MOVE_TO_OTHER_INVENTORY)
+            return;
+
+        ItemStack itemStack = e.getCurrentItem();
+
+        String type;
+        if ((type = Items.getMetadata(itemStack, "enderChest")) == null)
+            return;
+
+        if (type.equals("false") || Items.hasMetadata(itemStack, "perk"))
+        {
+            e.setCancelled(true);
+            player.sendMessage(ChatColor.RED + "このアイテムはエンダーチェストに収納できません！");
+        }
+    }
+
+    @EventHandler
+    private static void onDrag(InventoryDragEvent e) //Ender-Chest
+    {
+        System.out.println("a");
+        Player player = (Player) e.getWhoClicked();
+        if (!e.getInventory().equals(player.getEnderChest()))
+            return;
+
+        ItemStack itemStack = e.getCursor();
+
+        if (itemStack == null)
+            return;
+
+        String type;
+        if ((type = Items.getMetadata(itemStack, "enderChest")) == null)
+            return;
+
+        if (type.equals("false") || Items.hasMetadata(itemStack, "perk"))
+        {
+            e.setCancelled(true);
+            player.sendMessage(ChatColor.RED + "このアイテムはエンダーチェストに収納できません！");
+        }
+    }
+
+    @EventHandler
+    private static void onHit(EntityDamageByEntityEvent e) //Vampire
     {
         if (!(e.getDamager() instanceof Player) || !(e.getEntity() instanceof Player))
             return;
@@ -42,7 +98,7 @@ public class PerkProcess implements Listener
     }
 
     @EventHandler
-    private static void onArrowHit(EntityDamageByEntityEvent e)
+    private static void onArrowHit(EntityDamageByEntityEvent e) //EndlessQuiver
     {
         if (e.getDamager().getType() != EntityType.ARROW)
             return;
@@ -84,7 +140,7 @@ public class PerkProcess implements Listener
                 .mapToLong(ItemStack::getAmount).sum();
     }
 
-    public static void onKill(Player deather)
+    public static void onKill(Player deather) //Vampire, G-Head, Gapple, MineMan
     {
         Player killer = deather.getKiller();
         if (killer == null)
@@ -122,7 +178,7 @@ public class PerkProcess implements Listener
     }
 
     @EventHandler
-    public static void onFood(PlayerItemConsumeEvent e)
+    public static void onFood(PlayerItemConsumeEvent e) //Gapple
     {
         String type;
         if ((type = Items.getMetadata(e.getItem(), "type")) == null)
@@ -156,7 +212,7 @@ public class PerkProcess implements Listener
     }
 
     @EventHandler
-    public static void onInteract(PlayerInteractEvent e)
+    public static void onInteract(PlayerInteractEvent e) //G-Head
     {
         Player player = e.getPlayer();
 
@@ -178,7 +234,7 @@ public class PerkProcess implements Listener
     }
 
     @EventHandler
-    public static void onDrop(PlayerDropItemEvent e)
+    public static void onDrop(PlayerDropItemEvent e) //Remove chain items
     {
         if (e.getItemDrop().getItemStack().getType() == Material.CHAINMAIL_BOOTS ||
                 e.getItemDrop().getItemStack().getType() == Material.CHAINMAIL_CHESTPLATE ||

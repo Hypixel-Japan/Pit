@@ -1,5 +1,6 @@
 package xyz.areapvp.areapvp.perk.perks;
 
+import jdk.internal.dynalink.beans.StaticClass;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -20,13 +21,14 @@ public class MineMan implements IPerkEntry
         stack.addEnchantment(Enchantment.DIG_SPEED, 4);
         stack = Items.noDrop(stack);
         stack = Items.setPerk(stack);
+        stack = Items.cantEnderChest(stack);
         return Items.setUnbreakable(stack);
     }
 
     @Override
     public ItemStack getItem()
     {
-        return Items.setPerk(Items.setUnbreakable(Items.noDrop(new ItemStack(Material.COBBLESTONE))));
+        return Items.cantEnderChest(Items.setPerk(Items.setUnbreakable(Items.noDrop(new ItemStack(Material.COBBLESTONE)))));
     }
 
     @Override
@@ -71,7 +73,7 @@ public class MineMan implements IPerkEntry
     @Override
     public void onBuy(Player player)
     {
-        player.getInventory().addItem(Items.noDrop(new ItemStack(Material.COBBLESTONE, 24)));
+        player.getInventory().addItem(Items.cantEnderChest(Items.noDrop(new ItemStack(Material.COBBLESTONE, 24))));
 
         player.getInventory().addItem(getPickaxe());
     }
@@ -79,6 +81,6 @@ public class MineMan implements IPerkEntry
     @Override
     public void onWork(Player player)
     {
-        player.getInventory().addItem(Items.noDrop(new ItemStack(Material.COBBLESTONE, 3)));
+        player.getInventory().addItem(Items.cantEnderChest(Items.noDrop(new ItemStack(Material.COBBLESTONE, 3))));
     }
 }

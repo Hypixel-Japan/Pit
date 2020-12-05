@@ -28,8 +28,8 @@ public class InventoryUtils
     public static void initItem(Player player)
     {
         PlayerInventory inventory = player.getInventory();
-        addOrElse(inventory, 0, Items.noDrop(Items.changeDamage(Items.setUnbreakable(new ItemStack(Material.IRON_SWORD)), 6)), true);
-        addOrElse(inventory, 1, Items.noDrop(Items.setUnbreakable(new ItemStack(Material.BOW))), true);
+        addOrElse(inventory, 0, Items.cantEnderChest(Items.noDrop(Items.changeDamage(Items.setUnbreakable(new ItemStack(Material.IRON_SWORD)), 6))), true);
+        addOrElse(inventory, 1, Items.cantEnderChest(Items.noDrop(Items.setUnbreakable(new ItemStack(Material.BOW)))), true);
         addOrElse(inventory, 8, new ItemStack(Material.ARROW, 32), true);
 
         if (inventory.getBoots() == null)
@@ -39,7 +39,7 @@ public class InventoryUtils
         if (inventory.getChestplate() == null)
             inventory.setChestplate(Items.setUnbreakable(new ItemStack(new Random().nextBoolean() ? Material.IRON_CHESTPLATE: Material.CHAINMAIL_CHESTPLATE)));
         if (Perk.contains(player, "mineMan"))
-            player.getInventory().addItem(Items.noDrop(new ItemStack(Material.COBBLESTONE, 24)));
+            player.getInventory().addItem(Items.cantEnderChest(Items.noDrop(new ItemStack(Material.COBBLESTONE, 24))));
         if (Perk.contains(player, "safetyFirst"))
         {
             Objects.requireNonNull(Perks.getPerk("safetyFirst")).onRemove(player);
@@ -51,6 +51,7 @@ public class InventoryUtils
     {
         player.getInventory().remove(Objects.requireNonNull(Perks.getPerk("gHead")).getItem());
         player.getInventory().remove(Material.GOLDEN_APPLE);
+        player.getInventory().remove(Material.ARROW);
     }
 
     public static void reItem(Player player)

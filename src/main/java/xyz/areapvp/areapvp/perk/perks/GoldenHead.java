@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import xyz.areapvp.areapvp.Items;
 import xyz.areapvp.areapvp.perk.IPerkEntry;
 
 import java.lang.reflect.Field;
@@ -48,6 +49,7 @@ public class GoldenHead implements IPerkEntry
                 ChatColor.GOLD + "3❤ ライフ!"
         ));
         stack.setItemMeta(meta);
+        stack = Items.cantEnderChest(stack);
         return stack;
     }
 

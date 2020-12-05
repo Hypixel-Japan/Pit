@@ -28,6 +28,11 @@ public class Items
     public static final String perkItem = ChatColor.GRAY + ChatColor.ITALIC.toString() + "Perk item";
     public static final String specialItem = ChatColor.YELLOW + "Special item";
 
+    public static ItemStack cantEnderChest(ItemStack b)
+    {
+        return addMetaData(b, "enderChest", "false");
+    }
+
     public static ItemStack unDisplayName(ItemStack b, String append)
     {
         ItemStack copy = b.clone();
