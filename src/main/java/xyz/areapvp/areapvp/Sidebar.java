@@ -40,7 +40,7 @@ public class Sidebar
             objective.getScore(ChatColor.WHITE + "Prestige: " + PlayerInfo.getPrestigeString(info.prestige)).setScore(9);
         objective.getScore(ChatColor.WHITE + "Level: " + PlayerInfo.getPrefix(info.level, info.prestige)).setScore(8);
 
-        long exp = Exp.getExp(info.level + 1, info.prestige) - info.exp;
+        long exp = Exp.getExp(info.level + (info.level == 119 ? 0: 1), info.prestige) - info.exp;
 
         objective.getScore(ChatColor.WHITE + (info.level != 120 ? "Needed": "") + " XP: " +
                 ChatColor.AQUA + (info.level != 120 ? String.format("%,d", exp): "MAXED!")).setScore(7);

@@ -108,7 +108,7 @@ public class PlayerModify
         try (Connection connection = AreaPvP.data.getConnection();
              PreparedStatement statement = connection.prepareStatement("UPDATE player SET LEVEL=?, EXP=? WHERE UUID=?"))
         {
-            statement.setInt(1, info.level + level);
+            statement.setInt(1, Math.min(info.level + level, 120));
             if (level == 0)
                 statement.setLong(2, info.exp + exp);
             else
@@ -123,7 +123,7 @@ public class PlayerModify
             return;
         player.sendTitle(ChatColor.AQUA + ChatColor.BOLD.toString() + "LEVEL UP!",
                 PlayerInfo.getPrefix(info.level, info.prestige) + ChatColor.GRAY + " → " +
-                        PlayerInfo.getPrefix(info.level + level, info.prestige),
+                        PlayerInfo.getPrefix(Math.min(info.level + level, 120), info.prestige),
                 10, 20, 10
         );
     }
@@ -296,32 +296,18 @@ public class PlayerModify
 
         long xp = info.exp + exp;
         int prestige = info.prestige;
-        int level = info.level;
+        long level = info.level;
 
-        int add = 1;
-
-        if (xp < Exp.getExp(level + add, prestige))
+        long nextWheat = 1L;
+        long next = Exp.getExp(Math.toIntExact(level + nextWheat), prestige);
+        if (Exp.getExp(Math.toIntExact(level), prestige) >= xp)
         {
             addLevel(player, 0, exp);
+            return;
         }
-
-        while (true)
-        {
-            long a = Exp.getExp(level + add, prestige);
-            if (a > xp)
-            {
-                int l = add - 1;
-                if (l == 0)
-                    break;
-                if (info.level + l >= 120)
-                    addLevel(player, info.level - 120, 0);
-                else
-                    addLevel(player, l, xp);
-                break;
-            }
-            xp = xp - a;
-            add++;
-        }
+        while (next < exp)
+            next += Exp.getExp(Math.toIntExact(level + ++nextWheat), prestige);
+        addLevel(player, Math.toIntExact(nextWheat), xp - Exp.getExp(Math.toIntExact(level + nextWheat), prestige));
     }
 
     public static Optional<MetadataValue> getMetaData(Entity entity, String key)
