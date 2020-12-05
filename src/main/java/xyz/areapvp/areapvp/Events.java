@@ -78,13 +78,13 @@ public class Events implements Listener
         return base.toString();
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onKill(PlayerDeathEvent e)
     {
         Kill.processKill(e.getEntity());
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerDamage(EntityDamageEvent e)
     {
         Entity ee = e.getEntity();
@@ -95,7 +95,7 @@ public class Events implements Listener
             e.setCancelled(true);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onArrow(ProjectileLaunchEvent e)
     {
         if (e.getEntity().getType() == EntityType.FISHING_HOOK)
@@ -117,7 +117,7 @@ public class Events implements Listener
         AreaPvP.arrows.put(arrow.getUniqueId(), 26);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onCaught(ProjectileHitEvent e)
     {
         if (!(e.getEntityType() == EntityType.FISHING_HOOK))
@@ -128,7 +128,7 @@ public class Events implements Listener
             ((Player) e.getHitEntity()).setNoDamageTicks(100);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onArrowHit(EntityDamageByEntityEvent e)
     {
         if (e.getDamager().getType() != EntityType.ARROW)
@@ -166,7 +166,7 @@ public class Events implements Listener
             );
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent e)
     {
         if (!(e.getEntity() instanceof Player) || !(e.getDamager() instanceof Player))
@@ -206,7 +206,7 @@ public class Events implements Listener
 
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onJoin(PlayerJoinEvent e)
     {
         Player player = e.getPlayer();
@@ -236,7 +236,7 @@ public class Events implements Listener
         InventoryUtils.reItem(player);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     private void onBreak(BlockBreakEvent e)
     {
         if (e.getPlayer().getGameMode() == GameMode.CREATIVE)
@@ -251,7 +251,7 @@ public class Events implements Listener
         e.setCancelled(true);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     private void onPlace(BlockPlaceEvent e)
     {
         if (e.getPlayer().getGameMode() == GameMode.CREATIVE)
@@ -281,19 +281,19 @@ public class Events implements Listener
         AreaPvP.blockPlace.put(e.getBlock().getLocation(), remove);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     private void onHungr(FoodLevelChangeEvent e)
     {
         e.setFoodLevel(19);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     private void onLeave(PlayerQuitEvent e)
     {
         AreaPvP.gui.remove(e.getPlayer().getUniqueId());
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     private void onClose(InventoryCloseEvent e)
     {
         if (e.getInventory() instanceof PlayerInventory)
@@ -301,7 +301,7 @@ public class Events implements Listener
         AreaPvP.gui.remove(e.getPlayer().getUniqueId());
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     private void onAsyncChat(AsyncPlayerChatEvent e)
     {
         PlayerInfo info = PlayerModify.getInfo(e.getPlayer());
@@ -320,7 +320,7 @@ public class Events implements Listener
                 .forEach(player -> player.sendMessage(full));
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     private void onCollision(VehicleEntityCollisionEvent e)
     {
         e.setCancelled(true);
@@ -340,7 +340,7 @@ public class Events implements Listener
         e.setCancelled(true);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     private void onDrop(PlayerDropItemEvent e)
     {
         if (Items.hasMetadata(e.getItemDrop().getItemStack(), "noDrop"))
@@ -353,14 +353,14 @@ public class Events implements Listener
     @EventHandler(priority = EventPriority.MONITOR)
     private void onMalware(PlayerCommandPreprocessEvent e)
     {
-        if (e.getMessage().startsWith("/minecraft:kill") || e.getMessage().startsWith("/kill"))
+        if (!AreaPvP.debugging && (e.getMessage().startsWith("/minecraft:kill") || e.getMessage().startsWith("/kill")))
         {
             e.setCancelled(true);
             e.getPlayer().sendMessage(ChatColor.RED + "An internal error occurred while attempting to perform this command.");
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     private void onPickup(EntityPickupItemEvent e)
     {
         if (!(e.getEntity() instanceof Player))

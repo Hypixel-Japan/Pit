@@ -43,13 +43,13 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 public class AreaPvP extends JavaPlugin
 {
     public static final String[] debugger = {"6b93a8e6-58ee-4794-b69a-56a3c2287010",
             "69e5aea0-dd5e-4cf8-8fca-d8b4dd8b2243",
             "36f2cdbc-77d5-45c7-a205-f5e8e6c0fb3b"};
+    public static boolean debugging = false;
 
     public static FileConfiguration config;
     public static AreaPvP plugin;

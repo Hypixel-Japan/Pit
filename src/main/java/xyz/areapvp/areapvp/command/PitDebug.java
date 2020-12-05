@@ -201,6 +201,10 @@ public class PitDebug implements CommandExecutor
 
         switch (args[0])
         {
+            case "debug":
+                AreaPvP.debugging = !AreaPvP.debugging;
+                sender.sendMessage(ChatColor.GREEN + "デバッグモード：" + AreaPvP.debugging);
+                break;
             case "exp":
             case "xp":
             case "gold":
