@@ -96,7 +96,7 @@ public class ProfileViewer
                 ChatColor.GRAY + "Total XP: " + ChatColor.AQUA + exp + " XP"
         ));
 
-        inventory.setItem(21, stack);
+        inventory.setItem(20, stack);
         //Inventory
         inventory.setItem(
                 23,
@@ -141,13 +141,11 @@ public class ProfileViewer
         Inventory inventory = Bukkit.createInventory(null, 36, "インベントリ");
         if (player == null)
             return inventory;
-        IntStream.range(0, 35)
+        IntStream.range(0, 36)
                 .forEach(value -> {
                     ItemStack stack = player.getInventory().getItem(value);
-                    if (stack == null)
-                        inventory.addItem(new ItemStack(Material.AIR));
-                    else
-                        inventory.addItem(Items.addMetaData(stack, "AreaPvP::NotPickable", "1b"));
+                    if (stack != null)
+                        inventory.setItem(value, Items.addMetaData(stack, "AreaPvP::NotPickable", "1b"));
                 });
         return inventory;
     }
@@ -158,10 +156,8 @@ public class ProfileViewer
         IntStream.range(0, 26)
                 .forEach(value -> {
                     ItemStack stack = player.getEnderChest().getItem(value);
-                    if (stack == null)
-                        inventory.addItem(new ItemStack(Material.AIR));
-                    else
-                        inventory.addItem(Items.addMetaData(stack, "AreaPvP::NotPickable", "1b"));
+                    if (stack != null)
+                        inventory.setItem(value, Items.addMetaData(stack, "AreaPvP::NotPickable", "1b"));
                 });
         return inventory;
     }
