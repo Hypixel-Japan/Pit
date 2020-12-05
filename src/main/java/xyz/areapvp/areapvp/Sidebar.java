@@ -98,6 +98,9 @@ public class Sidebar
 
         }
 
+        player.setLevel(info.level);
+        player.setExp(new BigDecimal(info.exp).divide(new BigDecimal(Exp.getExp(info.level, info.prestige) == 0 ? info.exp: Exp.getExp(info.level, info.prestige)), BigDecimal.ROUND_DOWN).floatValue());
+
         return board;
     }
 
