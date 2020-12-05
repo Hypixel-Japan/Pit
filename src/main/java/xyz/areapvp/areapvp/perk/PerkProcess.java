@@ -187,17 +187,12 @@ public class PerkProcess implements Listener
             return;
         }
 
-        e.setCancelled(true);
 
         Player player = e.getPlayer();
-
-        ItemStack stack = e.getItem().clone();
-        stack.setAmount(1);
 
         switch (type)
         {
             case "gapple":
-                player.getInventory().remove(stack);
                 if (player.hasPotionEffect(PotionEffectType.ABSORPTION))
                     player.removePotionEffect(PotionEffectType.ABSORPTION);
                 player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 114514, 1, false));
