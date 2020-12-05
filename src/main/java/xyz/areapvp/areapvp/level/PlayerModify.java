@@ -1,6 +1,9 @@
 package xyz.areapvp.areapvp.level;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftBat;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftCaveSpider;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -8,6 +11,7 @@ import org.bukkit.metadata.MetadataValue;
 import xyz.areapvp.areapvp.AreaPvP;
 import xyz.areapvp.areapvp.perk.Perk;
 
+import javax.annotation.Resource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -281,6 +285,10 @@ public class PlayerModify
                         ChatColor.GREEN + " をアンロックしました！",
                 10, 20, 10
         );
+        Bukkit.broadcastMessage(ChatColor.YELLOW + ChatColor.BOLD.toString() + "PRESTIGE! " +
+                ChatColor.RESET + ChatColor.GRAY + player.getName() + "さんが、prestige " +
+                ChatColor.YELLOW + PlayerInfo.arabicToRoman(info.prestige + 1) +
+                ChatColor.GRAY + " をアンロックしました。gg！");
     }
 
     public static void addExp(Player player, long exp)
