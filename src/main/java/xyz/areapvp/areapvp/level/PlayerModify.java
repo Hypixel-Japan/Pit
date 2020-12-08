@@ -1,24 +1,14 @@
 package xyz.areapvp.areapvp.level;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftBat;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftCaveSpider;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.metadata.MetadataValue;
-import xyz.areapvp.areapvp.AreaPvP;
-import xyz.areapvp.areapvp.perk.Perk;
+import org.bukkit.*;
+import org.bukkit.entity.*;
+import org.bukkit.metadata.*;
+import xyz.areapvp.areapvp.*;
+import xyz.areapvp.areapvp.perk.*;
 
-import javax.annotation.Resource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
+import java.sql.*;
+import java.util.*;
+import java.util.concurrent.atomic.*;
 
 public class PlayerModify
 {

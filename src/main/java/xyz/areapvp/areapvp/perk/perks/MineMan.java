@@ -1,6 +1,5 @@
 package xyz.areapvp.areapvp.perk.perks;
 
-import jdk.internal.dynalink.beans.StaticClass;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
