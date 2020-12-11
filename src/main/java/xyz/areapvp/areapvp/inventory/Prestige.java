@@ -1,14 +1,14 @@
-package xyz.areapvp.areapvp;
+package xyz.areapvp.areapvp.inventory;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import xyz.areapvp.areapvp.level.*;
+import xyz.areapvp.areapvp.*;
+import xyz.areapvp.areapvp.player.*;
 
 import java.util.Arrays;
 

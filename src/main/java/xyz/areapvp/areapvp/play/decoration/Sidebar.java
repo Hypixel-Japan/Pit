@@ -1,4 +1,4 @@
-package xyz.areapvp.areapvp;
+package xyz.areapvp.areapvp.play.decoration;
 
 import com.comphenix.protocol.*;
 import com.comphenix.protocol.events.*;
@@ -9,10 +9,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.v1_12_R1.entity.*;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.ScoreboardManager;
-import org.bukkit.scoreboard.Team;
-import xyz.areapvp.areapvp.level.*;
+import xyz.areapvp.areapvp.*;
+import xyz.areapvp.areapvp.play.*;
+import xyz.areapvp.areapvp.player.*;
 
 import java.lang.reflect.*;
 import java.math.BigDecimal;

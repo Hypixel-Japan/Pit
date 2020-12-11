@@ -8,39 +8,18 @@ import org.bukkit.command.Command;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Entity;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scoreboard.*;
 import xyz.areapvp.areapvp.command.Main;
 import xyz.areapvp.areapvp.command.Oof;
 import xyz.areapvp.areapvp.command.PitDebug;
 import xyz.areapvp.areapvp.command.Spawn;
 import xyz.areapvp.areapvp.command.View;
-import xyz.areapvp.areapvp.item.Items;
-import xyz.areapvp.areapvp.item.items.DiamondBoots;
-import xyz.areapvp.areapvp.item.items.DiamondChestPlate;
-import xyz.areapvp.areapvp.item.items.DiamondSword;
-import xyz.areapvp.areapvp.item.items.ItemAir;
-import xyz.areapvp.areapvp.item.items.Obsidian;
-import xyz.areapvp.areapvp.level.*;
+import xyz.areapvp.areapvp.events.*;
 import xyz.areapvp.areapvp.perk.PerkProcess;
-import xyz.areapvp.areapvp.perk.Perks;
-import xyz.areapvp.areapvp.perk.perks.EndlessQuiver;
-import xyz.areapvp.areapvp.perk.perks.FishingRod;
-import xyz.areapvp.areapvp.perk.perks.GoldenHead;
-import xyz.areapvp.areapvp.perk.perks.MineMan;
-import xyz.areapvp.areapvp.perk.perks.SafetyFirst;
-import xyz.areapvp.areapvp.perk.perks.Streaker;
-import xyz.areapvp.areapvp.perk.perks.Vampire;
 
 import java.lang.reflect.Field;
-import java.sql.Statement;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.UUID;
 
 public class AreaPvP extends JavaPlugin
@@ -65,53 +44,6 @@ public class AreaPvP extends JavaPlugin
         return plugin;
     }
 
-    private static void initShop()
-    {
-        Items.newLine();
-        Items.addItem(new DiamondSword());
-        Items.addItem(new Obsidian());
-        Items.addItem(new ItemAir());
-        Items.addItem(new DiamondChestPlate());
-        Items.addItem(new DiamondBoots());
-        Items.addItem(new ItemAir());
-        Items.addItem(new ItemAir());
-        Items.newLine();
-
-        Perks.addPerk(new GoldenHead());
-        Perks.addPerk(new FishingRod());
-        Perks.addPerk(new EndlessQuiver());
-        Perks.addPerk(new MineMan());
-        Perks.addPerk(new SafetyFirst());
-        Perks.addPerk(new Streaker());
-        Perks.addPerk(new Vampire());
-
-    }
-
-    private static void initDatabase()
-    {
-        try (Statement statement = data.getConnection().createStatement())
-        {
-            statement.execute("CREATE TABLE IF NOT EXISTS player(" +
-                    "UUID text," +
-                    "LEVEL integer," +
-                    "PRESTIGE integer," +
-                    "EXP bigint" +
-                    ")");
-            statement.execute("CREATE TABLE IF NOT EXISTS perk(" +
-                    "UUID text," +
-                    "PERK text" +
-                    ")");
-            statement.execute("CREATE TABLE IF NOT EXISTS holdperk(" +
-                    "UUID text," +
-                    "PERK text" +
-                    ")");
-        }
-        catch (Exception ignored)
-        {
-
-        }
-    }
-
     @Override
     public void onEnable()
     {
@@ -119,6 +51,7 @@ public class AreaPvP extends JavaPlugin
         Bukkit.getPluginManager().registerEvents(new Events(), this);
         Bukkit.getPluginManager().registerEvents(new PerkProcess(), this);
         Bukkit.getPluginManager().registerEvents(new GUI(), this);
+        Bukkit.getPluginManager().registerEvents(new DamageModifier(), this);
         getCommand("areapvp").setExecutor(new Main());
         getCommand("spawn").setExecutor(new Spawn());
         getCommand("oof").setExecutor(new Oof());
@@ -139,7 +72,7 @@ public class AreaPvP extends JavaPlugin
             getServer().getPluginManager().disablePlugin(this);
         }
 
-        initShop();
+        Init.initShop();
 
         RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
 
@@ -149,94 +82,17 @@ public class AreaPvP extends JavaPlugin
         config.setDriverClassName("org.sqlite.JDBC");
         config.setJdbcUrl("jdbc:sqlite:" + getDataFolder().getAbsolutePath() + "/" + "data.db");
         data = new HikariDataSource(config);
-        initDatabase();
+        Init.initDatabase();
 
 
         timer = new Timer();
         timer.runTaskTimer(this, 0L, 20L); //1秒に1回実行
 
-        new BukkitRunnable()
-        {
-            @Override
-            public void run()
-            {
-                Bukkit.getOnlinePlayers()
-                        .forEach(player -> {
-                            player.removePotionEffect(PotionEffectType.NIGHT_VISION);
-                            player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 810, 7, true));
-                            Sidebar.sendBoard(player);
-                            Scoreboard board = player.getScoreboard();
+        Init.schedulePlayerTimer();
 
-                            if (board == null)
-                                board = Bukkit.getScoreboardManager().getNewScoreboard();
-                            Team t = board.getTeam("c");
+        Init.scheduleSpawnTimer();
 
-                            if (t == null)
-                                t = board.registerNewTeam("c");
 
-                            if (t != null)
-                            {
-                                t.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
-                                if (!t.getEntries().contains(player.getName()))
-                                    t.addEntry(player.getName());
-                                if (!InfoContainer.isInitialize(player))
-                                    return;
-                                PlayerInfo info = InfoContainer.getInfo(player);
-                                t.setPrefix(PlayerInfo.getPrefix(info.level, info.prestige) + ChatColor.WHITE);
-                            }
-
-                            player.setScoreboard(board);
-                        });
-            }
-        }.runTaskTimer(this, 0L, 20L);
-
-        int b = getConfig().getInt("spawnLoc");
-
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> Bukkit.getOnlinePlayers()
-                .forEach(player -> {
-                    int y = (int) player.getLocation().getY();
-                    if (y >= b)
-                    {
-                        player.removeMetadata("x-hitter", AreaPvP.getPlugin());
-                        player.removeMetadata("x-hitted", AreaPvP.getPlugin());
-                        player.removeMetadata("x-streak", AreaPvP.getPlugin());
-                        Kill.reset(player);
-                        player.setHealth(20);
-
-                    }
-                }), 0L, 1L);
-
-        Bukkit.getScheduler().runTaskTimer(this, () -> {
-            final LinkedList<UUID> removal = new LinkedList<>();
-            arrows.forEach((k, v) -> {
-                v = v - 1;
-
-                Entity arrow = Bukkit.getEntity(k);
-
-                if (arrow == null)
-                {
-                    removal.add(k);
-                    return;
-                }
-
-                if (arrow.isDead())
-                {
-                    removal.add(k);
-                    return;
-                }
-                if (v < 0)
-                {
-                    arrow.remove();
-                    removal.add(k);
-                    return;
-                }
-
-                arrows.put(k, v);
-
-            });
-            removal.parallelStream().forEach(arrow -> arrows.remove(arrow));
-
-        }, 0L, 10L);
 
     }
 

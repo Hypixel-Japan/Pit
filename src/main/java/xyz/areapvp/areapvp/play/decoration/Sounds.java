@@ -1,4 +1,4 @@
-package xyz.areapvp.areapvp;
+package xyz.areapvp.areapvp.play.decoration;
 
 import net.minecraft.server.v1_12_R1.MinecraftKey;
 import net.minecraft.server.v1_12_R1.PacketPlayOutNamedSoundEffect;

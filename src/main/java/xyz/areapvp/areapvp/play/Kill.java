@@ -1,4 +1,4 @@
-package xyz.areapvp.areapvp;
+package xyz.areapvp.areapvp.play;
 
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -7,9 +7,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
-import xyz.areapvp.areapvp.level.Exp;
-import xyz.areapvp.areapvp.level.PlayerInfo;
-import xyz.areapvp.areapvp.level.PlayerModify;
+import xyz.areapvp.areapvp.*;
+import xyz.areapvp.areapvp.play.decoration.*;
+import xyz.areapvp.areapvp.player.Exp;
+import xyz.areapvp.areapvp.player.PlayerInfo;
+import xyz.areapvp.areapvp.player.PlayerModify;
 import xyz.areapvp.areapvp.perk.Perk;
 import xyz.areapvp.areapvp.perk.PerkProcess;
 

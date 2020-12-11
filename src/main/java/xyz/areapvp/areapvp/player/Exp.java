@@ -1,7 +1,7 @@
-package xyz.areapvp.areapvp.level;
+package xyz.areapvp.areapvp.player;
 
 import org.bukkit.entity.Player;
-import xyz.areapvp.areapvp.Kill;
+import xyz.areapvp.areapvp.play.Kill;
 
 public class Exp
 {

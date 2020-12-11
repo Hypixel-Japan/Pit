@@ -1,5 +1,7 @@
 package xyz.areapvp.areapvp;
 
+import com.comphenix.protocol.wrappers.nbt.*;
+import com.google.common.util.concurrent.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.minecraft.server.v1_12_R1.NBTBase;
@@ -208,7 +210,7 @@ public class Items
         NBTTagList mod = new NBTTagList();
         NBTTagCompound dm = new NBTTagCompound();
         dm.set("AttributeName", new NBTTagString("generic.attackDamage"));
-        dm.set("Name", new NBTTagString("genericd.attackDamage"));
+        dm.set("Name", new NBTTagString("generic.attackDamage"));
         dm.set("Amount", new NBTTagDouble(damage));
         dm.set("Operation", new NBTTagInt(0));
         dm.set("UUIDLeast", new NBTTagInt(UUID.randomUUID().hashCode()));
@@ -218,6 +220,44 @@ public class Items
         compound.set("AttributeModifiers", mod);
         craftItem.setTag(compound);
         return CraftItemStack.asBukkitCopy(craftItem);
+    }
+
+    public static double getDamage(ItemStack stack)
+    {
+        net.minecraft.server.v1_12_R1.ItemStack craftItem = CraftItemStack.asNMSCopy(stack);
+        NBTTagCompound compound = craftItem.hasTag() ? craftItem.getTag(): new NBTTagCompound();
+        if (compound == null)
+            return 0;
+        NBTTagList lst =((NBTTagList)compound.get("AttributeModifiers"));
+        if (lst == null)
+            return 0;
+        List<NBTBase> list;
+        try
+        {
+            Field field = NBTTagList.class.getDeclaredField("list");
+            field.setAccessible(true);
+            list = (List<NBTBase>) field.get(lst);
+        }
+        catch (Exception ignored)
+        {
+            return 0;
+        }
+
+        AtomicDouble atomicDouble = new AtomicDouble(0);
+
+        list.stream()
+                .parallel()
+                .forEach(nbtBase -> {
+                    if (!(nbtBase instanceof NBTTagCompound))
+                        return;
+                    NBTTagCompound c = (NBTTagCompound) nbtBase;
+                    String n = c.getString("AttributeName");
+                    if (!n.equals("generic.attackDamage"))
+                        return;
+                    atomicDouble.set(c.getDouble("Amount"));
+                });
+
+        return atomicDouble.get();
     }
 
     public static ItemStack addGlow(ItemStack item)

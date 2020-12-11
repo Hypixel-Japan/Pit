@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffectType;
 import xyz.areapvp.areapvp.AreaPvP;
-import xyz.areapvp.areapvp.InventoryUtils;
+import xyz.areapvp.areapvp.play.InventoryUtils;
 
 public class Spawn implements CommandExecutor
 {

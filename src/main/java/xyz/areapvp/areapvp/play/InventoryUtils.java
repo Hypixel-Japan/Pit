@@ -1,4 +1,4 @@
-package xyz.areapvp.areapvp;
+package xyz.areapvp.areapvp.play;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -6,6 +6,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import xyz.areapvp.areapvp.*;
 import xyz.areapvp.areapvp.perk.Perk;
 import xyz.areapvp.areapvp.perk.Perks;
 import xyz.areapvp.areapvp.perk.perks.GoldenHead;

@@ -1,4 +1,4 @@
-package xyz.areapvp.areapvp;
+package xyz.areapvp.areapvp.player;
 
 import org.bukkit.inventory.ItemStack;
 
@@ -133,7 +133,7 @@ public class ArmorUtils
         }
     }
 
-    enum ArmorType
+    public enum ArmorType
     {
         HELMET,
         CHESTPLATE,
@@ -142,7 +142,7 @@ public class ArmorUtils
         UNKNOWN
     }
 
-    enum MaterialType
+    public enum MaterialType
     {
         DIAMOND,
         IRON,

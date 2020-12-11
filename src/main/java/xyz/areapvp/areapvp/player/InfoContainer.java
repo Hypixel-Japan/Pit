@@ -1,4 +1,4 @@
-package xyz.areapvp.areapvp.level;
+package xyz.areapvp.areapvp.player;
 
 import org.bukkit.entity.*;
 import org.bukkit.metadata.*;

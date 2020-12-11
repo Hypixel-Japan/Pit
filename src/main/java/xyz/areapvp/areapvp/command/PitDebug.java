@@ -13,9 +13,9 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import xyz.areapvp.areapvp.AreaPvP;
 import xyz.areapvp.areapvp.Items;
-import xyz.areapvp.areapvp.Kill;
+import xyz.areapvp.areapvp.play.Kill;
 import xyz.areapvp.areapvp.inventory.Shop;
-import xyz.areapvp.areapvp.level.PlayerModify;
+import xyz.areapvp.areapvp.player.PlayerModify;
 
 import java.util.Arrays;
 

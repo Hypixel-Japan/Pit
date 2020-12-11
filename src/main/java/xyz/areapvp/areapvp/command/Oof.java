@@ -9,8 +9,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import xyz.areapvp.areapvp.AreaPvP;
-import xyz.areapvp.areapvp.InventoryUtils;
-import xyz.areapvp.areapvp.Kill;
+import xyz.areapvp.areapvp.play.InventoryUtils;
+import xyz.areapvp.areapvp.play.Kill;
 
 import java.util.UUID;
 

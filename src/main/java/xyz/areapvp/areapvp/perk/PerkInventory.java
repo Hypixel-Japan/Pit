@@ -9,8 +9,8 @@ import org.bukkit.inventory.ItemStack;
 import xyz.areapvp.areapvp.AreaPvP;
 import xyz.areapvp.areapvp.Items;
 import xyz.areapvp.areapvp.inventory.ShopItem;
-import xyz.areapvp.areapvp.level.PlayerInfo;
-import xyz.areapvp.areapvp.level.PlayerModify;
+import xyz.areapvp.areapvp.player.PlayerInfo;
+import xyz.areapvp.areapvp.player.PlayerModify;
 
 public class PerkInventory
 {

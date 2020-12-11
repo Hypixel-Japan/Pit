@@ -27,7 +27,6 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -36,7 +35,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
-import xyz.areapvp.areapvp.level.*;
+import xyz.areapvp.areapvp.play.*;
+import xyz.areapvp.areapvp.play.decoration.*;
+import xyz.areapvp.areapvp.player.*;
 import xyz.areapvp.areapvp.perk.Perk;
 import xyz.areapvp.areapvp.perk.PerkProcess;
 
@@ -45,7 +46,7 @@ import java.util.stream.IntStream;
 
 public class Events implements Listener
 {
-    private static String getDamageIndicator(double damage, Player damager)
+    public static String getDamageIndicator(double damage, Player damager)
     {
         StringBuilder base = new StringBuilder();
 
@@ -164,47 +165,6 @@ public class Events implements Listener
                     new ComponentBuilder(ChatColor.RED.toString() + e.getDamage() + " => " + ((Player) e.getEntity()).getHealth()).create()
             );
     }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onEntityDamageByEntity(EntityDamageByEntityEvent e)
-    {
-        if (!(e.getEntity() instanceof Player) || !(e.getDamager() instanceof Player))
-            return;
-
-
-        if (((Player) e.getDamager()).getGameMode() == GameMode.CREATIVE)
-        {
-            e.setCancelled(true);
-            return;
-        }
-
-        if (e.getEntity().getLocation().getY() >= AreaPvP.spawnloc || e.getDamager().getLocation().getY() >= AreaPvP.spawnloc)
-        {
-            e.setCancelled(true);
-            return;
-        }
-
-        Player damager = (Player) e.getEntity();
-        Player hitter = (Player) e.getDamager();
-
-        hitter.setMetadata("x-hitted", new FixedMetadataValue(AreaPvP.getPlugin(), 15));
-        damager.setMetadata("x-hitted", new FixedMetadataValue(AreaPvP.getPlugin(), 15));
-        damager.setMetadata("x-hitter", new FixedMetadataValue(AreaPvP.getPlugin(), hitter.getUniqueId().toString()));
-
-        if (!hitter.hasMetadata("damageDebug"))
-            hitter.spigot().sendMessage(
-                    ChatMessageType.ACTION_BAR,
-                    new ComponentBuilder(ChatColor.GRAY + damager.getName() + " "
-                            + getDamageIndicator(e.getDamage(), damager)).create()
-            );
-        else
-            hitter.spigot().sendMessage(
-                    ChatMessageType.ACTION_BAR,
-                    new ComponentBuilder(ChatColor.RED.toString() + e.getDamage() + " => " + damager.getHealth()).create()
-            );
-
-    }
-
     @EventHandler(ignoreCancelled = true)
     public void onJoin(PlayerJoinEvent e)
     {
@@ -336,16 +296,6 @@ public class Events implements Listener
         {
             e.getPlayer().sendMessage(ChatColor.RED + ChatColor.BOLD.toString() + "OOPS! " + ChatColor.RESET + ChatColor.RED + "このアイテムはドロップできません！");
             e.setCancelled(true);
-        }
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR)
-    private void onMalware(PlayerCommandPreprocessEvent e)
-    {
-        if (!AreaPvP.debugging && (e.getMessage().startsWith("/minecraft:kill") || e.getMessage().startsWith("/kill")))
-        {
-            e.setCancelled(true);
-            e.getPlayer().sendMessage(ChatColor.RED + "An internal error occurred while attempting to perform this command.");
         }
     }
 

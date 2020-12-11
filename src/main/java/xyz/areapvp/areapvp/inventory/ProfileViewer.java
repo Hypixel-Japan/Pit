@@ -1,4 +1,4 @@
-package xyz.areapvp.areapvp;
+package xyz.areapvp.areapvp.inventory;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -6,9 +6,10 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import xyz.areapvp.areapvp.level.Exp;
-import xyz.areapvp.areapvp.level.PlayerInfo;
-import xyz.areapvp.areapvp.level.PlayerModify;
+import xyz.areapvp.areapvp.*;
+import xyz.areapvp.areapvp.player.Exp;
+import xyz.areapvp.areapvp.player.PlayerInfo;
+import xyz.areapvp.areapvp.player.PlayerModify;
 import xyz.areapvp.areapvp.perk.Perks;
 
 import java.math.BigDecimal;

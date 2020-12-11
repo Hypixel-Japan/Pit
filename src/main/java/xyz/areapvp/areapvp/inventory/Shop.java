@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import xyz.areapvp.areapvp.AreaPvP;
 import xyz.areapvp.areapvp.item.IShopItem;
 import xyz.areapvp.areapvp.item.Items;
-import xyz.areapvp.areapvp.level.*;
+import xyz.areapvp.areapvp.player.*;
 import xyz.areapvp.areapvp.perk.Perks;
 
 import java.util.Objects;

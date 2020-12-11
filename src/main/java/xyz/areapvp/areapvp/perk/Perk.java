@@ -2,8 +2,8 @@ package xyz.areapvp.areapvp.perk;
 
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
-import xyz.areapvp.areapvp.level.PlayerInfo;
-import xyz.areapvp.areapvp.level.PlayerModify;
+import xyz.areapvp.areapvp.player.PlayerInfo;
+import xyz.areapvp.areapvp.player.PlayerModify;
 
 import java.util.ArrayList;
 import java.util.Objects;

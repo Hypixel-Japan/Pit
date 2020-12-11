@@ -7,8 +7,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import xyz.areapvp.areapvp.ProfileViewer;
-import xyz.areapvp.areapvp.level.*;
+import xyz.areapvp.areapvp.inventory.ProfileViewer;
+import xyz.areapvp.areapvp.player.*;
 
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
