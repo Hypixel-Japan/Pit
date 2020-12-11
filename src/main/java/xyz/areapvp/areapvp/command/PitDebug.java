@@ -232,10 +232,10 @@ public class PitDebug implements CommandExecutor
                 }
                 metaData(player, args);
                 break;
-            case "evacute":
+            case "evacuate":
             case "ev":
                 player.teleport(player.getWorld().getSpawnLocation());
-                ((Player) sender).sendTitle(ChatColor.RED + "EVACUTE!", "", 10, 20, 10);
+                ((Player) sender).sendTitle(ChatColor.RED + "EVACUATE!", "", 10, 20, 10);
                 break;
             case "shop":
                 if (args.length != 2)
