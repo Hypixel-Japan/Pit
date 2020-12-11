@@ -3,9 +3,7 @@ package xyz.areapvp.areapvp;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import net.milkbowl.vault.economy.Economy;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.SimpleCommandMap;
@@ -16,7 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.*;
 import xyz.areapvp.areapvp.command.Main;
 import xyz.areapvp.areapvp.command.Oof;
 import xyz.areapvp.areapvp.command.PitDebug;
@@ -28,6 +26,7 @@ import xyz.areapvp.areapvp.item.items.DiamondChestPlate;
 import xyz.areapvp.areapvp.item.items.DiamondSword;
 import xyz.areapvp.areapvp.item.items.ItemAir;
 import xyz.areapvp.areapvp.item.items.Obsidian;
+import xyz.areapvp.areapvp.level.*;
 import xyz.areapvp.areapvp.perk.PerkProcess;
 import xyz.areapvp.areapvp.perk.Perks;
 import xyz.areapvp.areapvp.perk.perks.EndlessQuiver;
@@ -165,10 +164,28 @@ public class AreaPvP extends JavaPlugin
                         .forEach(player -> {
                             player.removePotionEffect(PotionEffectType.NIGHT_VISION);
                             player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 810, 7, true));
-                            Scoreboard b = Sidebar.getBoard(player);
-                            if (b == null)
-                                return;
-                            player.setScoreboard(b);
+                            Sidebar.sendBoard(player);
+                            Scoreboard board = player.getScoreboard();
+
+                            if (board == null)
+                                board = Bukkit.getScoreboardManager().getNewScoreboard();
+                            Team t = board.getTeam("c");
+
+                            if (t == null)
+                                t = board.registerNewTeam("c");
+
+                            if (t != null)
+                            {
+                                t.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
+                                if (!t.getEntries().contains(player.getName()))
+                                    t.addEntry(player.getName());
+                                PlayerInfo info = PlayerModify.getInfo(player);
+                                if (info == null)
+                                    return;
+                                t.setPrefix(PlayerInfo.getPrefix(info.level, info.prestige) + ChatColor.WHITE);
+                            }
+
+                            player.setScoreboard(board);
                         });
             }
         }.runTaskTimer(this, 0L, 20L);

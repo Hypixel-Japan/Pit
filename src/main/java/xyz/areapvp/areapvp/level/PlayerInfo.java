@@ -59,14 +59,14 @@ public class PlayerInfo
         String a = "";
         if (prestige != 0)
             a = ChatColor.YELLOW + arabicToRoman(prestige) + "-";
-        return bracketColor + "[" + a + levelColor + level + bracketColor + "]" + ChatColor.WHITE;
+        return bracketColor + "[" + a + levelColor + level + bracketColor + "]";
     }
 
     public static String getPrefix(int level, int prestige)
     {
         String bracketColor = getBracketColor(prestige).toString();
         String levelColor = getLevelColor(level);
-        return bracketColor + "[" + levelColor + level + bracketColor + "]" + ChatColor.WHITE;
+        return bracketColor + "[" + levelColor + level + bracketColor + "]";
     }
 
     private static ChatColor getBracketColor(int prestige)

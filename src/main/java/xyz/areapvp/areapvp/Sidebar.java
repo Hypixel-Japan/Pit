@@ -1,51 +1,71 @@
 package xyz.areapvp.areapvp;
 
+import com.comphenix.protocol.*;
+import com.comphenix.protocol.events.*;
+import net.minecraft.server.v1_12_R1.*;
+import org.apache.commons.lang.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.craftbukkit.v1_12_R1.entity.*;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
 import xyz.areapvp.areapvp.level.Exp;
 import xyz.areapvp.areapvp.level.PlayerInfo;
 import xyz.areapvp.areapvp.level.PlayerModify;
 
+import java.lang.reflect.*;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.*;
 
 public class Sidebar
 {
-    public static Scoreboard getBoard(Player player)
+    public static PacketPlayOutScoreboardScore getScore(Scoreboard board, ScoreboardObjective obj, String str, int c)
+    {
+        ScoreboardScore scoreboardScore = new ScoreboardScore(board, obj, str);
+        scoreboardScore.setScore(c);
+        return new PacketPlayOutScoreboardScore(scoreboardScore);
+    }
+
+    public static void send(Player player, Packet<?> p)
+    {
+        ((CraftPlayer)player).getHandle().playerConnection.sendPacket(p);
+    }
+
+    public static void sendBoard(Player player)
     {
 
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy");
 
         final PlayerInfo info = PlayerModify.getInfo(player);
         if (info == null)
-            return null;
+            return;
 
-        ScoreboardManager manager = Bukkit.getScoreboardManager();
-        final Scoreboard board = manager.getNewScoreboard();
-        final Objective objective = board.registerNewObjective("test", "dummy");
-        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-        objective.setDisplayName(ChatColor.YELLOW + ChatColor.BOLD.toString() + "THE HYPIXEL PIT");
+        final Scoreboard b = new Scoreboard();
 
-        objective.getScore(ChatColor.GRAY + format.format(new Date())).setScore(info.prestige == 0 ? 10: 11);
-        objective.getScore(ChatColor.WHITE.toString()).setScore(info.prestige == 0 ? 9: 10);
+        final ScoreboardObjective o = b.registerObjective("peyang", IScoreboardCriteria.b);
+        o.setDisplayName(ChatColor.YELLOW + ChatColor.BOLD.toString() + "THE HYPIXEL PIT");
+
+        send(player, new PacketPlayOutScoreboardObjective(o, 1));
+        send(player, new PacketPlayOutScoreboardObjective(o, 0));
+
+        send(player, new PacketPlayOutScoreboardDisplayObjective(1, o));
+
+        send(player, getScore(b, o, ChatColor.GRAY + format.format(new Date()), info.prestige == 0 ? 10: 11));
+        send(player, getScore(b, o, ChatColor.WHITE.toString(), info.prestige == 0 ? 9: 10));
         if (info.prestige != 0)
-            objective.getScore(ChatColor.WHITE + "Prestige: " + PlayerInfo.getPrestigeString(info.prestige)).setScore(9);
-        objective.getScore(ChatColor.WHITE + "Level: " + PlayerInfo.getPrefix(info.level, info.prestige)).setScore(8);
+            send(player, getScore(b, o, ChatColor.WHITE + "Prestige: " + PlayerInfo.getPrestigeString(info.prestige), 9));
+        send(player, getScore(b, o, ChatColor.WHITE + "Level: " + PlayerInfo.getPrefix(info.level, info.prestige), 8));
 
         long exp = Exp.getExp(info.level + (info.level == 119 ? 0: 1), info.prestige) - info.exp;
 
-        objective.getScore(ChatColor.WHITE + (info.level != 120 ? "Needed": "") + " XP: " +
-                ChatColor.AQUA + (info.level != 120 ? String.format("%,d", exp): "MAXED!")).setScore(7);
+        send(player, getScore(b, o, ChatColor.WHITE + (info.level != 120 ? "Needed": "") + " XP: " +
+                ChatColor.AQUA + (info.level != 120 ? String.format("%,d", exp): "MAXED!"), 7));
 
-        objective.getScore(ChatColor.ITALIC.toString()).setScore(6);
+        send(player, getScore(b, o, ChatColor.ITALIC.toString(), 6));
 
         BigDecimal decimal = BigDecimal.valueOf(AreaPvP.economy.getBalance(player));
 
@@ -56,11 +76,11 @@ public class Sidebar
         else
             decimalOf = String.format("%,d", decimal.setScale(1, BigDecimal.ROUND_HALF_UP).longValue());
 
-        objective.getScore(ChatColor.WHITE + "Gold: " + ChatColor.GOLD + decimalOf + "g").setScore(5);
+        send(player, getScore(b, o, ChatColor.WHITE + "Gold: " + ChatColor.GOLD + decimalOf + "g", 5));
 
-        objective.getScore(ChatColor.YELLOW.toString()).setScore(4);
+        send(player, getScore(b, o, ChatColor.YELLOW.toString(), 4));
         if (!player.hasMetadata("x-hitted"))
-            objective.getScore(ChatColor.WHITE + "Status: " + ChatColor.GREEN + "Idling").setScore(3);
+            send(player, getScore(b, o, ChatColor.WHITE + "Status: " + ChatColor.GREEN + "Idling", 3));
         else
         {
             Integer hitted = null;
@@ -68,40 +88,53 @@ public class Sidebar
                 if (hitter.getOwningPlugin().getName().equals(AreaPvP.getPlugin().getName()))
                     hitted = hitter.asInt();
             if (hitted == null)
-                objective.getScore(ChatColor.WHITE + "Status: " + ChatColor.GREEN + "Idling").setScore(3);
+                send(player, getScore(b, o, ChatColor.WHITE + "Status: " + ChatColor.GREEN + "Idling", 3));
             else
             {
                 if (hitted > 5)
-                    objective.getScore(ChatColor.WHITE + "Status: " + ChatColor.RED + "Fighting").setScore(3);
+                    send(player, getScore(b, o, ChatColor.WHITE + "Status: " + ChatColor.RED + "Fighting", 3));
                 else
-                    objective.getScore(ChatColor.WHITE + "Status: " + ChatColor.RED + "Fighting" + ChatColor.GRAY +
-                            "(" + hitted + ChatColor.GRAY + ")").setScore(3);
+                    send(player, getScore(b, o, ChatColor.WHITE + "Status: " + ChatColor.RED + "Fighting" + ChatColor.GRAY +
+                            "(" + hitted + ChatColor.GRAY + ")", 3));
             }
         }
 
         long streak = Kill.getStreak(player.getUniqueId());
 
         if (streak == 0)
-            objective.getScore(ChatColor.BLUE.toString()).setScore(2);
+            send(player, getScore(b, o, ChatColor.BLUE.toString(), 2));
         else
-            objective.getScore("Streak: " + ChatColor.GREEN + streak).setScore(2);
-        objective.getScore(ChatColor.BLACK.toString()).setScore(1);
+            send(player, getScore(b, o, "Streak: " + ChatColor.GREEN + streak, 2));
+        send(player, getScore(b, o, ChatColor.BLACK.toString(), 1));
+
+
         player.setPlayerListName(PlayerInfo.getPrefix(info.level, info.prestige) + ChatColor.GRAY + " " + player.getName());
         player.setDisplayName(PlayerInfo.getPrefix(info.level, info.prestige) + ChatColor.GRAY + " " + player.getName());
-        if (board.getTeam("c") == null)
-            board.registerNewTeam("c");
-        if (board.getTeam("c") != null)
-        {
-            board.getTeam("c").setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
-            if (!board.getTeam("c").getEntries().contains(player.getName()))
-                board.getTeam("c").addEntry(player.getName());
-
-        }
 
         player.setLevel(info.level);
         player.setExp(new BigDecimal(info.exp == 0 ? 1: info.exp).divide(new BigDecimal(Exp.getExp(info.level, info.prestige) == 0 ? info.exp: Exp.getExp(info.level, info.prestige)), BigDecimal.ROUND_DOWN).floatValue());
 
-        return board;
     }
 
+    public static void setPrefix(Player p, String s)
+    {
+        PacketContainer container = new PacketContainer(PacketType.Play.Server.SCOREBOARD_TEAM);
+        container.getStrings().write(0, RandomStringUtils.random(10));
+        container.getIntegers().write(0, 0);
+        container.getStrings().write(1, p.getName());
+        container.getStrings().write(2,  s);
+        container.getIntegers().write(1, 1);
+        container.getSpecificModifier(Collection.class).write(0, Collections.singletonList(p.getName()));
+        ProtocolManager manager = ProtocolLibrary.getProtocolManager();
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            try
+            {
+                manager.sendServerPacket(player, container, false);
+            }
+            catch (InvocationTargetException e)
+            {
+                e.printStackTrace();
+            }
+        });
+    }
 }

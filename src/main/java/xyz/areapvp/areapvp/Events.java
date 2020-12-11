@@ -228,6 +228,7 @@ public class Events implements Listener
                         PlayerModify.createBalance(player, true);
                         return;
                     }
+
                     return;
                 }
                 PlayerModify.createBalance(player, true);
