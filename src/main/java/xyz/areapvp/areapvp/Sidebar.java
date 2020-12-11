@@ -12,9 +12,7 @@ import org.bukkit.metadata.MetadataValue;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
-import xyz.areapvp.areapvp.level.Exp;
-import xyz.areapvp.areapvp.level.PlayerInfo;
-import xyz.areapvp.areapvp.level.PlayerModify;
+import xyz.areapvp.areapvp.level.*;
 
 import java.lang.reflect.*;
 import java.math.BigDecimal;
@@ -40,9 +38,9 @@ public class Sidebar
 
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy");
 
-        final PlayerInfo info = PlayerModify.getInfo(player);
-        if (info == null)
+        if (!InfoContainer.isInitialize(player))
             return;
+        final PlayerInfo info = InfoContainer.getInfo(player);
 
         final Scoreboard b = new Scoreboard();
 

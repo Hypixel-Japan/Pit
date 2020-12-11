@@ -138,7 +138,7 @@ public class Kill
             @Override
             public void run()
             {
-                PlayerInfo info = PlayerModify.getInfo(deather);
+                PlayerInfo info = PlayerModify.getInfo(deather); //TODO: PerkInfo ini InfoContainer
 
                 if (info == null)
                     return;

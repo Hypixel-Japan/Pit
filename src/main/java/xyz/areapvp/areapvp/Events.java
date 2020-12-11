@@ -36,8 +36,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
-import xyz.areapvp.areapvp.level.PlayerInfo;
-import xyz.areapvp.areapvp.level.PlayerModify;
+import xyz.areapvp.areapvp.level.*;
 import xyz.areapvp.areapvp.perk.Perk;
 import xyz.areapvp.areapvp.perk.PerkProcess;
 
@@ -220,18 +219,7 @@ public class Events implements Listener
             @Override
             public void run()
             {
-                if (PlayerModify.isCreated(player))
-                {
-                    PlayerInfo info = PlayerModify.getInfo(player);
-                    if (info == null)
-                    {
-                        PlayerModify.createBalance(player, true);
-                        return;
-                    }
-
-                    return;
-                }
-                PlayerModify.createBalance(player, true);
+                InfoContainer.initialize(player);
             }
         }.runTaskAsynchronously(AreaPvP.getPlugin());
         InventoryUtils.reItem(player);
@@ -305,9 +293,9 @@ public class Events implements Listener
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     private void onAsyncChat(AsyncPlayerChatEvent e)
     {
-        PlayerInfo info = PlayerModify.getInfo(e.getPlayer());
-        if (info == null)
+        if (!InfoContainer.isInitialize(e.getPlayer()))
             return;
+        PlayerInfo info = InfoContainer.getInfo(e.getPlayer());
 
         String prefix = PlayerInfo.getPrefixFull(info.level, info.prestige);
 

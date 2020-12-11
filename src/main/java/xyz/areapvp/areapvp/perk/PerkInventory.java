@@ -16,7 +16,7 @@ public class PerkInventory
 {
     public static Inventory getPerksInventory(Player player, int slot)
     {
-        PlayerInfo info = PlayerModify.getInfo(player);
+        PlayerInfo info = PlayerModify.getInfo(player); //TODO: info in perk
         if (info == null)
             return Bukkit.createInventory(null, 9, "ERROR");
 

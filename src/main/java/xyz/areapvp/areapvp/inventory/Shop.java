@@ -9,8 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import xyz.areapvp.areapvp.AreaPvP;
 import xyz.areapvp.areapvp.item.IShopItem;
 import xyz.areapvp.areapvp.item.Items;
-import xyz.areapvp.areapvp.level.PlayerInfo;
-import xyz.areapvp.areapvp.level.PlayerModify;
+import xyz.areapvp.areapvp.level.*;
 import xyz.areapvp.areapvp.perk.Perks;
 
 import java.util.Objects;
@@ -19,9 +18,9 @@ public class Shop
 {
     public static void openInventory(Player player)
     {
-        PlayerInfo info = PlayerModify.getInfo(player);
-        if (info == null)
+        if (!InfoContainer.isInitialize(player))
             return;
+        PlayerInfo info = InfoContainer.getInfo(player);
 
         int balance = (int) AreaPvP.economy.getBalance(player);
 
@@ -54,7 +53,7 @@ public class Shop
 
     public static void openPerkInventory(Player player)
     {
-        PlayerInfo info = PlayerModify.getInfo(player);
+        PlayerInfo info = PlayerModify.getInfo(player); //TODO: Info in perk
         if (info == null)
             return;
 

@@ -13,7 +13,7 @@ public class Perk
 {
     public static void update(Player player)
     {
-        PlayerInfo info = PlayerModify.getInfo(player);
+        PlayerInfo info = PlayerModify.getInfo(player); //TODO: info in perk
         if (info == null)
             return;
 

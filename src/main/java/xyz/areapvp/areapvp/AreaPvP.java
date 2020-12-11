@@ -179,9 +179,9 @@ public class AreaPvP extends JavaPlugin
                                 t.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
                                 if (!t.getEntries().contains(player.getName()))
                                     t.addEntry(player.getName());
-                                PlayerInfo info = PlayerModify.getInfo(player);
-                                if (info == null)
+                                if (!InfoContainer.isInitialize(player))
                                     return;
+                                PlayerInfo info = InfoContainer.getInfo(player);
                                 t.setPrefix(PlayerInfo.getPrefix(info.level, info.prestige) + ChatColor.WHITE);
                             }
 

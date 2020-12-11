@@ -8,8 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import xyz.areapvp.areapvp.level.PlayerInfo;
-import xyz.areapvp.areapvp.level.PlayerModify;
+import xyz.areapvp.areapvp.level.*;
 
 import java.util.Arrays;
 
@@ -86,9 +85,9 @@ public class Prestige
                 switch (phase)
                 {
                     case "do":
-                        PlayerInfo info = PlayerModify.getInfo(player);
-                        if (info == null)
+                        if (!InfoContainer.isInitialize(player))
                             return;
+                        PlayerInfo info = InfoContainer.getInfo(player);
                         if (info.level < 120)
                         {
                             player.sendMessage(ChatColor.RED + "あなたはまだPrestigeできません！");

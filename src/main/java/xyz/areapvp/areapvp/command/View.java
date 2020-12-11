@@ -8,8 +8,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import xyz.areapvp.areapvp.ProfileViewer;
-import xyz.areapvp.areapvp.level.PlayerInfo;
-import xyz.areapvp.areapvp.level.PlayerModify;
+import xyz.areapvp.areapvp.level.*;
 
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
@@ -25,9 +24,9 @@ public class View implements CommandExecutor
             return true;
         }
 
-        PlayerInfo info = PlayerModify.getInfo((Player) sender);
-        if (info == null)
+        if (!InfoContainer.isInitialize((Player) sender))
             return true;
+        PlayerInfo info = InfoContainer.getInfo((Player) sender);
         if (info.level < 20)
         {
             sender.sendMessage(ChatColor.RED + "この機能はまだ使用できません！");

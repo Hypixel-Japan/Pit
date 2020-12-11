@@ -15,8 +15,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import xyz.areapvp.areapvp.command.PitDebug;
 import xyz.areapvp.areapvp.inventory.Shop;
 import xyz.areapvp.areapvp.item.IShopItem;
-import xyz.areapvp.areapvp.level.PlayerInfo;
-import xyz.areapvp.areapvp.level.PlayerModify;
+import xyz.areapvp.areapvp.level.*;
 import xyz.areapvp.areapvp.perk.IPerkEntry;
 import xyz.areapvp.areapvp.perk.PerkInventory;
 import xyz.areapvp.areapvp.perk.Perks;
@@ -30,9 +29,9 @@ public class GUI implements Listener
         if (e.getPlayer().isSneaking() && e.getRightClicked() instanceof Player &&
                 e.getPlayer().getLocation().getY() >= AreaPvP.spawnloc)
         {
-            PlayerInfo info = PlayerModify.getInfo(e.getPlayer());
-            if (info == null)
+            if (!InfoContainer.isInitialize(e.getPlayer()))
                 return;
+            PlayerInfo info = InfoContainer.getInfo(e.getPlayer());
             if (info.prestige == 0 && info.level < 20)
                 return;
             ProfileViewer.viewPlayer((Player) e.getRightClicked(), e.getPlayer());
@@ -105,7 +104,7 @@ public class GUI implements Listener
         if (item == null)
             return;
 
-        PlayerInfo info = PlayerModify.getInfo(player);
+        PlayerInfo info = PlayerModify.getInfo(player); //TODO: Perk in Info
         if (info == null)
             return;
 
@@ -216,7 +215,7 @@ public class GUI implements Listener
                 if ((ty = Items.getMetadata(item, "slot")) == null)
                     return;
 
-                PlayerInfo info = PlayerModify.getInfo(player);
+                PlayerInfo info = PlayerModify.getInfo(player); //TODO: Perk in InfoContainer
 
                 if (info == null)
                     return;

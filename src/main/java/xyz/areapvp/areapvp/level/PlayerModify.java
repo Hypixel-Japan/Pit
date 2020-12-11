@@ -95,9 +95,9 @@ public class PlayerModify
 
     public static void addLevel(Player player, int level, long exp)
     {
-        PlayerInfo info = getInfo(player);
-        if (info == null)
+        if (!InfoContainer.isInitialize(player))
             return;
+        PlayerInfo info = InfoContainer.getInfo(player);
 
         try (Connection connection = AreaPvP.data.getConnection();
              PreparedStatement statement = connection.prepareStatement("UPDATE player SET LEVEL=?, EXP=? WHERE UUID=?"))
@@ -115,6 +115,7 @@ public class PlayerModify
         }
         if (level == 0)
             return;
+        InfoContainer.initialize(player);
         player.sendTitle(ChatColor.AQUA + ChatColor.BOLD.toString() + "LEVEL UP!",
                 PlayerInfo.getPrefix(info.level, info.prestige) + ChatColor.GRAY + " → " +
                         PlayerInfo.getPrefix(Math.min(info.level + level, 120), info.prestige),
@@ -124,7 +125,7 @@ public class PlayerModify
 
     public static void removeOwnPerk(Player player, String perk)
     {
-        PlayerInfo info = getInfo(player);
+        PlayerInfo info = getInfo(player); //TODO: info in container
         if (info == null)
             return;
 
@@ -147,7 +148,7 @@ public class PlayerModify
 
     public static void addOwnPerk(Player player, String perk)
     {
-        PlayerInfo info = getInfo(player);
+        PlayerInfo info = getInfo(player); //TODO: perk in container
         if (info == null)
             return;
 
@@ -242,9 +243,10 @@ public class PlayerModify
 
     public static void addPrestige(Player player)
     {
-        PlayerInfo info = getInfo(player);
-        if (info == null)
+        if (!InfoContainer.isInitialize(player))
             return;
+        PlayerInfo info = InfoContainer.getInfo(player);
+
         if (info.level < 120)
             return;
 
@@ -269,6 +271,8 @@ public class PlayerModify
         clearPerk(player);
         AreaPvP.economy.withdrawPlayer(player, AreaPvP.economy.getBalance(player));
 
+        InfoContainer.initialize(player);
+
         player.sendTitle(ChatColor.YELLOW + ChatColor.BOLD.toString() + "PRESTIGE!",
                 ChatColor.GRAY + "あなたはprestige " +
                         ChatColor.YELLOW + PlayerInfo.arabicToRoman(info.prestige + 1) +
@@ -285,9 +289,10 @@ public class PlayerModify
     {
         if (exp == 0L)
             return;
-        PlayerInfo info = getInfo(player);
-        if (info == null)
+
+        if (!InfoContainer.isInitialize(player))
             return;
+        PlayerInfo info = InfoContainer.getInfo(player);
 
         if (info.level == 120)
             return;
@@ -301,6 +306,7 @@ public class PlayerModify
         if (Exp.getExp(Math.toIntExact(level), prestige) >= xp)
         {
             addLevel(player, 0, exp);
+            InfoContainer.initialize(player);
             return;
         }
         while (next < exp)

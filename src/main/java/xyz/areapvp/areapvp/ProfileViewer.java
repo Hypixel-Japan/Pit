@@ -25,7 +25,7 @@ public class ProfileViewer
         if (player == null)
             return;
 
-        PlayerInfo info = PlayerModify.getInfo(player);
+        PlayerInfo info = PlayerModify.getInfo(player); //TODO: Perk in InfoContainer
 
         Inventory inventory = Bukkit.createInventory(null, 45, "Profile Viewer");
         //Armor
