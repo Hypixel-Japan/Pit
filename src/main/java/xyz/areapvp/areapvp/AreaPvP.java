@@ -92,7 +92,7 @@ public class AreaPvP extends JavaPlugin
 
         Init.scheduleSpawnTimer();
 
-
+        Init.scheduleArrowTimer();
 
     }
 

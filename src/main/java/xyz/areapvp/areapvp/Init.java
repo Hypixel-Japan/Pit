@@ -74,7 +74,7 @@ public class Init
                 }), 0L, 1L);
     }
 
-    public synchronized static void arrowTimer()
+    public synchronized static void scheduleArrowTimer()
     {
         Bukkit.getScheduler().runTaskTimer(AreaPvP.plugin, () -> {
             final LinkedList<UUID> removal = new LinkedList<>();
