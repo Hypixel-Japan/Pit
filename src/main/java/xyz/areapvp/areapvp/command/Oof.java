@@ -34,11 +34,11 @@ public class Oof implements CommandExecutor
 
         if (player.hasMetadata("x-spawn"))
         {
-            sender.sendMessage(ChatColor.RED + "エラー！/respawnは15秒に1回可能です！");
+            sender.sendMessage(ChatColor.RED + "エラー！/respawnは10秒に1回可能です！");
             return true;
         }
 
-        player.setMetadata("x-spawn", new FixedMetadataValue(AreaPvP.getPlugin(), 15));
+        player.setMetadata("x-spawn", new FixedMetadataValue(AreaPvP.getPlugin(), 10));
 
         if (player.hasMetadata("x-hitter") && player.hasMetadata("x-hitted"))
         {

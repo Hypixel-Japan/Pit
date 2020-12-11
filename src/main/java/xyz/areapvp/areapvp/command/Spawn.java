@@ -30,7 +30,7 @@ public class Spawn implements CommandExecutor
 
         if (player.hasMetadata("x-spawn"))
         {
-            sender.sendMessage(ChatColor.RED + "エラー！/respawnは15秒に1回可能です！");
+            sender.sendMessage(ChatColor.RED + "エラー！/respawnは10秒に1回可能です！");
             return true;
         }
         if (player.getLocation().getY() >= AreaPvP.spawnloc)
@@ -47,7 +47,7 @@ public class Spawn implements CommandExecutor
             player.removePotionEffect(PotionEffectType.ABSORPTION);
             player.removePotionEffect(PotionEffectType.SPEED);
             InventoryUtils.onRespawn(player);
-            player.setMetadata("x-spawn", new FixedMetadataValue(AreaPvP.getPlugin(), 15));
+            player.setMetadata("x-spawn", new FixedMetadataValue(AreaPvP.getPlugin(), 10));
         }
         return true;
     }
