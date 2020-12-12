@@ -109,8 +109,14 @@ public class Sidebar
         player.setDisplayName(PlayerInfo.getPrefix(info.level, info.prestige) + ChatColor.GRAY + " " + player.getName());
 
         player.setLevel(info.level);
-        player.setExp(new BigDecimal(info.exp == 0 ? 1: info.exp).divide(new BigDecimal(Exp.getExp(info.level, info.prestige) == 0 ? info.exp: Exp.getExp(info.level, info.prestige)), BigDecimal.ROUND_DOWN).floatValue());
 
+        BigDecimal r = new BigDecimal(Exp.getExp(info.level, info.prestige) == 0 ? info.exp: Exp.getExp(info.level, info.prestige));
+
+        BigDecimal rb = new BigDecimal(info.exp == 0 ? 1: info.exp);
+        if (r.compareTo(new BigDecimal(0)) != 0)
+            player.setExp(rb.divide(r, BigDecimal.ROUND_DOWN).floatValue());
+        else
+            player.setExp(rb.floatValue());
     }
 
     public static void setPrefix(Player p, String s)

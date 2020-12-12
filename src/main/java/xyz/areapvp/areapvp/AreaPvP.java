@@ -3,11 +3,15 @@ package xyz.areapvp.areapvp;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import net.milkbowl.vault.economy.Economy;
+import net.minecraft.server.v1_12_R1.*;
+import org.apache.commons.lang3.tuple.*;
 import org.bukkit.*;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.event.player.*;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.areapvp.areapvp.command.Main;
@@ -19,8 +23,7 @@ import xyz.areapvp.areapvp.events.*;
 import xyz.areapvp.areapvp.perk.PerkProcess;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
 public class AreaPvP extends JavaPlugin
 {
@@ -31,7 +34,7 @@ public class AreaPvP extends JavaPlugin
 
     public static FileConfiguration config;
     public static AreaPvP plugin;
-    public static HashMap<Location, Integer> blockPlace;
+    public static HashMap<Location, Tuple<Integer, Material>> block;
     public static HashMap<UUID, Integer> arrows; //宣伝
     public static Timer timer;
     public static HikariDataSource data;
@@ -63,7 +66,7 @@ public class AreaPvP extends JavaPlugin
         config = getConfig();
         spawnloc = config.getInt("spawnLoc");
 
-        blockPlace = new HashMap<>();
+        block = new HashMap<>();
         arrows = new HashMap<>();
         gui = new HashMap<>();
         if (getServer().getPluginManager().getPlugin("Vault") == null)
@@ -79,11 +82,11 @@ public class AreaPvP extends JavaPlugin
         economy = rsp.getProvider();
 
         HikariConfig config = new HikariConfig();
-        config.setDriverClassName("org.sqlite.JDBC");
-        config.setJdbcUrl("jdbc:sqlite:" + getDataFolder().getAbsolutePath() + "/" + "data.db");
+        config.setDriverClassName(getConfig().getString("sql.driver"));
+        config.setJdbcUrl(getConfig().getString("sql.jdbc")
+                .replace("%%data%%", getDataFolder().getAbsolutePath()));
         data = new HikariDataSource(config);
         Init.initDatabase();
-
 
         timer = new Timer();
         timer.runTaskTimer(this, 0L, 20L); //1秒に1回実行
@@ -94,6 +97,8 @@ public class AreaPvP extends JavaPlugin
 
         Init.scheduleArrowTimer();
 
+        Bukkit.getOnlinePlayers().forEach(player -> new Events().onJoin(new PlayerJoinEvent(player, "")));
+
     }
 
     @Override
@@ -101,7 +106,7 @@ public class AreaPvP extends JavaPlugin
     {
         if (data != null)
             data.close();
-        blockPlace.keySet().forEach((b) -> b.getWorld().getBlockAt(b).setType(Material.AIR));
+        block.forEach((b, v) -> b.getWorld().getBlockAt(b).setType(v.b()));
     }
 
     private static Object getPrivateField(Object object, String field)throws SecurityException,

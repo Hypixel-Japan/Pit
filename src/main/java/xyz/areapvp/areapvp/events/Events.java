@@ -1,7 +1,9 @@
-package xyz.areapvp.areapvp;
+package xyz.areapvp.areapvp.events;
 
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.minecraft.server.v1_12_R1.*;
+import org.apache.commons.lang3.tuple.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -35,7 +37,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
+import xyz.areapvp.areapvp.*;
+import xyz.areapvp.areapvp.Items;
 import xyz.areapvp.areapvp.play.*;
+import xyz.areapvp.areapvp.play.InventoryUtils;
 import xyz.areapvp.areapvp.play.decoration.*;
 import xyz.areapvp.areapvp.player.*;
 import xyz.areapvp.areapvp.perk.Perk;
@@ -191,9 +196,9 @@ public class Events implements Listener
         if (e.getPlayer().getGameMode() == GameMode.CREATIVE)
             return;
 
-        if (e.getBlock().hasMetadata("newPlayer"))
+        if (e.getBlock().hasMetadata("placed"))
         {
-            AreaPvP.blockPlace.remove(e.getBlock().getLocation());
+            AreaPvP.block.remove(e.getBlock().getLocation());
             return;
         }
 
@@ -212,7 +217,7 @@ public class Events implements Listener
             return;
         }
 
-        e.getBlock().setMetadata("newPlayer", new FixedMetadataValue(AreaPvP.getPlugin(), "binzyouozisan"));
+        e.getBlock().setMetadata("placed", new FixedMetadataValue(AreaPvP.getPlugin(), "binzyouozisan"));
 
         Integer remove; //消すまでの時間
 
@@ -227,7 +232,7 @@ public class Events implements Listener
             default:
                 remove = null; //削除しない
         }
-        AreaPvP.blockPlace.put(e.getBlock().getLocation(), remove);
+        AreaPvP.block.put(e.getBlock().getLocation(), new Tuple<>(remove, e.getBlockReplacedState().getType()));
     }
 
     @EventHandler(ignoreCancelled = true)

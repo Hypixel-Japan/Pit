@@ -1,5 +1,6 @@
 package xyz.areapvp.areapvp;
 
+import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -14,7 +15,7 @@ public class Timer extends BukkitRunnable
     @Override
     public void run()
     {
-        breakBlock();
+        blockBreak();
         hit();
     }
 
@@ -58,26 +59,27 @@ public class Timer extends BukkitRunnable
                 });
     }
 
-    private void breakBlock()
+    private void blockBreak()
     {
         ArrayList<Location> removeKeys = new ArrayList<>();
-        AreaPvP.blockPlace
-                .forEach((key, value) -> {
+        AreaPvP.block
+                .forEach((tr, v) -> {
+                    if (v.a() == null)
+                        return;
 
-                    if (value == null)
-                        return; //削除しないブロック(ADMINが遊んでる場合など)
-                    int val = value - 1;
+                    int val = v.a() - 1;
                     if (val > 0)
                     {
-                        AreaPvP.blockPlace.put(key, val);
+                        AreaPvP.block.put(tr, new Tuple<>(val, v.b()));
                         return;
                     }
 
-                    removeKeys.add(key);
-                    key.getWorld().getBlockAt(key).removeMetadata("newPlayer", AreaPvP.getPlugin());
-                    key.getWorld().getBlockAt(key).setType(Material.AIR);
-
+                    removeKeys.add(tr);
+                    tr.getWorld().getBlockAt(tr).removeMetadata("placed", AreaPvP.getPlugin());
+                    tr.getWorld().getBlockAt(tr).setType(v.b());
                 });
-        removeKeys.parallelStream().forEach(AreaPvP.blockPlace::remove);
+
+        removeKeys.parallelStream().forEach(AreaPvP.block::remove);
+
     }
 }

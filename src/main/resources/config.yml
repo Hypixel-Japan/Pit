@@ -1,2 +1,9 @@
 #スポーン位置の＊＊高さ＊＊
 spawnLoc: 30
+sql:
+  #JDBC
+  #%%data%% -> /path/to/plugins/AreaPvP
+  jdbc: "jdbc:sqlite:%%data%%/data.db"
+
+  #Driver
+  driver: "org.sqlite.JDBC"
