@@ -245,6 +245,7 @@ public class Events implements Listener
     private void onLeave(PlayerQuitEvent e)
     {
         AreaPvP.gui.remove(e.getPlayer().getUniqueId());
+        InfoContainer.unnick(e.getPlayer());
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -260,7 +261,7 @@ public class Events implements Listener
     {
         if (!InfoContainer.isInitialize(e.getPlayer()))
             return;
-        PlayerInfo info = InfoContainer.getInfo(e.getPlayer());
+        PlayerInfo info = InfoContainer.getInfoAllowNick(e.getPlayer());
 
         String prefix = PlayerInfo.getPrefixFull(info.level, info.prestige);
 

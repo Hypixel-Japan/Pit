@@ -27,17 +27,17 @@ public class Init
             {
                 Bukkit.getOnlinePlayers()
                         .forEach(player -> {
+                            PlayerInfo info = InfoContainer.getInfoAllowNick(player);
                             player.removePotionEffect(PotionEffectType.NIGHT_VISION);
                             player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 810, 7, true));
                             Sidebar.sendBoard(player);
                             Scoreboard board = player.getScoreboard();
-
                             if (board == null)
                                 board = Bukkit.getScoreboardManager().getNewScoreboard();
-                            Team t = board.getTeam("c");
+                            Team t = board.getTeam(info.level + "_" + info.prestige + player.getUniqueId().toString().substring(0, 9));
 
                             if (t == null)
-                                t = board.registerNewTeam("c");
+                                t = board.registerNewTeam(info.level + "_" + info.prestige + player.getUniqueId().toString().substring(0, 9));
 
                             if (t != null)
                             {
@@ -46,8 +46,7 @@ public class Init
                                     t.addEntry(player.getName());
                                 if (!InfoContainer.isInitialize(player))
                                     return;
-                                PlayerInfo info = InfoContainer.getInfo(player);
-                                t.setPrefix(PlayerInfo.getPrefix(info.level, info.prestige) + ChatColor.WHITE);
+                                t.setPrefix(PlayerInfo.getPrefix(info.level, info.prestige) + ChatColor.GRAY);
                             }
 
                             player.setScoreboard(board);

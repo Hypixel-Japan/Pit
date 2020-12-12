@@ -21,6 +21,8 @@ public class DamageModifier implements Listener
     @EventHandler
     public void onOCM(OCMEntityDamageByEntityEvent e)
     {
+        if (!(e.getDamager() instanceof Player))
+            return;
         Player hitter = (Player) e.getDamager();
         e.setBaseDamage(Items.getDamage(hitter.getInventory().getItemInMainHand()));
     }

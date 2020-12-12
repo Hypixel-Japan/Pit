@@ -39,7 +39,7 @@ public class Sidebar
 
         if (!InfoContainer.isInitialize(player))
             return;
-        final PlayerInfo info = InfoContainer.getInfo(player);
+        PlayerInfo info = InfoContainer.getInfo(player);
 
         final Scoreboard b = new Scoreboard();
 
@@ -104,10 +104,6 @@ public class Sidebar
             send(player, getScore(b, o, "Streak: " + ChatColor.GREEN + streak, 2));
         send(player, getScore(b, o, ChatColor.BLACK.toString(), 1));
 
-
-        player.setPlayerListName(PlayerInfo.getPrefix(info.level, info.prestige) + ChatColor.GRAY + " " + player.getName());
-        player.setDisplayName(PlayerInfo.getPrefix(info.level, info.prestige) + ChatColor.GRAY + " " + player.getName());
-
         player.setLevel(info.level);
 
         BigDecimal r = new BigDecimal(Exp.getExp(info.level, info.prestige) == 0 ? info.exp: Exp.getExp(info.level, info.prestige));
@@ -117,6 +113,12 @@ public class Sidebar
             player.setExp(rb.divide(r, BigDecimal.ROUND_DOWN).floatValue());
         else
             player.setExp(rb.floatValue());
+
+        info = InfoContainer.getInfoAllowNick(player);
+
+        player.setPlayerListName(PlayerInfo.getPrefix(info.level, info.prestige) + ChatColor.GRAY + " " + player.getName());
+        player.setDisplayName(PlayerInfo.getPrefix(info.level, info.prestige) + ChatColor.GRAY + " " + player.getName());
+
     }
 
     public static void setPrefix(Player p, String s)

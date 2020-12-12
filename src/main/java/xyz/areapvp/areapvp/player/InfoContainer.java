@@ -62,6 +62,37 @@ public class InfoContainer
         return getAsLong(player, "AreaPvP.Exp");
     }
 
+    public static void unnick(Player player)
+    {
+        PlayerModify.removeMetaData(player, "AreaPvP.Nick.Level");
+        PlayerModify.removeMetaData(player, "AreaPvP.Nick.Exp");
+        PlayerModify.removeMetaData(player, "AreaPvp.Nick.Enabled");
+    }
+
+    public static void nick(Player player)
+    {
+        PlayerModify.setMetaData(player, "AreaPvP.Nick.Level", new Random().nextInt(119) + 1);
+        PlayerModify.setMetaData(player, "AreaPvP.Nick.Exp", 0);
+        PlayerModify.setMetaData(player, "AreaPvp.Nick.Enabled", "1");
+    }
+
+    public static boolean isNicked(Player player)
+    {
+        return get(player, "AreaPvp.Nick.Enabled").equals("1");
+    }
+
+    public static PlayerInfo getInfoAllowNick(Player player)
+    {
+        if (!get(player, "AreaPvp.Nick.Enabled").equals("1"))
+            return getInfo(player);
+        return new PlayerInfo(getAsInt(player, "AreaPvP.Nick.Level"),
+                getAsLong(player, "AreaPvP.Nick.Exp"),
+                0,
+                new ArrayList<>(),
+                new ArrayList<>());
+
+    }
+
     public static PlayerInfo getInfo(Player player)
     {
         return new PlayerInfo(getLevel(player),

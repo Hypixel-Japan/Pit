@@ -27,7 +27,7 @@ public class View implements CommandExecutor
         if (!InfoContainer.isInitialize((Player) sender))
             return true;
         PlayerInfo info = InfoContainer.getInfo((Player) sender);
-        if (info.level < 20)
+        if (info.prestige == 0 && info.level < 70)
         {
             sender.sendMessage(ChatColor.RED + "この機能はまだ使用できません！");
             return true;

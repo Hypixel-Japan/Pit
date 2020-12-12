@@ -32,7 +32,7 @@ public class GUI implements Listener
             if (!InfoContainer.isInitialize(e.getPlayer()))
                 return;
             PlayerInfo info = InfoContainer.getInfo(e.getPlayer());
-            if (info.prestige == 0 && info.level < 20)
+            if (info.prestige == 0 && info.level < 70)
                 return;
             ProfileViewer.viewPlayer((Player) e.getRightClicked(), e.getPlayer());
 

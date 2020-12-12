@@ -11,9 +11,12 @@ import org.bukkit.command.Command;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.*;
 import org.bukkit.event.player.*;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scoreboard.*;
+import org.bukkit.scoreboard.Scoreboard;
 import xyz.areapvp.areapvp.command.Main;
 import xyz.areapvp.areapvp.command.Oof;
 import xyz.areapvp.areapvp.command.PitDebug;
@@ -55,6 +58,7 @@ public class AreaPvP extends JavaPlugin
         Bukkit.getPluginManager().registerEvents(new PerkProcess(), this);
         Bukkit.getPluginManager().registerEvents(new GUI(), this);
         Bukkit.getPluginManager().registerEvents(new DamageModifier(), this);
+        Bukkit.getPluginManager().registerEvents(new NickHandler(), this);
         getCommand("areapvp").setExecutor(new Main());
         getCommand("spawn").setExecutor(new Spawn());
         getCommand("oof").setExecutor(new Oof());
@@ -99,6 +103,14 @@ public class AreaPvP extends JavaPlugin
 
         Bukkit.getOnlinePlayers().forEach(player -> new Events().onJoin(new PlayerJoinEvent(player, "")));
 
+    }
+
+    public static void refreshScoreBoard(Player player)
+    {
+        Scoreboard scoreboard = player.getScoreboard();
+        if (scoreboard == null)
+            return;
+        scoreboard.getTeams().forEach(Team::unregister);;
     }
 
     @Override

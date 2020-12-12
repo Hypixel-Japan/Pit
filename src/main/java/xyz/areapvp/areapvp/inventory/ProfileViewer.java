@@ -74,6 +74,7 @@ public class ProfileViewer
                 ));
         });
         //NameTag
+        info = InfoContainer.getInfoAllowNick(player);
         ItemStack stack = new ItemStack(Material.NAME_TAG);
         stack = Items.addMetaData(stack, "AreaPvP::NotPickable", "true");
         stack = Items.setDisplayName(stack, PlayerInfo.getPrefixFull(info.level, info.prestige) + " " +
@@ -96,6 +97,7 @@ public class ProfileViewer
         ));
 
         inventory.setItem(20, stack);
+
         //Inventory
         inventory.setItem(
                 23,
@@ -113,6 +115,7 @@ public class ProfileViewer
                         )
                 ), "AreaPvP::uuid", player.getUniqueId().toString())
         );
+
         //EnderChest
         inventory.setItem(
                 24,
