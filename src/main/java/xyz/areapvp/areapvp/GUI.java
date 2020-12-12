@@ -104,7 +104,7 @@ public class GUI implements Listener
         if (item == null)
             return;
 
-        PlayerInfo info = PlayerModify.getInfo(player); //TODO: Perk in Info
+        PlayerInfo info = PlayerModify.getInfo(player);
         if (info == null)
             return;
 
@@ -215,7 +215,7 @@ public class GUI implements Listener
                 if ((ty = Items.getMetadata(item, "slot")) == null)
                     return;
 
-                PlayerInfo info = PlayerModify.getInfo(player); //TODO: Perk in InfoContainer
+                PlayerInfo info = PlayerModify.getInfo(player);
 
                 if (info == null)
                     return;

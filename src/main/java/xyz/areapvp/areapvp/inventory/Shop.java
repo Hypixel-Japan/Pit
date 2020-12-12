@@ -53,7 +53,7 @@ public class Shop
 
     public static void openPerkInventory(Player player)
     {
-        PlayerInfo info = PlayerModify.getInfo(player); //TODO: Info in perk
+        PlayerInfo info = PlayerModify.getInfo(player);
         if (info == null)
             return;
 

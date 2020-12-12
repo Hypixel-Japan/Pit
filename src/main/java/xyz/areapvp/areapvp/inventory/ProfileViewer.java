@@ -7,10 +7,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import xyz.areapvp.areapvp.*;
-import xyz.areapvp.areapvp.player.Exp;
-import xyz.areapvp.areapvp.player.PlayerInfo;
-import xyz.areapvp.areapvp.player.PlayerModify;
-import xyz.areapvp.areapvp.perk.Perks;
+import xyz.areapvp.areapvp.perk.*;
+import xyz.areapvp.areapvp.player.*;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -26,7 +24,7 @@ public class ProfileViewer
         if (player == null)
             return;
 
-        PlayerInfo info = PlayerModify.getInfo(player); //TODO: Perk in InfoContainer
+        PlayerInfo info = PlayerModify.getInfo(player);
 
         Inventory inventory = Bukkit.createInventory(null, 45, "Profile Viewer");
         //Armor
@@ -51,14 +49,14 @@ public class ProfileViewer
                         "AreaPvP::NotPickable", "true"
                 )
         );
+        int[] i = {12};
+
         if (info == null)
         {
             viewer.openInventory(inventory);
             AreaPvP.gui.put(viewer.getUniqueId(), "profile");
             return;
         }
-
-        int[] i = {12};
 
         info.perk.parallelStream()
                 .forEach(s -> inventory.setItem(

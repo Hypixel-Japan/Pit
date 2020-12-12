@@ -125,7 +125,7 @@ public class PlayerModify
 
     public static void removeOwnPerk(Player player, String perk)
     {
-        PlayerInfo info = getInfo(player); //TODO: info in container
+        PlayerInfo info = getInfo(player);
         if (info == null)
             return;
 
@@ -148,7 +148,7 @@ public class PlayerModify
 
     public static void addOwnPerk(Player player, String perk)
     {
-        PlayerInfo info = getInfo(player); //TODO: perk in container
+        PlayerInfo info = getInfo(player);
         if (info == null)
             return;
 

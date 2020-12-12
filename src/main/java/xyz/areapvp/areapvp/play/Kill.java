@@ -9,9 +9,7 @@ import org.bukkit.metadata.MetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import xyz.areapvp.areapvp.*;
 import xyz.areapvp.areapvp.play.decoration.*;
-import xyz.areapvp.areapvp.player.Exp;
-import xyz.areapvp.areapvp.player.PlayerInfo;
-import xyz.areapvp.areapvp.player.PlayerModify;
+import xyz.areapvp.areapvp.player.*;
 import xyz.areapvp.areapvp.perk.Perk;
 import xyz.areapvp.areapvp.perk.PerkProcess;
 
@@ -140,10 +138,12 @@ public class Kill
             @Override
             public void run()
             {
-                PlayerInfo info = PlayerModify.getInfo(deather); //TODO: PerkInfo ini InfoContainer
 
-                if (info == null)
+                if (!InfoContainer.isInitialize(deather))
                     return;
+
+                PlayerInfo info = InfoContainer.getInfo(deather);
+
 
                 reduce(killer, deather);
                 boolean reduced = hasReduce(killer);
