@@ -246,6 +246,7 @@ public class Events implements Listener
     {
         AreaPvP.gui.remove(e.getPlayer().getUniqueId());
         InfoContainer.unnick(e.getPlayer());
+        AreaPvP.refreshScoreBoard(e.getPlayer());
     }
 
     @EventHandler(ignoreCancelled = true)
