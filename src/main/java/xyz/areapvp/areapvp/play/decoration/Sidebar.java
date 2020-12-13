@@ -54,7 +54,8 @@ public class Sidebar
         send(player, getScore(b, o, ChatColor.GRAY + format.format(new Date()), info.prestige == 0 ? 10: 11));
         send(player, getScore(b, o, ChatColor.WHITE.toString(), info.prestige == 0 ? 9: 10));
         if (info.prestige != 0)
-            send(player, getScore(b, o, ChatColor.WHITE + "Prestige: " + PlayerInfo.getPrestigeString(info.prestige), 9));
+            send(player, getScore(b, o, ChatColor.WHITE + "Prestige: " + ChatColor.YELLOW +
+                    PlayerInfo.arabicToRoman(info.prestige), 9));
         send(player, getScore(b, o, ChatColor.WHITE + "Level: " + PlayerInfo.getPrefix(info.level, info.prestige), 8));
 
         long exp = Exp.getExp(info.level + (info.level == 119 ? 0: 1), info.prestige) - info.exp;
@@ -109,8 +110,9 @@ public class Sidebar
         BigDecimal r = new BigDecimal(Exp.getExp(info.level, info.prestige) == 0 ? info.exp: Exp.getExp(info.level, info.prestige));
 
         BigDecimal rb = new BigDecimal(info.exp == 0 ? 1: info.exp);
+        float a = rb.divide(r, BigDecimal.ROUND_DOWN).floatValue();
         if (r.compareTo(new BigDecimal(0)) != 0)
-            player.setExp(rb.divide(r, BigDecimal.ROUND_DOWN).floatValue());
+            player.setExp(Math.min(a, 1.0f));
         else
             player.setExp(rb.floatValue());
 

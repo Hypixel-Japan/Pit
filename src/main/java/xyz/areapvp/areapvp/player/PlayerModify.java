@@ -297,21 +297,38 @@ public class PlayerModify
         if (info.level == 120)
             return;
 
-        long xp = info.exp + exp;
-        int prestige = info.prestige;
-        long level = info.level;
-
-        long nextWheat = 1L;
-        long next = Exp.getExp(Math.toIntExact(level + nextWheat), prestige);
-        if (Exp.getExp(Math.toIntExact(level), prestige) >= xp)
+        long next = Exp.getExp(info.level + 1, info.prestige);
+        Debugger.debug(player, "Next: " + next);
+        if (next - (info.exp + exp) > 0)
         {
+            Debugger.debug(player, "Not LevelUP");
+            Debugger.debug(player, "ADD EXP: " + exp);
             addLevel(player, 0, exp);
-            InfoContainer.initialize(player);
             return;
         }
-        while (next < exp)
-            next += Exp.getExp(Math.toIntExact(level + ++nextWheat), prestige);
-        addLevel(player, Math.toIntExact(nextWheat), xp - Exp.getExp(Math.toIntExact(level + nextWheat), prestige));
+        Debugger.debug(player, "LevelUP!!!");
+
+        int levelUp = 1;
+
+        long ex = info.exp + exp;
+
+
+        while (Exp.getExp(info.level + levelUp, info.prestige) <= ex)
+        {
+            Debugger.debug(player, "UP: " + levelUp + ", EXP: " + ex + ", REQ: " + Exp.getExp(info.level + levelUp, info.prestige));
+            ex -= Exp.getExp(info.level + levelUp, info.prestige);
+            levelUp++;
+            if ((info.level + levelUp) > 120)
+            {
+                Debugger.debug(player, "!!!PRESTIGE!!!");
+                ex = 0;
+                break;
+            }
+        }
+        Debugger.debug(player, "Level UP: " + (levelUp - 1));
+        Debugger.debug(player, "ADD EXP: " + ex);
+        Debugger.debug(player, "Next Require: " + Exp.getExp(info.level + levelUp, info.prestige));
+        addLevel(player, levelUp - 1, ex);
     }
 
     public static Optional<MetadataValue> getMetaData(Entity entity, String key)

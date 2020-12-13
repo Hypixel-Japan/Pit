@@ -24,10 +24,6 @@ public class PlayerInfo
         this.ownPerk = ownPerk;
     }
 
-    public static String getPrestigeString(int n)
-    {
-        return ChatColor.RESET.toString() + getBracketColor(n) + arabicToRoman(n);
-    }
 
     /**
      * 参考: http://lovedvoraklayout.hatenablog.com/entry/roman-numerals-to-arabic
@@ -59,7 +55,7 @@ public class PlayerInfo
         String a = "";
         if (prestige != 0)
             a = ChatColor.YELLOW + arabicToRoman(prestige) + "-";
-        return bracketColor + "[" + a + levelColor + level + bracketColor + "]";
+        return bracketColor + "[" + a + levelColor + bracketColor + level + "]";
     }
 
     public static String getPrefix(int level, int prestige)

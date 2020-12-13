@@ -56,7 +56,6 @@ public class PerkProcess implements Listener
     @EventHandler
     private static void onDrag(InventoryDragEvent e) //Ender-Chest
     {
-        System.out.println("a");
         Player player = (Player) e.getWhoClicked();
         if (!e.getInventory().equals(player.getEnderChest()))
             return;
