@@ -25,6 +25,7 @@ import xyz.areapvp.areapvp.command.View;
 import xyz.areapvp.areapvp.events.*;
 import xyz.areapvp.areapvp.perk.PerkProcess;
 
+import java.awt.*;
 import java.lang.reflect.Field;
 import java.util.*;
 
@@ -102,7 +103,10 @@ public class AreaPvP extends JavaPlugin
 
         Init.scheduleArrowTimer();
 
-        Bukkit.getOnlinePlayers().forEach(player -> new Events().onJoin(new PlayerJoinEvent(player, "")));
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            refreshScoreBoard(player);
+            new Events().onJoin(new PlayerJoinEvent(player, ""));
+        });
 
     }
 

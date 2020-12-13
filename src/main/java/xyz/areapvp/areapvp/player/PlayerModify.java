@@ -113,9 +113,13 @@ public class PlayerModify
         catch (Exception ignored)
         {
         }
+        PlayerModify.setMetaData(player, "AreaPvP.Exp", info.exp + exp);
+
         if (level == 0)
             return;
-        InfoContainer.initialize(player);
+        PlayerModify.setMetaData(player, "AreaPvP.Level", Math.min(info.level + level, 120));
+
+        AreaPvP.refreshScoreBoard(player);
         player.sendTitle(ChatColor.AQUA + ChatColor.BOLD.toString() + "LEVEL UP!",
                 PlayerInfo.getPrefix(info.level, info.prestige) + ChatColor.GRAY + " → " +
                         PlayerInfo.getPrefix(Math.min(info.level + level, 120), info.prestige),
@@ -272,6 +276,7 @@ public class PlayerModify
         AreaPvP.economy.withdrawPlayer(player, AreaPvP.economy.getBalance(player));
 
         InfoContainer.initialize(player);
+        AreaPvP.refreshScoreBoard(player);
 
         player.sendTitle(ChatColor.YELLOW + ChatColor.BOLD.toString() + "PRESTIGE!",
                 ChatColor.GRAY + "あなたはprestige " +
@@ -329,6 +334,8 @@ public class PlayerModify
         Debugger.debug(player, "ADD EXP: " + ex);
         Debugger.debug(player, "Next Require: " + Exp.getExp(info.level + levelUp, info.prestige));
         addLevel(player, levelUp - 1, ex);
+        PlayerModify.setMetaData(player, "AreaPvP.Exp", ex);
+
     }
 
     public static Optional<MetadataValue> getMetaData(Entity entity, String key)

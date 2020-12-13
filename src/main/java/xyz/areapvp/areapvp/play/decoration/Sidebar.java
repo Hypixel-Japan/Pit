@@ -110,9 +110,8 @@ public class Sidebar
         BigDecimal r = new BigDecimal(Exp.getExp(info.level, info.prestige) == 0 ? info.exp: Exp.getExp(info.level, info.prestige));
 
         BigDecimal rb = new BigDecimal(info.exp == 0 ? 1: info.exp);
-        float a = rb.divide(r, BigDecimal.ROUND_DOWN).floatValue();
         if (r.compareTo(new BigDecimal(0)) != 0)
-            player.setExp(Math.min(a, 1.0f));
+            player.setExp(Math.min(rb.divide(r, BigDecimal.ROUND_DOWN).floatValue(), 1.0f));
         else
             player.setExp(rb.floatValue());
 

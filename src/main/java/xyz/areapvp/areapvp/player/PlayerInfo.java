@@ -54,8 +54,8 @@ public class PlayerInfo
         String levelColor = getLevelColor(level);
         String a = "";
         if (prestige != 0)
-            a = ChatColor.YELLOW + arabicToRoman(prestige) + "-";
-        return bracketColor + "[" + a + levelColor + bracketColor + level + "]";
+            a = ChatColor.YELLOW + arabicToRoman(prestige) + bracketColor + "-";
+        return bracketColor + "[" + a + levelColor + level + bracketColor + "]";
     }
 
     public static String getPrefix(int level, int prestige)
@@ -113,7 +113,7 @@ public class PlayerInfo
         else if (level < 110)
             return ChatColor.LIGHT_PURPLE + ChatColor.BOLD.toString();
         else if (level < 120)
-            return ChatColor.WHITE.toString();
+            return ChatColor.WHITE + ChatColor.BOLD.toString();
         else if (level == 120)
             return ChatColor.AQUA + ChatColor.BOLD.toString();
         else
