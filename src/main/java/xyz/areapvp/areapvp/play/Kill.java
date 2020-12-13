@@ -37,9 +37,9 @@ public class Kill
         Kill.st.put(player.getUniqueId(), st);
         if (st % 5 == 0)
         {
-            PlayerInfo info = PlayerModify.getInfo(player);
-            if (info == null)
+            if (!InfoContainer.isInitialize(player))
                 return;
+            PlayerInfo info = InfoContainer.getInfoAllowNick(player);
             Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(ChatColor.RED + ChatColor.BOLD.toString() + "STREAK! " +
                     ChatColor.RESET + ChatColor.GRAY + "of " + ChatColor.RED + st + ChatColor.GRAY +
                     " kills by " + PlayerInfo.getPrefix(info.level, info.prestige) + ChatColor.GRAY + " " +
@@ -150,7 +150,6 @@ public class Kill
 
                 long exp = Exp.calcKillExp(killer, deather, info.level, info.prestige);
 
-
                 double money = 12;
                 money = money * ((info.prestige == 0 ? 1: info.prestige) * 120d / 100d);
                 BigDecimal bd = new BigDecimal(money);
@@ -179,6 +178,8 @@ public class Kill
                 AreaPvP.economy.depositPlayer(killer, money);
                 PlayerModify.addExp(killer, exp);
 
+                info = InfoContainer.getInfoAllowNick(deather);
+
                 String name = PlayerInfo.getPrefix(info.level, info.prestige) +
                         ChatColor.GRAY + " " + deather.getName();
 
@@ -192,13 +193,13 @@ public class Kill
                         (reduced ? ChatColor.GRAY + " (reduced)": "")
                 );
 
-                PlayerInfo kInfo = PlayerModify.getInfo(killer);
+                PlayerInfo kInfo = InfoContainer.getInfoAllowNick(killer);
 
                 long streak = getStreak(killer.getUniqueId());
                 if (!reduced)
                     st.put(killer.getUniqueId(), streak + 1);
 
-                if (kInfo == null)
+                if (!InfoContainer.isInitialize(killer))
                 {
                     unknownRestart(deather);
                     return;

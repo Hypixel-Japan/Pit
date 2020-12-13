@@ -24,11 +24,11 @@ public class PlayerUnnickEvent extends Event implements Cancellable
     @Override
     public HandlerList getHandlers()
     {
-        return null;
+        return new HandlerList();
     }
 
     public HandlerList getHandlerList()
     {
-        return null;
+        return new HandlerList();
     }
 }

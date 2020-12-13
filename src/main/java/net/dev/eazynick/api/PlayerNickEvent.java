@@ -20,12 +20,12 @@ public class PlayerNickEvent extends Event implements Cancellable
 
     public HandlerList getHandlers()
     {
-        return null;
+        return new HandlerList();
     }
 
     public HandlerList getHandlerList()
     {
-        return null;
+        return new HandlerList();
     }
 
     public Player getPlayer() {

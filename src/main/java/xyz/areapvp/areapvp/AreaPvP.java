@@ -58,7 +58,8 @@ public class AreaPvP extends JavaPlugin
         Bukkit.getPluginManager().registerEvents(new PerkProcess(), this);
         Bukkit.getPluginManager().registerEvents(new GUI(), this);
         Bukkit.getPluginManager().registerEvents(new DamageModifier(), this);
-        Bukkit.getPluginManager().registerEvents(new NickHandler(), this);
+        if (Bukkit.getPluginManager().isPluginEnabled("EazyNick"))
+            Bukkit.getPluginManager().registerEvents(new NickHandler(), this);
         getCommand("areapvp").setExecutor(new Main());
         getCommand("spawn").setExecutor(new Spawn());
         getCommand("oof").setExecutor(new Oof());

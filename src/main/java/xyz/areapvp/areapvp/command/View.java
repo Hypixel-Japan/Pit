@@ -37,7 +37,7 @@ public class View implements CommandExecutor
         player.set(Bukkit.getPlayer(args[0]));
         if (player.get() == null)
         {
-            Arrays.stream(Bukkit.getOfflinePlayers()).forEach(o -> player.set(o.getName().equals("") ? Bukkit.getOfflinePlayer(o.getUniqueId()): null));
+            player.set(Bukkit.getOfflinePlayer(args[0]));
             if (player.get() == null)
             {
                 sender.sendMessage(ChatColor.RED + "プレイヤーが見つかりませんでした。");
@@ -45,7 +45,16 @@ public class View implements CommandExecutor
             }
         }
 
-        ProfileViewer.viewPlayer(player.get().getPlayer(), (Player) sender);
+        OfflinePlayer atp = player.get();
+
+        if (atp.isOnline() && InfoContainer.isNicked(atp.getPlayer()))
+        {
+            sender.sendMessage(ChatColor.RED + ChatColor.BOLD.toString() + "HOAH! " +
+                    ChatColor.RESET + ChatColor.GRAY + "このプレイヤーは /view を無効化しています！");
+            return true;
+        }
+
+        ProfileViewer.viewPlayer(atp.getPlayer(), (Player) sender);
 
         return true;
     }
