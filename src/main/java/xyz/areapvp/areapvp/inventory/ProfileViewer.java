@@ -1,21 +1,15 @@
 package xyz.areapvp.areapvp.inventory;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.*;
+import org.bukkit.entity.*;
+import org.bukkit.inventory.*;
 import xyz.areapvp.areapvp.*;
 import xyz.areapvp.areapvp.perk.*;
 import xyz.areapvp.areapvp.player.*;
 
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Objects;
-import java.util.UUID;
-import java.util.stream.IntStream;
+import java.math.*;
+import java.util.*;
+import java.util.stream.*;
 
 public class ProfileViewer
 {

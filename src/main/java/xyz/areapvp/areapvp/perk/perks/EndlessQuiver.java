@@ -1,14 +1,12 @@
 package xyz.areapvp.areapvp.perk.perks;
 
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import xyz.areapvp.areapvp.Items;
-import xyz.areapvp.areapvp.perk.IPerkEntry;
+import org.bukkit.*;
+import org.bukkit.entity.*;
+import org.bukkit.inventory.*;
+import xyz.areapvp.areapvp.*;
+import xyz.areapvp.areapvp.perk.*;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class EndlessQuiver implements IPerkEntry
 {

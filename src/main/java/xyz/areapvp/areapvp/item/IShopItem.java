@@ -1,6 +1,6 @@
 package xyz.areapvp.areapvp.item;
 
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.*;
 
 public interface IShopItem
 {

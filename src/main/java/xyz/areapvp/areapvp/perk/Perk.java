@@ -1,13 +1,10 @@
 package xyz.areapvp.areapvp.perk;
 
-import org.bukkit.entity.Player;
-import org.bukkit.metadata.MetadataValue;
-import xyz.areapvp.areapvp.player.PlayerInfo;
-import xyz.areapvp.areapvp.player.PlayerModify;
+import org.bukkit.entity.*;
+import org.bukkit.metadata.*;
+import xyz.areapvp.areapvp.player.*;
 
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 public class Perk
 {

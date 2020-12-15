@@ -1,18 +1,15 @@
 package xyz.areapvp.areapvp.inventory;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import xyz.areapvp.areapvp.AreaPvP;
-import xyz.areapvp.areapvp.item.IShopItem;
+import org.bukkit.*;
+import org.bukkit.entity.*;
+import org.bukkit.inventory.*;
+import xyz.areapvp.areapvp.*;
 import xyz.areapvp.areapvp.item.Items;
+import xyz.areapvp.areapvp.item.*;
+import xyz.areapvp.areapvp.perk.*;
 import xyz.areapvp.areapvp.player.*;
-import xyz.areapvp.areapvp.perk.Perks;
 
-import java.util.Objects;
+import java.util.*;
 
 public class Shop
 {

@@ -1,23 +1,19 @@
 package xyz.areapvp.areapvp.play;
 
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import org.bukkit.Bukkit;
+import net.md_5.bungee.api.*;
+import net.md_5.bungee.api.chat.*;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.*;
+import org.bukkit.entity.*;
+import org.bukkit.metadata.*;
+import org.bukkit.scheduler.*;
 import xyz.areapvp.areapvp.*;
+import xyz.areapvp.areapvp.perk.*;
 import xyz.areapvp.areapvp.play.decoration.*;
 import xyz.areapvp.areapvp.player.*;
-import xyz.areapvp.areapvp.perk.Perk;
-import xyz.areapvp.areapvp.perk.PerkProcess;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Random;
-import java.util.UUID;
+import java.math.*;
+import java.util.*;
 
 public class Kill
 {

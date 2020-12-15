@@ -1,9 +1,9 @@
 package xyz.areapvp.areapvp.item.items;
 
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.*;
+import org.bukkit.inventory.*;
 import xyz.areapvp.areapvp.Items;
-import xyz.areapvp.areapvp.item.IShopItem;
+import xyz.areapvp.areapvp.item.*;
 
 public class DiamondChestPlate implements IShopItem
 {

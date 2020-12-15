@@ -1,25 +1,22 @@
 package xyz.areapvp.areapvp.inventory;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
+import org.apache.commons.lang.*;
+import org.bukkit.*;
+import org.bukkit.entity.*;
+import org.bukkit.inventory.*;
 import xyz.areapvp.areapvp.*;
 import xyz.areapvp.areapvp.player.*;
 
-import java.util.Arrays;
+import java.util.*;
 
 public class Prestige
 {
     private static String[] getCautionLore()
     {
-        return  new String[]{ChatColor.RED + "◎" + ChatColor.AQUA + "Level" +
+        return new String[]{ChatColor.RED + "◎" + ChatColor.AQUA + "Level" +
                 ChatColor.RED + "が 1 に" + ChatColor.BOLD + "リセット" + ChatColor.RESET + ChatColor.RED + "されます。",
                 ChatColor.RED + ChatColor.BOLD.toString() + "◎" + ChatColor.RESET + ChatColor.GOLD + "Gold" +
-                ChatColor.RED + "が 0 に" + ChatColor.BOLD + "リセット" + ChatColor.RESET + ChatColor.RED + "されます。",
+                        ChatColor.RED + "が 0 に" + ChatColor.BOLD + "リセット" + ChatColor.RESET + ChatColor.RED + "されます。",
                 ChatColor.RED + ChatColor.BOLD.toString() + "◎" + ChatColor.RESET + ChatColor.RED +
                         "すべての" + ChatColor.GREEN + "Perkが" + ChatColor.BOLD + "リセット" + ChatColor.RESET + ChatColor.RED + "されます。",
                 ChatColor.RED + ChatColor.BOLD.toString() + "◎" + ChatColor.RESET + ChatColor.AQUA + "Level" +
@@ -59,19 +56,28 @@ public class Prestige
     public static Inventory getConfirmPresInventory(Player player)
     {
         Inventory inventory = Bukkit.createInventory(null, 27, "Are you sure?");
-        inventory.setItem(11,
-                Items.addMetaData(Items.addMetaData(Items.lore(Items.setDisplayName(new ItemStack(Material.STAINED_CLAY, 1, (short) 13),
-                        ChatColor.DARK_GREEN + "Confirm"), Arrays.asList(getCautionLore()))
+        inventory.setItem(
+                11,
+                Items.addMetaData(Items.addMetaData(Items.lore(Items.setDisplayName(
+                        new ItemStack(Material.STAINED_CLAY, 1, (short) 13),
+                        ChatColor.DARK_GREEN + "Confirm"
+                        ), Arrays.asList(getCautionLore()))
                         , "action", "prestige")
-                        , "phase", "confirm"));
-        inventory.setItem(15,
-                Items.addMetaData(Items.addMetaData(Items.setDisplayName(new ItemStack(Material.STAINED_CLAY, 1, (short) 14),
-                        ChatColor.DARK_RED + "Cancel"),
-                        "action", "prestige"),
-                        "phase", "cancel"));
+                        , "phase", "confirm")
+        );
+        inventory.setItem(
+                15,
+                Items.addMetaData(Items.addMetaData(Items.setDisplayName(
+                        new ItemStack(Material.STAINED_CLAY, 1, (short) 14),
+                        ChatColor.DARK_RED + "Cancel"
+                        ),
+                        "action", "prestige"
+                        ),
+                        "phase", "cancel"
+                )
+        );
         return inventory;
     }
-
 
     public static void onPickUp(Player player, ItemStack stack)
     {

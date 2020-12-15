@@ -1,6 +1,6 @@
 package xyz.areapvp.areapvp.perk;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class Perks
 {

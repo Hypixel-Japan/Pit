@@ -1,17 +1,12 @@
 package xyz.areapvp.areapvp.command;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import xyz.areapvp.areapvp.inventory.ProfileViewer;
+import org.bukkit.*;
+import org.bukkit.command.*;
+import org.bukkit.entity.*;
+import xyz.areapvp.areapvp.inventory.*;
 import xyz.areapvp.areapvp.player.*;
 
-import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.*;
 
 public class View implements CommandExecutor
 {

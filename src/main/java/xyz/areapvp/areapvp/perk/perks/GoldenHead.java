@@ -1,22 +1,17 @@
 package xyz.areapvp.areapvp.perk.perks;
 
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import xyz.areapvp.areapvp.Items;
-import xyz.areapvp.areapvp.perk.IPerkEntry;
+import com.mojang.authlib.*;
+import com.mojang.authlib.properties.*;
+import org.bukkit.*;
+import org.bukkit.entity.*;
+import org.bukkit.inventory.*;
+import org.bukkit.inventory.meta.*;
+import org.bukkit.potion.*;
+import xyz.areapvp.areapvp.*;
+import xyz.areapvp.areapvp.perk.*;
 
-import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.lang.reflect.*;
+import java.util.*;
 
 public class GoldenHead implements IPerkEntry
 {

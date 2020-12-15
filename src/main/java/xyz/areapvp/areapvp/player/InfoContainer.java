@@ -85,17 +85,20 @@ public class InfoContainer
     {
         if (!get(player, "AreaPvp.Nick.Enabled").equals("1"))
             return getInfo(player);
-        return new PlayerInfo(getAsInt(player, "AreaPvP.Nick.Level"),
+        return new PlayerInfo(
+                getAsInt(player, "AreaPvP.Nick.Level"),
                 getAsLong(player, "AreaPvP.Nick.Exp"),
                 0,
                 new ArrayList<>(),
-                new ArrayList<>());
+                new ArrayList<>()
+        );
 
     }
 
     public static PlayerInfo getInfo(Player player)
     {
-        return new PlayerInfo(getLevel(player),
+        return new PlayerInfo(
+                getLevel(player),
                 getExp(player),
                 getPrestige(player),
                 new ArrayList<>(),

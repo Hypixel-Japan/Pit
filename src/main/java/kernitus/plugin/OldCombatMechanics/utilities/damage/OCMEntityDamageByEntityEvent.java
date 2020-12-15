@@ -4,8 +4,10 @@ import org.bukkit.entity.*;
 import org.bukkit.event.*;
 
 public class OCMEntityDamageByEntityEvent extends Event
-{
-    public void setBaseDamage(double baseDamage){
+{ //Exclude in Build
+
+    public void setBaseDamage(double baseDamage)
+    {
     }
 
     @Override
@@ -14,7 +16,8 @@ public class OCMEntityDamageByEntityEvent extends Event
         return null;
     }
 
-    public Entity getDamager(){
+    public Entity getDamager()
+    {
         return null;
     }
 

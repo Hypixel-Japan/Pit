@@ -1,53 +1,34 @@
 package xyz.areapvp.areapvp.events;
 
 import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.*;
 import net.minecraft.server.v1_12_R1.*;
-import org.apache.commons.lang3.tuple.*;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
 import org.bukkit.Material;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.Arrow;
+import org.bukkit.*;
+import org.bukkit.attribute.*;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockFadeEvent;
-import org.bukkit.event.block.BlockFromToEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityPickupItemEvent;
-import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.entity.ProjectileHitEvent;
-import org.bukkit.event.entity.ProjectileLaunchEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.vehicle.VehicleEntityCollisionEvent;
+import org.bukkit.entity.*;
+import org.bukkit.event.*;
+import org.bukkit.event.block.*;
+import org.bukkit.event.entity.*;
+import org.bukkit.event.inventory.*;
+import org.bukkit.event.player.*;
+import org.bukkit.event.vehicle.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.scheduler.BukkitRunnable;
-import xyz.areapvp.areapvp.*;
+import org.bukkit.metadata.*;
+import org.bukkit.scheduler.*;
 import xyz.areapvp.areapvp.Items;
-import xyz.areapvp.areapvp.play.*;
+import xyz.areapvp.areapvp.*;
+import xyz.areapvp.areapvp.perk.*;
 import xyz.areapvp.areapvp.play.InventoryUtils;
+import xyz.areapvp.areapvp.play.*;
 import xyz.areapvp.areapvp.play.decoration.*;
 import xyz.areapvp.areapvp.player.*;
-import xyz.areapvp.areapvp.perk.Perk;
-import xyz.areapvp.areapvp.perk.PerkProcess;
 
-import java.math.BigDecimal;
-import java.util.stream.IntStream;
+import java.math.*;
+import java.util.stream.*;
 
 public class Events implements Listener
 {
@@ -170,6 +151,7 @@ public class Events implements Listener
                     new ComponentBuilder(ChatColor.RED.toString() + e.getDamage() + " => " + ((Player) e.getEntity()).getHealth()).create()
             );
     }
+
     @EventHandler(ignoreCancelled = true)
     public void onJoin(PlayerJoinEvent e)
     {

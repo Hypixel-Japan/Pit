@@ -1,28 +1,17 @@
 package xyz.areapvp.areapvp;
 
-import com.comphenix.protocol.wrappers.nbt.*;
 import com.google.common.util.concurrent.*;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import net.minecraft.server.v1_12_R1.NBTBase;
-import net.minecraft.server.v1_12_R1.NBTTagCompound;
-import net.minecraft.server.v1_12_R1.NBTTagDouble;
-import net.minecraft.server.v1_12_R1.NBTTagInt;
-import net.minecraft.server.v1_12_R1.NBTTagList;
-import net.minecraft.server.v1_12_R1.NBTTagString;
-import org.bukkit.ChatColor;
+import com.google.gson.*;
+import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
-import org.bukkit.inventory.ItemFlag;
+import org.bukkit.*;
+import org.bukkit.craftbukkit.v1_12_R1.inventory.*;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.*;
+import org.bukkit.inventory.meta.*;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.lang.reflect.*;
+import java.util.*;
 
 public class Items
 {
@@ -228,7 +217,7 @@ public class Items
         NBTTagCompound compound = craftItem.hasTag() ? craftItem.getTag(): new NBTTagCompound();
         if (compound == null)
             return 0;
-        NBTTagList lst =((NBTTagList)compound.get("AttributeModifiers"));
+        NBTTagList lst = ((NBTTagList) compound.get("AttributeModifiers"));
         if (lst == null)
             return 0;
         List<NBTBase> list;

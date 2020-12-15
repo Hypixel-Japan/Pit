@@ -1,10 +1,50 @@
 package xyz.areapvp.areapvp.player;
 
-import org.bukkit.entity.Player;
-import xyz.areapvp.areapvp.play.Kill;
+import org.apache.commons.lang3.tuple.*;
+import org.bukkit.entity.*;
+import xyz.areapvp.areapvp.*;
+import xyz.areapvp.areapvp.play.*;
 
 public class Exp
 {
+    public static Pair<Integer, Long> calcLevelUpAmountAndSurplusExp(PlayerInfo info, long exp, Player player)
+    {
+        if (info.level == 120)
+            return Pair.of(0, 0L);
+
+        long next = Exp.getExp(info.level + 1, info.prestige);
+        Debugger.debug(player, "Next: " + next);
+        if (next - (info.exp + exp) > 0)
+        {
+            Debugger.debug(player, "Not LevelUP");
+            Debugger.debug(player, "ADD EXP: " + exp);
+            return Pair.of(0, exp);
+        }
+        Debugger.debug(player, "LevelUP!!!");
+
+        int levelUp = 1;
+
+        long ex = info.exp + exp;
+
+
+        while (Exp.getExp(info.level + levelUp, info.prestige) <= ex)
+        {
+            Debugger.debug(player, "UP: " + levelUp + ", EXP: " + ex + ", REQ: " + Exp.getExp(info.level + levelUp, info.prestige));
+            ex -= Exp.getExp(info.level + levelUp, info.prestige);
+            levelUp++;
+            if ((info.level + levelUp) > 120)
+            {
+                Debugger.debug(player, "!!!PRESTIGE!!!");
+                ex = 0;
+                break;
+            }
+        }
+        Debugger.debug(player, "Level UP: " + (levelUp - 1));
+        Debugger.debug(player, "ADD EXP: " + ex);
+        Debugger.debug(player, "Next Require: " + Exp.getExp(info.level + levelUp, info.prestige));
+        return Pair.of(levelUp - 1, ex);
+    }
+
     public static long calcKillExp(Player killer, Player death, int level, int prestige)
     {
         int base = 10;

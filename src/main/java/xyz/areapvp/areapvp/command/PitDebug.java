@@ -1,23 +1,17 @@
 package xyz.areapvp.areapvp.command;
 
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.scheduler.BukkitRunnable;
-import xyz.areapvp.areapvp.AreaPvP;
-import xyz.areapvp.areapvp.Items;
-import xyz.areapvp.areapvp.play.Kill;
-import xyz.areapvp.areapvp.inventory.Shop;
-import xyz.areapvp.areapvp.player.PlayerModify;
+import net.md_5.bungee.api.chat.*;
+import org.bukkit.*;
+import org.bukkit.command.*;
+import org.bukkit.entity.*;
+import org.bukkit.metadata.*;
+import org.bukkit.scheduler.*;
+import xyz.areapvp.areapvp.*;
+import xyz.areapvp.areapvp.inventory.*;
+import xyz.areapvp.areapvp.play.*;
+import xyz.areapvp.areapvp.player.*;
 
-import java.util.Arrays;
+import java.util.*;
 
 public class PitDebug implements CommandExecutor
 {

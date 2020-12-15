@@ -1,9 +1,9 @@
 package xyz.areapvp.areapvp.perk;
 
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.entity.*;
+import org.bukkit.inventory.*;
 
-import java.util.List;
+import java.util.*;
 
 public interface IPerkEntry
 {

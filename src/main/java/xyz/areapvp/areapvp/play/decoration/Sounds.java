@@ -1,12 +1,8 @@
 package xyz.areapvp.areapvp.play.decoration;
 
-import net.minecraft.server.v1_12_R1.MinecraftKey;
-import net.minecraft.server.v1_12_R1.PacketPlayOutNamedSoundEffect;
-import net.minecraft.server.v1_12_R1.PlayerConnection;
-import net.minecraft.server.v1_12_R1.SoundCategory;
-import net.minecraft.server.v1_12_R1.SoundEffect;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
-import org.bukkit.entity.Player;
+import net.minecraft.server.v1_12_R1.*;
+import org.bukkit.craftbukkit.v1_12_R1.entity.*;
+import org.bukkit.entity.*;
 
 public class Sounds
 {
@@ -15,7 +11,8 @@ public class Sounds
         SoundEffect effect;
         if ((effect = SoundEffect.a.get(new MinecraftKey(name))) == null)
             return;
-        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutNamedSoundEffect(effect,
+        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutNamedSoundEffect(
+                effect,
                 SoundCategory.PLAYERS,
                 player.getLocation().getX(),
                 player.getLocation().getY(),
@@ -30,7 +27,6 @@ public class Sounds
         play(player, type.getName(), type.getPitch());
     }
 
-
     public enum SoundType
     {
         KILL("entity.experience_orb.pickup", 1.8f),
@@ -38,6 +34,7 @@ public class Sounds
 
         final String name;
         final float pitch;
+
         SoundType(String name, float pitch)
         {
             this.name = name;

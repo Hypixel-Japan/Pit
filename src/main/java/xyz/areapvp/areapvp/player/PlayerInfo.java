@@ -1,11 +1,10 @@
 package xyz.areapvp.areapvp.player;
 
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.*;
+import org.bukkit.inventory.*;
+import org.bukkit.inventory.meta.*;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class PlayerInfo
 {
@@ -23,7 +22,6 @@ public class PlayerInfo
         this.perk = perk;
         this.ownPerk = ownPerk;
     }
-
 
     /**
      * 参考: http://lovedvoraklayout.hatenablog.com/entry/roman-numerals-to-arabic

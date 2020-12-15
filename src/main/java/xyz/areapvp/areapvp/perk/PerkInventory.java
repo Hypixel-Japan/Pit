@@ -1,16 +1,11 @@
 package xyz.areapvp.areapvp.perk;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import xyz.areapvp.areapvp.AreaPvP;
-import xyz.areapvp.areapvp.Items;
-import xyz.areapvp.areapvp.inventory.ShopItem;
-import xyz.areapvp.areapvp.player.PlayerInfo;
-import xyz.areapvp.areapvp.player.PlayerModify;
+import org.bukkit.*;
+import org.bukkit.entity.*;
+import org.bukkit.inventory.*;
+import xyz.areapvp.areapvp.*;
+import xyz.areapvp.areapvp.inventory.*;
+import xyz.areapvp.areapvp.player.*;
 
 public class PerkInventory
 {

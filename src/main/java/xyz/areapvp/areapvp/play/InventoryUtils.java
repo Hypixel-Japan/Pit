@@ -1,20 +1,14 @@
 package xyz.areapvp.areapvp.play;
 
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.*;
+import org.bukkit.entity.*;
+import org.bukkit.inventory.*;
+import org.bukkit.potion.*;
+import org.bukkit.scheduler.*;
 import xyz.areapvp.areapvp.*;
-import xyz.areapvp.areapvp.perk.Perk;
-import xyz.areapvp.areapvp.perk.Perks;
-import xyz.areapvp.areapvp.perk.perks.GoldenHead;
+import xyz.areapvp.areapvp.perk.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 public class InventoryUtils
 {

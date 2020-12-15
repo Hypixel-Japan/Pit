@@ -1,13 +1,11 @@
 package xyz.areapvp.areapvp.inventory;
 
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import xyz.areapvp.areapvp.Items;
+import org.bukkit.*;
+import org.bukkit.inventory.*;
+import org.bukkit.inventory.meta.*;
+import xyz.areapvp.areapvp.*;
 
-import java.util.Collections;
-import java.util.UUID;
+import java.util.*;
 
 public class ShopItem
 {

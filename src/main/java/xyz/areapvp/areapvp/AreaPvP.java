@@ -1,32 +1,23 @@
 package xyz.areapvp.areapvp;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-import net.milkbowl.vault.economy.Economy;
+import com.zaxxer.hikari.*;
+import net.milkbowl.vault.economy.*;
 import net.minecraft.server.v1_12_R1.*;
-import org.apache.commons.lang3.tuple.*;
-import org.bukkit.*;
 import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.PluginCommand;
-import org.bukkit.command.SimpleCommandMap;
-import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.*;
+import org.bukkit.command.*;
+import org.bukkit.configuration.file.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.player.*;
-import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scoreboard.*;
+import org.bukkit.plugin.*;
+import org.bukkit.plugin.java.*;
 import org.bukkit.scoreboard.Scoreboard;
-import xyz.areapvp.areapvp.command.Main;
-import xyz.areapvp.areapvp.command.Oof;
-import xyz.areapvp.areapvp.command.PitDebug;
-import xyz.areapvp.areapvp.command.Spawn;
-import xyz.areapvp.areapvp.command.View;
+import org.bukkit.scoreboard.*;
+import xyz.areapvp.areapvp.command.*;
 import xyz.areapvp.areapvp.events.*;
-import xyz.areapvp.areapvp.perk.PerkProcess;
+import xyz.areapvp.areapvp.perk.*;
 
-import java.awt.*;
-import java.lang.reflect.Field;
+import java.lang.reflect.*;
 import java.util.*;
 
 public class AreaPvP extends JavaPlugin
@@ -51,6 +42,49 @@ public class AreaPvP extends JavaPlugin
         return plugin;
     }
 
+    public static void refreshScoreBoard(Player player)
+    {
+        Scoreboard scoreboard = player.getScoreboard();
+        if (scoreboard == null)
+            return;
+        scoreboard.getTeams().forEach(Team::unregister);
+    }
+
+    private static Object getPrivateField(Object object, String field) throws SecurityException,
+            NoSuchFieldException, IllegalArgumentException, IllegalAccessException
+    {
+        Class<?> clazz = object.getClass();
+        Field objectField = clazz.getDeclaredField(field);
+        objectField.setAccessible(true);
+        Object result = objectField.get(object);
+        objectField.setAccessible(false);
+        return result;
+    }
+
+    public static void unRegisterBukkitCommand(PluginCommand cmd)
+    {
+        try
+        {
+            Object result = getPrivateField(Bukkit.getPluginManager(), "commandMap");
+            SimpleCommandMap commandMap = (SimpleCommandMap) result;
+            Object map = getPrivateField(commandMap, "knownCommands");
+            @SuppressWarnings("unchecked")
+            HashMap<String, Command> knownCommands = (HashMap<String, Command>) map;
+            knownCommands.remove(cmd.getName());
+            for (String alias : cmd.getAliases())
+            {
+                if (knownCommands.containsKey(alias) && knownCommands.get(alias).toString().contains("CmdSender"))
+                {
+                    knownCommands.remove(alias);
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void onEnable()
     {
@@ -61,6 +95,7 @@ public class AreaPvP extends JavaPlugin
         Bukkit.getPluginManager().registerEvents(new DamageModifier(), this);
         if (Bukkit.getPluginManager().isPluginEnabled("EazyNick"))
             Bukkit.getPluginManager().registerEvents(new NickHandler(), this);
+        Bukkit.getPluginManager().registerEvents(new DamageModifier(), this);
         getCommand("areapvp").setExecutor(new Main());
         getCommand("spawn").setExecutor(new Spawn());
         getCommand("oof").setExecutor(new Oof());
@@ -110,53 +145,11 @@ public class AreaPvP extends JavaPlugin
 
     }
 
-    public static void refreshScoreBoard(Player player)
-    {
-        Scoreboard scoreboard = player.getScoreboard();
-        if (scoreboard == null)
-            return;
-        scoreboard.getTeams().forEach(Team::unregister);;
-    }
-
     @Override
     public void onDisable()
     {
         if (data != null)
             data.close();
         block.forEach((b, v) -> b.getWorld().getBlockAt(b).setType(v.b()));
-    }
-
-    private static Object getPrivateField(Object object, String field)throws SecurityException,
-            NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
-        Class<?> clazz = object.getClass();
-        Field objectField = clazz.getDeclaredField(field);
-        objectField.setAccessible(true);
-        Object result = objectField.get(object);
-        objectField.setAccessible(false);
-        return result;
-    }
-
-    public static void unRegisterBukkitCommand(PluginCommand cmd)
-    {
-        try
-        {
-            Object result = getPrivateField(Bukkit.getPluginManager(), "commandMap");
-            SimpleCommandMap commandMap = (SimpleCommandMap) result;
-            Object map = getPrivateField(commandMap, "knownCommands");
-            @SuppressWarnings("unchecked")
-            HashMap<String, Command> knownCommands = (HashMap<String, Command>) map;
-            knownCommands.remove(cmd.getName());
-            for (String alias : cmd.getAliases())
-            {
-                if (knownCommands.containsKey(alias) && knownCommands.get(alias).toString().contains("CmdSender"))
-                {
-                    knownCommands.remove(alias);
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
     }
 }

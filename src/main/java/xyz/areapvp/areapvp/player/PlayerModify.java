@@ -1,5 +1,6 @@
 package xyz.areapvp.areapvp.player;
 
+import org.apache.commons.lang3.tuple.*;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.metadata.*;
@@ -302,39 +303,29 @@ public class PlayerModify
         if (info.level == 120)
             return;
 
-        long next = Exp.getExp(info.level + 1, info.prestige);
-        Debugger.debug(player, "Next: " + next);
-        if (next - (info.exp + exp) > 0)
+        Pair<Integer, Long> level = Exp.calcLevelUpAmountAndSurplusExp(info, exp, player);
+
+        addLevel(player, level.getLeft(), level.getRight());
+        PlayerModify.setMetaData(player, "AreaPvP.Exp", level.getRight());
+        if (!InfoContainer.isNicked(player))
+            return;
+        info = InfoContainer.getInfoAllowNick(player);
+
+        if (info.level == 120)
         {
-            Debugger.debug(player, "Not LevelUP");
-            Debugger.debug(player, "ADD EXP: " + exp);
-            addLevel(player, 0, exp);
+            PlayerModify.setMetaData(player, "AreaPvP.Nick.Level", 1);
+            PlayerModify.setMetaData(player, "AreaPvP.Nick.Exp", 0);
+            PlayerModify.setMetaData(player, "AreaPvP.Nick.Prestige", info.prestige + 1);
+            AreaPvP.refreshScoreBoard(player);
             return;
         }
-        Debugger.debug(player, "LevelUP!!!");
 
-        int levelUp = 1;
+        level = Exp.calcLevelUpAmountAndSurplusExp(InfoContainer.getInfoAllowNick(player), info.exp, player);
 
-        long ex = info.exp + exp;
-
-
-        while (Exp.getExp(info.level + levelUp, info.prestige) <= ex)
-        {
-            Debugger.debug(player, "UP: " + levelUp + ", EXP: " + ex + ", REQ: " + Exp.getExp(info.level + levelUp, info.prestige));
-            ex -= Exp.getExp(info.level + levelUp, info.prestige);
-            levelUp++;
-            if ((info.level + levelUp) > 120)
-            {
-                Debugger.debug(player, "!!!PRESTIGE!!!");
-                ex = 0;
-                break;
-            }
-        }
-        Debugger.debug(player, "Level UP: " + (levelUp - 1));
-        Debugger.debug(player, "ADD EXP: " + ex);
-        Debugger.debug(player, "Next Require: " + Exp.getExp(info.level + levelUp, info.prestige));
-        addLevel(player, levelUp - 1, ex);
-        PlayerModify.setMetaData(player, "AreaPvP.Exp", ex);
+        PlayerModify.setMetaData(player, "AreaPvP.Nick.Level", info.level + level.getLeft());
+        PlayerModify.setMetaData(player, "AreaPvP.Nick.Exp", info.exp + level.getLeft());
+        if (level.getLeft() != 0)
+            AreaPvP.refreshScoreBoard(player);
 
     }
 

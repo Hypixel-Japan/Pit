@@ -15,7 +15,7 @@ public class NickHandler implements Listener
             return;
         InfoContainer.nick(e.getPlayer());
         AreaPvP.refreshScoreBoard(e.getPlayer());
-        e.getPlayer().sendMessage(ChatColor.YELLOW + "あなたはニックネームを使用していますので、表示されるレベルがランダム化されています！");
+        e.getPlayer().sendMessage(ChatColor.YELLOW + "あなたはニックネームを使用しているため、表示されるレベルがランダム化されています！");
         e.getPlayer().teleport(e.getPlayer().getWorld().getSpawnLocation());
     }
 

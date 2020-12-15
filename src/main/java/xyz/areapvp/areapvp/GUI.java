@@ -1,24 +1,18 @@
 package xyz.areapvp.areapvp;
 
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.scheduler.BukkitRunnable;
-import xyz.areapvp.areapvp.command.PitDebug;
+import org.bukkit.*;
+import org.bukkit.entity.*;
+import org.bukkit.event.*;
+import org.bukkit.event.entity.*;
+import org.bukkit.event.inventory.*;
+import org.bukkit.event.player.*;
+import org.bukkit.inventory.*;
+import org.bukkit.scheduler.*;
+import xyz.areapvp.areapvp.command.*;
 import xyz.areapvp.areapvp.inventory.*;
-import xyz.areapvp.areapvp.item.IShopItem;
+import xyz.areapvp.areapvp.item.*;
+import xyz.areapvp.areapvp.perk.*;
 import xyz.areapvp.areapvp.player.*;
-import xyz.areapvp.areapvp.perk.IPerkEntry;
-import xyz.areapvp.areapvp.perk.PerkInventory;
-import xyz.areapvp.areapvp.perk.Perks;
 
 public class GUI implements Listener
 {

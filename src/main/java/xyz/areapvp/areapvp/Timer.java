@@ -1,14 +1,11 @@
 package xyz.areapvp.areapvp;
 
 import net.minecraft.server.v1_12_R1.*;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.*;
+import org.bukkit.metadata.*;
+import org.bukkit.scheduler.*;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class Timer extends BukkitRunnable
 {

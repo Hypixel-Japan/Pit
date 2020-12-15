@@ -38,15 +38,6 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <filters>
-                                <filter>
-                                    <artifact>*:*</artifact>
-                                    <excludes>
-                                        <exclude>**/kernitus/**/*</exclude>
-                                        <exclude>**/net/dev/**/*</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>
                             <minimizeJar>true</minimizeJar>
                             <artifactSet>
                                 <includes>
@@ -128,6 +119,11 @@
             <groupId>com.comphenix.protocol</groupId>
             <artifactId>ProtocolLib</artifactId>
             <version>4.5.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.peyang-Celeron</groupId>
+            <artifactId>EazyNick</artifactId>
+            <version>1.0-ChangePom</version>
         </dependency>
     </dependencies>
 </project>

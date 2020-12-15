@@ -1,14 +1,12 @@
 package xyz.areapvp.areapvp.command;
 
-import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.potion.PotionEffectType;
-import xyz.areapvp.areapvp.AreaPvP;
-import xyz.areapvp.areapvp.play.InventoryUtils;
+import org.bukkit.*;
+import org.bukkit.command.*;
+import org.bukkit.entity.*;
+import org.bukkit.metadata.*;
+import org.bukkit.potion.*;
+import xyz.areapvp.areapvp.*;
+import xyz.areapvp.areapvp.play.*;
 
 public class Spawn implements CommandExecutor
 {

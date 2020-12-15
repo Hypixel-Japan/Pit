@@ -3,8 +3,8 @@ package xyz.areapvp.areapvp.events;
 import kernitus.plugin.OldCombatMechanics.utilities.damage.*;
 import net.md_5.bungee.api.*;
 import net.md_5.bungee.api.chat.*;
-import org.bukkit.*;
 import org.bukkit.ChatColor;
+import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.*;
 import org.bukkit.event.entity.*;
@@ -16,8 +16,6 @@ import java.util.*;
 public class DamageModifier implements Listener
 {
 
-
-
     @EventHandler
     public void onOCM(OCMEntityDamageByEntityEvent e)
     {
@@ -26,7 +24,6 @@ public class DamageModifier implements Listener
         Player hitter = (Player) e.getDamager();
         e.setBaseDamage(Items.getDamage(hitter.getInventory().getItemInMainHand()));
     }
-
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onEntityDamageByEntityOnModified(EntityDamageByEntityEvent e)
