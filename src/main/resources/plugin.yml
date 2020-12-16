@@ -1,8 +1,9 @@
 name: AreaPvP
 version: ${project.version}
 main: xyz.areapvp.areapvp.AreaPvP
-loadbefore: ["Vault", "EazyNick"]
+load: POSTWORLD
 softdepend: ["EazyNick"]
+depend: ["Vault"]
 commands:
   areapvp:
   spawn:

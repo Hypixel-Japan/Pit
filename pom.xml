@@ -123,7 +123,7 @@
         <dependency>
             <groupId>com.github.peyang-Celeron</groupId>
             <artifactId>EazyNick</artifactId>
-            <version>1.0-ChangePom</version>
+            <version>1.1-ChangePom</version>
         </dependency>
     </dependencies>
 </project>

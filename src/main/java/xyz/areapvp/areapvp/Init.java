@@ -52,7 +52,7 @@ public class Init
                             player.setScoreboard(board);
                         });
             }
-        }.runTaskTimer(AreaPvP.plugin, 0L, 20L);
+        }.runTaskTimer(AreaPvP.plugin, 0L, 10L);
     }
 
     public static void scheduleSpawnTimer()
