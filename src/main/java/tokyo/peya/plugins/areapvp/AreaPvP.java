@@ -142,7 +142,6 @@ public class AreaPvP extends JavaPlugin
             refreshScoreBoard(player);
             new Events().onJoin(new PlayerJoinEvent(player, ""));
         });
-
     }
 
     @Override

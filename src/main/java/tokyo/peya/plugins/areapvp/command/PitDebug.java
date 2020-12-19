@@ -166,9 +166,7 @@ public class PitDebug implements CommandExecutor
                     public void run()
                     {
                         Bukkit.getOnlinePlayers().parallelStream().forEach((player) ->
-                        {
-                            AreaPvP.economy.withdrawPlayer(player, finalA);
-                        });
+                                AreaPvP.economy.withdrawPlayer(player, finalA));
                     }
                 }.runTaskAsynchronously(AreaPvP.getPlugin());
                 sender.sendMessage(ChatColor.GOLD.toString() + a + "g" + ChatColor.GRAY + "をオンラインのプレイヤー全員から強奪しました。");

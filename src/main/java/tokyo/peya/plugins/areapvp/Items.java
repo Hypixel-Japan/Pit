@@ -140,6 +140,7 @@ public class Items
         {
             Field field = NBTTagCompound.class.getDeclaredField("map");
             field.setAccessible(true);
+            @SuppressWarnings("unchecked")
             HashMap<String, NBTBase> map = (HashMap<String, NBTBase>) field.get(tagCompound);
 
             HashMap<String, String> result = new HashMap<>();
@@ -211,6 +212,7 @@ public class Items
         return CraftItemStack.asBukkitCopy(craftItem);
     }
 
+    @SuppressWarnings("unchecked")
     public static double getDamage(ItemStack stack)
     {
         net.minecraft.server.v1_12_R1.ItemStack craftItem = CraftItemStack.asNMSCopy(stack);

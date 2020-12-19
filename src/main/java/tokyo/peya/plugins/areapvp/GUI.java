@@ -10,8 +10,8 @@ import org.bukkit.inventory.*;
 import org.bukkit.scheduler.*;
 import tokyo.peya.plugins.areapvp.command.*;
 import tokyo.peya.plugins.areapvp.inventory.*;
-import tokyo.peya.plugins.areapvp.item.*;
 import tokyo.peya.plugins.areapvp.item.Items;
+import tokyo.peya.plugins.areapvp.item.*;
 import tokyo.peya.plugins.areapvp.perk.*;
 import tokyo.peya.plugins.areapvp.player.*;
 

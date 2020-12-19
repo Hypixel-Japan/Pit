@@ -19,13 +19,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.metadata.*;
 import org.bukkit.scheduler.*;
-import tokyo.peya.plugins.areapvp.*;
 import tokyo.peya.plugins.areapvp.Items;
+import tokyo.peya.plugins.areapvp.*;
 import tokyo.peya.plugins.areapvp.perk.*;
+import tokyo.peya.plugins.areapvp.play.InventoryUtils;
 import tokyo.peya.plugins.areapvp.play.*;
 import tokyo.peya.plugins.areapvp.play.decoration.*;
 import tokyo.peya.plugins.areapvp.player.*;
-import tokyo.peya.plugins.areapvp.play.InventoryUtils;
 
 import java.math.*;
 import java.util.stream.*;
@@ -357,5 +357,4 @@ public class Events implements Listener
             e.setCancelled(true);
         }
     }
-
 }

@@ -110,8 +110,8 @@ public class Prestige
                     case "confirm":
                         PlayerModify.addPrestige(player);
                         player.closeInventory();
-                        return;
                 }
+                break;
         }
     }
 }

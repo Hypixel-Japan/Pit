@@ -1,9 +1,6 @@
 package tokyo.peya.plugins.areapvp.play.decoration;
 
-import com.comphenix.protocol.*;
-import com.comphenix.protocol.events.*;
 import net.minecraft.server.v1_12_R1.*;
-import org.apache.commons.lang.*;
 import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_12_R1.entity.*;
 import org.bukkit.entity.*;
@@ -12,7 +9,6 @@ import tokyo.peya.plugins.areapvp.*;
 import tokyo.peya.plugins.areapvp.play.*;
 import tokyo.peya.plugins.areapvp.player.*;
 
-import java.lang.reflect.*;
 import java.math.*;
 import java.text.*;
 import java.util.*;
@@ -121,25 +117,5 @@ public class Sidebar
 
     }
 
-    public static void setPrefix(Player p, String s)
-    {
-        PacketContainer container = new PacketContainer(PacketType.Play.Server.SCOREBOARD_TEAM);
-        container.getStrings().write(0, RandomStringUtils.random(10));
-        container.getIntegers().write(0, 0);
-        container.getStrings().write(1, p.getName());
-        container.getStrings().write(2, s);
-        container.getIntegers().write(1, 1);
-        container.getSpecificModifier(Collection.class).write(0, Collections.singletonList(p.getName()));
-        ProtocolManager manager = ProtocolLibrary.getProtocolManager();
-        Bukkit.getOnlinePlayers().forEach(player -> {
-            try
-            {
-                manager.sendServerPacket(player, container, false);
-            }
-            catch (InvocationTargetException e)
-            {
-                e.printStackTrace();
-            }
-        });
-    }
+
 }

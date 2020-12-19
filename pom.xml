@@ -116,11 +116,6 @@
             <version>11.451.4810</version>
         </dependency>
         <dependency>
-            <groupId>com.comphenix.protocol</groupId>
-            <artifactId>ProtocolLib</artifactId>
-            <version>4.5.1</version>
-        </dependency>
-        <dependency>
             <groupId>com.github.peyang-Celeron</groupId>
             <artifactId>EazyNick</artifactId>
             <version>1.1-ChangePom</version>
