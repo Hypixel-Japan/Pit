@@ -1,6 +1,6 @@
 name: AreaPvP
 version: ${project.version}
-main: xyz.areapvp.areapvp.AreaPvP
+main: tokyo.peya.plugins.areapvp.AreaPvP
 load: POSTWORLD
 softdepend: ["EazyNick"]
 depend: ["Vault"]
