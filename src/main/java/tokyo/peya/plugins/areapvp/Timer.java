@@ -2,6 +2,7 @@ package tokyo.peya.plugins.areapvp;
 
 import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.*;
+import org.bukkit.Material;
 import org.bukkit.metadata.*;
 import org.bukkit.scheduler.*;
 
@@ -73,6 +74,8 @@ public class Timer extends BukkitRunnable
 
                     removeKeys.add(tr);
                     tr.getWorld().getBlockAt(tr).removeMetadata("placed", AreaPvP.getPlugin());
+                    if (v.b() == null)
+                        tr.getWorld().getBlockAt(tr).setType(Material.AIR);
                     tr.getWorld().getBlockAt(tr).setType(v.b());
                 });
 

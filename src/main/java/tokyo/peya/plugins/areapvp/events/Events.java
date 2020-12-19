@@ -193,13 +193,11 @@ public class Events implements Listener
         if (e.getPlayer().getGameMode() == GameMode.CREATIVE)
             return;
 
-        if (e.getBlockPlaced().getLocation().getY() >= AreaPvP.spawnloc)
+        if (e.getBlockPlaced().getLocation().getY() + 5 >= AreaPvP.spawnloc)
         {
             e.setCancelled(true);
             return;
         }
-
-        e.getBlock().setMetadata("placed", new FixedMetadataValue(AreaPvP.getPlugin(), "binzyouozisan"));
 
         Integer remove; //消すまでの時間
 
