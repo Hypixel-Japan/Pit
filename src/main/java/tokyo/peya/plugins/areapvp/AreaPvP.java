@@ -22,9 +22,6 @@ import java.util.*;
 
 public class AreaPvP extends JavaPlugin
 {
-    public static final String[] debugger = {"6b93a8e6-58ee-4794-b69a-56a3c2287010",
-            "69e5aea0-dd5e-4cf8-8fca-d8b4dd8b2243",
-            "36f2cdbc-77d5-45c7-a205-f5e8e6c0fb3b"};
     public static boolean debugging = false;
 
     public static FileConfiguration config;
@@ -101,8 +98,6 @@ public class AreaPvP extends JavaPlugin
         getCommand("oof").setExecutor(new Oof());
         getCommand("pvpd").setExecutor(new PitDebug());
         getCommand("view").setExecutor(new View());
-        if (Bukkit.getPluginManager().isPluginEnabled("CmdSender") && Bukkit.getPluginCommand("cmdsender") != null)
-            unRegisterBukkitCommand(Bukkit.getPluginCommand("cmdsender"));
         saveDefaultConfig();
         config = getConfig();
         spawnloc = config.getInt("spawnLoc");

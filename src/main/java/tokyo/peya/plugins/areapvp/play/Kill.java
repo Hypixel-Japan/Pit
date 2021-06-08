@@ -56,7 +56,7 @@ public class Kill
     public static void processKill(final Player killer, final Player deather)
     {
         if (deather.isDead())
-            deather.spigot().respawn();
+            Bukkit.getScheduler().runTaskLater(AreaPvP.getPlugin(), () -> deather.spigot().respawn(), 5);
         else
             deather.teleport(deather.getWorld().getSpawnLocation());
         deather.sendTitle(ChatColor.RED + "YOU DIED", "", 10, 20, 10);

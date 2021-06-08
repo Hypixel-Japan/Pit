@@ -156,20 +156,19 @@ public class Events implements Listener
     public void onJoin(PlayerJoinEvent e)
     {
         Player player = e.getPlayer();
-        player.setFoodLevel(19);
-
-        Perk.update(player);
-
         player.teleport(player.getWorld().getSpawnLocation());
+        player.setFoodLevel(19);
         new BukkitRunnable()
         {
             @Override
             public void run()
             {
                 InfoContainer.initialize(player);
+                Perk.update(player);
+                InventoryUtils.reItem(player);
             }
         }.runTaskAsynchronously(AreaPvP.getPlugin());
-        InventoryUtils.reItem(player);
+
     }
 
     @EventHandler(ignoreCancelled = true)

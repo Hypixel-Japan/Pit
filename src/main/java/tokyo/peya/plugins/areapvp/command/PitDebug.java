@@ -177,7 +177,7 @@ public class PitDebug implements CommandExecutor
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
     {
-        if (!(sender instanceof Player) || !Arrays.asList(AreaPvP.debugger).contains(((Player) sender).getUniqueId().toString()))
+        if (!(sender instanceof Player) || !sender.hasPermission("pit.admin"))
         {
             sender.sendMessage(ChatColor.RED + "エラー：使用許諾がありません！");
             return true;
